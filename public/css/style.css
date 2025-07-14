@@ -1,0 +1,84 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Police moderne et lisible */
+    margin: 0;
+    padding: 0;
+    background-color: palevioletred;
+    color: var(--couleur-texte-sombre);
+    line-height: 1.6;
+    overflow-x: hidden; /* Empêche le défilement horizontal si jamais un élément dépasse */
+}
+
+/* --- Style du Header et de la Navbar --- */
+.navbar {
+    display: flex; /* Permet de mettre les éléments (logo et liens) en ligne */
+    justify-content: space-between; /* Espace au maximum entre le logo et les liens */
+    align-items: center; /* Centre verticalement les éléments */
+    padding: 1rem 2rem; /* Espacement intérieur */
+    background-color: rgba(255, 255, 255, 0.8); /* Fond semi-transparent pour le header */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Une légère ombre pour détacher le header */
+    position: sticky; /* Le header reste en haut lors du défilement */
+    top: 0;
+    z-index: 1000; /* Assure que le header est toujours au-dessus des autres contenus */
+    border-radius: 5px;
+}
+
+/* --- Taille et Animation du Logo --- */
+.logo img { /* Cible directement l'image dans la div .logo */
+    height: 60px; /* Taille du logo : 60 pixels de hauteur. Ajuste si nécessaire. */
+    width: auto;  /* Permet à la largeur de s'ajuster automatiquement pour garder les proportions */
+    display: block; /* Évite un espace blanc sous l'image */
+    cursor: pointer; /* Indique que l'image est cliquable */
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transition douce pour l'animation */
+}
+
+/* Animation simple au survol du logo */
+.logo img:hover {
+    transform: scale(1.1); /* Agrandit légèrement le logo */
+}
+
+/* --- Style des Liens de Navigation (Boutons) --- */
+.nav-links {
+    list-style: none; /* Enlève les puces de la liste */
+    display: flex; /* Met les éléments de la liste en ligne */
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    margin-left: 1.5rem; /* Espacement entre les boutons */
+}
+
+.btn {
+    display: inline-block; /* Permet d'appliquer padding et margins */
+    padding: 0.8rem 1.5rem; /* Espacement intérieur des boutons */
+    border: none; /* Pas de bordure par défaut */
+    border-radius: 25px; /* Boutons bien arrondis */
+    text-decoration: none; /* Enlève le soulignement des liens */
+    font-weight: bold; /* Texte en gras */
+    cursor: pointer; /* Curseur main au survol */
+    transition: all 0.3s ease; /* Transition douce pour toutes les propriétés (couleur, ombre, etc.) */
+    font-size: 0.95rem; /* Taille du texte */
+}
+
+/* Style du bouton "S'inscrire" */
+.btn-primary {
+    background-color: var(--couleur-principale); /* Utilise la couleur principale */
+    color: var(--couleur-texte-clair); /* Texte blanc */
+}
+
+/* Animation au survol du bouton "S'inscrire" */
+.btn-primary:hover {
+    background-color: #e65e5e; /* Une nuance plus foncée de la couleur principale */
+    transform: translateY(-2px); /* Fait remonter légèrement le bouton */
+    box-shadow: 0 4px 8px rgba(255, 96, 96, 0.3); /* Ajoute une ombre subtile */
+}
+
+/* Style du bouton "View stand" */
+.btn-secondary {
+    background-color: transparent; /* Fond transparent */
+    color: var(--couleur-principale); /* Texte avec la couleur principale */
+    border: 2px solid var(--couleur-principale); /* Bordure avec la couleur principale */
+}
+
+/* Animation au survol du bouton "View stand" */
+    
