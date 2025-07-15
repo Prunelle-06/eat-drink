@@ -2,7 +2,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Police moderne et lisible */
     margin: 0;
     padding: 0;
-    background-color:orange;
+    background-color:black;
     color: var(--couleur-texte-sombre);
     line-height: 1.6;
     overflow-x: hidden; /* Empêche le défilement horizontal si jamais un élément dépasse */
@@ -149,4 +149,59 @@ footer {
 .footer-content .socials a:hover {
   color: #ffcc70;
 }
-    
+.main-inscription{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.form-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #e67e22;
+}
+
+form input, form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+form textarea {
+    resize: vertical;
+}
+
+button[type="submit"] {
+    background-color: palevioletred;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button[type="submit"]:hover {
+    background-color: palevioletred;
+}
+  h1{
+    color: #e65e5e;
+  }
+  p{
+    color: #e67e22;
+  }  
