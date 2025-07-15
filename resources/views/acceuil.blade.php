@@ -14,7 +14,7 @@
         <img src="{{ asset('images/edlogo1.png') }}" alt="un logo" id="logo" width="300">
       </div>
        <ul class="nav-links">
-        <li><a href="#" class="btn ">S'inscrire</a></li>
+        <li><a href="{{ url('/inscription') }}" class="btn ">S'inscrire</a></li>
         <li><a href="#" class="btn ">View stand</a></li>
       </ul>
     </nav>
