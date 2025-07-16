@@ -1,11 +1,11 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Police moderne et lisible */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color:black;
+    background-color:whitesmoke;
     color: var(--couleur-texte-sombre);
     line-height: 1.6;
-    overflow-x: hidden; /* Empêche le défilement horizontal si jamais un élément dépasse */
+    overflow-x: hidden; 
 }
 
 /* --- Style du Header et de la Navbar --- */
@@ -33,13 +33,13 @@ body {
 
 /* Animation simple au survol du logo */
 .logo img:hover {
-    transform: scale(1.1); /* Agrandit légèrement le logo */
+    transform: scale(1.1); 
 }
 
 /* --- Style des Liens de Navigation (Boutons) --- */
 .nav-links {
-    list-style: none; /* Enlève les puces de la liste */
-    display: flex; /* Met les éléments de la liste en ligne */
+    list-style: none; 
+    display: flex; 
     margin: 0;
     padding: 0;
 }
@@ -63,7 +63,7 @@ body {
 /* Style du bouton "S'inscrire" */
 .btn-primary {
     background-color: var(--couleur-principale); /* Utilise la couleur principale */
-    color: var(--couleur-texte-clair); /* Texte blanc */
+    color: var(--couleur-texte-clair); /* Texte blanc clair
 }
 
 /* Animation au survol du bouton "S'inscrire" */
@@ -97,7 +97,7 @@ v/* Gallery */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
-/* Gallery */
+/* Gallery  image */
 .gallery img:hover {
   transform: scale(1.05);
 }
@@ -205,3 +205,7 @@ button[type="submit"]:hover {
   p{
     color: #e67e22;
   }  
+ h1{
+  color: antiquewhite;
+ }
+ 
