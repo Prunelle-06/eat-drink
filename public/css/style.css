@@ -1,3 +1,15 @@
+:root {
+  --primary: #FF6B6B;  /* Rouge gardé pour la cohérence */
+  --secondary: #6B717E;  /* Gris bleuté */
+  --dark: #1F2232;     /* Noir profond */
+  --light: #F9F9F9;    /* Blanc pur */
+  --accent: #4ECDC4;   /* Turquoise gardé pour les CTA */
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -9,203 +21,78 @@ body {
 }
 
 /* --- Style du Header et de la Navbar --- */
-.navbar {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center;
-    padding: 1rem 2rem; 
-    background-color: rgba(255, 255, 255, 0.8); 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-    position: sticky; 
-    top: 0;
-    z-index: 1000; 
-    border-radius: 5px;
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-
-/* --- Taille et Animation du Logo --- */
-.logo img { 
-    height: 60px;
-    width: auto; 
-    display: block; 
-    cursor: pointer; 
-    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transition douce pour l'animation */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
-
-/* Animation simple au survol du logo */
-.logo img:hover {
-    transform: scale(1.1); 
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-
-/* --- Style des Liens de Navigation (Boutons) --- */
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.logo span {
+  color: var(--accent);
+}
+.all-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 .nav-links {
-    list-style: none; 
-    display: flex; 
-    margin: 0;
-    padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
-
-.nav-links li {
-    margin-left: 1.5rem; 
-}
-
-.btn {
-    display: inline-block; 
-    padding: 0.8rem 1.5rem; 
-    border: none; 
-    border-radius: 25px; 
-    text-decoration: none; 
-    font-weight: bold; 
-    cursor: pointer; 
-    transition: all 0.3s ease; 
-    font-size: 0.95rem; 
-}
-
-/* Style du bouton "S'inscrire" */
-.btn-primary {
-    background-color: var(--couleur-principale); /* Utilise la couleur principale */
-    color: var(--couleur-texte-clair); /* Texte blanc clair
-}
-
-/* Animation au survol du bouton "S'inscrire" */
-.btn-primary:hover {
-    background-color: #e65e5e; 
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 96, 96, 0.3); 
-}
-
-/* Style du bouton "View stand" */
-.btn-secondary {
-    background-color: transparent; 
-    color: var(--couleur-principale); 
-    border: 2px solid var(--couleur-principale); 
-}
-
-/*main/
-v/* Gallery */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
-  padding: 40px;
-}
-
-.gallery img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-/* Gallery  image */
-.gallery img:hover {
-  transform: scale(1.05);
-}
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
-  padding: 40px;
-}
-
-.gallery img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.gallery img:hover {
-  transform: scale(1.05);
-}
-
-/* Footer */
-footer {
-  background-color: #222;
-  color: #ddd;
-  padding: 30px 20px;
-  text-align: center;
-  margin-top: 40px;
-}
-
-.footer-content {
-  max-width: 900px;
-  margin: auto;
-}
-
-.footer-content p {
-  margin-bottom: 10px;
-}
-
-.footer-content .socials a {
-  color: #ffa07a;
-  margin: 0 10px;
+.nav-links a, .cta-button a {
+  color: white;
   text-decoration: none;
-  transition: color 0.3s ease;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
-
-.footer-content .socials a:hover {
-  color: #ffcc70;
+.nav-links a:hover, .cta-button a {
+  color: var(--accent);
+  transform: translateY(-2px);
 }
-.main-inscription{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    padding: 20px;
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent);
+  transition: width 0.3s ease;
 }
-
-.form-container {
-    background-color: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 500px;
+.nav-links a:hover::after {
+  width: 100%;
 }
-
-.form-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #e67e22;
+.cta-button {
+  background-color: var(--accent);
+  padding: 0.7rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
-
-form input, form textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
+.cta-button a {
+  color: #fff;
 }
-
-form textarea {
-    resize: vertical;
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
-
-button[type="submit"] {
-    background-color: palevioletred;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    width: 100%;
-}
-
-button[type="submit"]:hover {
-    background-color: palevioletred;
-}
-  h1{
-    color: #e65e5e;
-  }
-  p{
-    color: #e67e22;
-  }  
- h1{
-  color: antiquewhite;
- }
- 

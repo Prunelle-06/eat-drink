@@ -8,17 +8,26 @@
 </head>
 <body>
     <!--header-->
-   <header>
-      <nav class="navbar">
-      <div class="logo">  
-        <img src="{{ asset('images/edlogo1.png') }}" alt="un logo" id="logo" width="300">
+    <header>
+      <div class="container">
+        <nav>
+            <div class="logo">
+                Eat<span>&</span>Drink
+            </div>
+            <div class="all-links">
+              <div class="nav-links">
+              <a href="#features">Fonctionnalités</a>
+              <a href="#">L'evenement</a>
+              <a href="#exposants">Exposants</a>
+              </div>
+              <div class="cta-button">
+                <a href="">Connexion</a>
+              </div>
+            </div>
+        </nav>
       </div>
-       <ul class="nav-links">
-        <li><a href="{{ url('/inscription') }}" class="btn ">S'inscrire</a></li>
-        <li><a href="#" class="btn ">View stand</a></li>
-      </ul>
-    </nav>
-  </header>
+    </header>
+
       <!--main content-->
     <main>
         <div class="global">
