@@ -1,5 +1,5 @@
 :root {
-  --primary: #FF6B6B;  /* Rouge gardé pour la cohérence */
+  --primary: #4A5568; 
   --secondary: #6B717E;  /* Gris bleuté */
   --dark: #1F2232;     /* Noir profond */
   --light: #F9F9F9;    /* Blanc pur */
@@ -11,13 +11,13 @@
   box-sizing: border-box;
 }
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color:whitesmoke;
-    color: var(--couleur-texte-sombre);
-    line-height: 1.6;
-    overflow-x: hidden; 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color:whitesmoke;
+  color: var(--couleur-texte-sombre);
+  line-height: 1.6;
+  overflow-x: hidden; 
 }
 
 /* --- Style du Header et de la Navbar --- */
@@ -26,7 +26,6 @@ header {
   color: white;
   padding: 1rem 0;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  position: sticky;
   top: 0;
   z-index: 100;
 }
@@ -105,7 +104,7 @@ nav {
 .hero h1 {
   font-size: 3.5rem;
   margin-bottom: 1.5rem;
-  background: linear-gradient(to right, var(--primary), var(--secondary));
+  background: linear-gradient(to right, var(--primary), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
