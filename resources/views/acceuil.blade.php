@@ -14,7 +14,7 @@
           <h1>Gérez votre stand culinaire en toute simplicité</h1>
           <p>La plateforme complète pour les exposants et visiteurs de l'événement Eat&Drink. Inscrivez votre stand, gérez vos produits et recevez des commandes en ligne.</p>
           <div class="button-group">
-              <a href="" class="btn btn-primary">Demander un stand</a>
+              <a href="/inscription" class="btn btn-primary">Demander un stand</a>
               <a href="#exposants" class="btn btn-secondary">Voir les exposants</a>
           </div>
       </div>

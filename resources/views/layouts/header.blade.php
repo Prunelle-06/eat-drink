@@ -21,7 +21,7 @@
                 <a href="#features">Fonctionnalités</a>
               </div>
               <div class="cta-button">
-                <a href="">Connexion</a>
+                <a href="/login">Connexion</a>
               </div>
             </div>
         </nav>
