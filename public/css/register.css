@@ -1,0 +1,79 @@
+:root {
+    --primary: #2D3748; /* Gris anthracite */
+    --secondary: #4A5568; /* Gris moyen */
+    --accent: #38B2AC; /* Turquoise doux */
+    --light: #F7FAFC; /* Blanc très léger */
+    --text: #2D3748;
+}
+:root {
+  --primary: #4A5568; 
+  --secondary: #6B717E;  /* Gris bleuté */
+  --dark: #1F2232;     /* Noir profond */
+  --light: #F9F9F9;    /* Blanc pur */
+  --accent: #4ECDC4;   /* Turquoise gardé pour les CTA */
+}
+section {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+.form-container {
+    width: 100%;
+    max-width: 500px;
+    padding: 2.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.form-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+    text-align: center;
+}
+.form-group {
+    margin-bottom: 1.5rem;
+}
+input, textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(56, 178, 172, 0.2);
+}
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+.submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.submit-btn:hover {
+    background-color: #319795; /* Turquoise légèrement plus foncé */
+}
+.form-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--secondary);
+}
+.form-footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
