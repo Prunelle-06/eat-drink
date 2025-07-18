@@ -1,211 +1,261 @@
+:root {
+  --primary: #4A5568; 
+  --secondary: #6B717E;  /* Gris bleuté */
+  --dark: #1F2232;     /* Noir profond */
+  --light: #F9F9F9;    /* Blanc pur */
+  --accent: #4ECDC4;   /* Turquoise gardé pour les CTA */
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color:whitesmoke;
-    color: var(--couleur-texte-sombre);
-    line-height: 1.6;
-    overflow-x: hidden; 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color:whitesmoke;
+  color: var(--couleur-texte-sombre);
+  line-height: 1.6;
+  overflow-x: hidden; 
 }
 
 /* --- Style du Header et de la Navbar --- */
-.navbar {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center;
-    padding: 1rem 2rem; 
-    background-color: rgba(255, 255, 255, 0.8); 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-    position: sticky; 
-    top: 0;
-    z-index: 1000; 
-    border-radius: 5px;
+header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 1rem 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  top: 0;
+  z-index: 100;
 }
-
-/* --- Taille et Animation du Logo --- */
-.logo img { 
-    height: 60px;
-    width: auto; 
-    display: block; 
-    cursor: pointer; 
-    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transition douce pour l'animation */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
-
-/* Animation simple au survol du logo */
-.logo img:hover {
-    transform: scale(1.1); 
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
-
-/* --- Style des Liens de Navigation (Boutons) --- */
+.logo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.logo span {
+  color: var(--accent);
+}
+.all-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 .nav-links {
-    list-style: none; 
-    display: flex; 
-    margin: 0;
-    padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.nav-links a, .cta-button a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.nav-links a:hover, .cta-button a {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent);
+  transition: width 0.3s ease;
+}
+.nav-links a:hover::after {
+  width: 100%;
+}
+.cta-button {
+  background-color: var(--accent);
+  padding: 0.7rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.cta-button a {
+  color: #fff;
+}
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
-.nav-links li {
-    margin-left: 1.5rem; 
+/* Style section hero */
+.hero {
+  padding: 5rem 0;
+  text-align: center;
 }
-
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(to right, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero p {
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+}
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
 .btn {
-    display: inline-block; 
-    padding: 0.8rem 1.5rem; 
-    border: none; 
-    border-radius: 25px; 
-    text-decoration: none; 
-    font-weight: bold; 
-    cursor: pointer; 
-    transition: all 0.3s ease; 
-    font-size: 0.95rem; 
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
-
-/* Style du bouton "S'inscrire" */
 .btn-primary {
-    background-color: var(--couleur-principale); /* Utilise la couleur principale */
-    color: var(--couleur-texte-clair); /* Texte blanc clair
+  background-color: var(--primary);
+  color: white;
 }
-
-/* Animation au survol du bouton "S'inscrire" */
-.btn-primary:hover {
-    background-color: #e65e5e; 
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 96, 96, 0.3); 
-}
-
-/* Style du bouton "View stand" */
 .btn-secondary {
-    background-color: transparent; 
-    color: var(--couleur-principale); 
-    border: 2px solid var(--couleur-principale); 
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
-/*main/
-v/* Gallery */
-.gallery {
+/* Style Section Fonctionnalités */
+.features {
+  padding: 5rem 0;
+  background-color: white;
+}
+.section-title {
+  text-align: center;
+  margin-bottom: 3rem;
+  font-size: 2.5rem;
+  color: var(--dark);
+}
+.features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
-  padding: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+.feature-card {
+  background-color: var(--light);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary);
+}
+.feature-card h3 {
+  margin-bottom: 1rem;
+  color: var(--dark);
 }
 
-.gallery img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+/* Style Section Info */
+.info-section {
+  padding: 100px 0;
+  background-color: var(--light);
 }
-/* Gallery  image */
-.gallery img:hover {
-  transform: scale(1.05);
-}
-.gallery {
+.info-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 15px;
-  padding: 40px;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
 }
-
-.gallery img {
+.info-content h2 {
+  font-size: 36px;
+  margin-bottom: 25px;
+  color: var(--dark);
+}
+.info-content p {
+  margin-bottom: 20px;
+}
+.info-image {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.info-image img {
   width: 100%;
-  height: 100%;
+  height: 75vh;
   object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  display: block;
+  transition: transform 0.5s ease;
 }
-
-.gallery img:hover {
+.info-image:hover img {
   transform: scale(1.05);
 }
 
 /* Footer */
-footer {
-  background-color: #222;
-  color: #ddd;
-  padding: 30px 20px;
-  text-align: center;
-  margin-top: 40px;
+.main-footer {
+  background-color: var(--dark);
+  color: white;
+  padding: 60px 0 30px;
 }
-
 .footer-content {
-  max-width: 900px;
-  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  margin-bottom: 50px;
 }
-
-.footer-content p {
+.footer-column h3 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: white;
+}
+.footer-links {
+  list-style: none;
+}
+.footer-links li {
+  margin-bottom: 12px;
+}
+.footer-links a {
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s ease;
+}
+.footer-links a:hover {
+  color: white;
+  padding-left: 5px;
+}
+.contact-info {
+  margin-top: 35px;
+}
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 10px;
+  color: rgba(255, 255, 255, 0.7);
 }
-
-.footer-content .socials a {
-  color: #ffa07a;
-  margin: 0 10px;
-  text-decoration: none;
-  transition: color 0.3s ease;
+.copyright {
+  text-align: center;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
 }
-
-.footer-content .socials a:hover {
-  color: #ffcc70;
-}
-.main-inscription{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    padding: 20px;
-}
-
-.form-container {
-    background-color: white;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 500px;
-}
-
-.form-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #e67e22;
-}
-
-form input, form textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-form textarea {
-    resize: vertical;
-}
-
-button[type="submit"] {
-    background-color: palevioletred;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    width: 100%;
-}
-
-button[type="submit"]:hover {
-    background-color: palevioletred;
-}
-  h1{
-    color: #e65e5e;
-  }
-  p{
-    color: #e67e22;
-  }  
- h1{
-  color: antiquewhite;
- }
- 

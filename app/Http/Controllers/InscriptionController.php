@@ -9,7 +9,7 @@ class InscriptionController extends Controller
 {
     public function formulaire()
     {
-        return view('inscription');
+        return view('register');
     }
 
     public function soumettre(Request $request)
