@@ -17,7 +17,7 @@ class InscriptionController extends Controller
         $request->validate([
             'nom' => 'required',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed',
+            'password' => 'required',
             'nom_entreprise' => 'required',
             'description_produit' => 'required',
         ]);

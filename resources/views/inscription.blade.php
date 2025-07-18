@@ -24,12 +24,20 @@
     <h1>Formulaire d'inscription</h1>
     <form method="POST" action="{{ url('/inscription') }}">
         @csrf
-        <input type="text" name="nom" placeholder="Nom complet" required><br><br>
-        <input type="email" name="email" placeholder="Adresse email" required><br><br>
-        <input type="text" name="nom_entreprise" placeholder="Nom de l'entreprise" required><br><br>
+        <input type="text" value="{{ old("nom") }}" name="nom" placeholder="Nom complet" required><br><br>
+        @error("nom")
+            {{ $message }}
+        @enderror
+        <input type="email" value="{{ old("email") }}" name="email" placeholder="Adresse email" required><br><br>
+        @error("email")
+            {{ $message }}
+        @enderror
+        <input type="text" value="{{ old("nom_entreprise") }}" name="nom_entreprise" placeholder="Nom de l'entreprise" required><br><br>
+        @error("nom_entreprise")
+            {{ $message }}
+        @enderror
         <textarea name="description_produit" placeholder="Décris tes produits ici..." required></textarea><br><br>
-        <input type="password" name="password" placeholder="Mot de passe" required><br><br>
-        <input type="password" name="password_confirmation" placeholder="Confirmer mot de passe" required><br><br>
+        <input value="{{ old("password") }}"  type="password" name="password" placeholder="Mot de passe" required><br><br>
         <button type="submit">Soumettre la demande</button>
     </form>
 </div>
