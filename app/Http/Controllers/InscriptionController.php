@@ -1,9 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Stand;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class InscriptionController extends Controller
 {
@@ -14,24 +17,33 @@ class InscriptionController extends Controller
 
     public function soumettre(Request $request)
     {
-        $request->validate([
-            'nom' => 'required',
+        $validated = $request->validate([
             'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'nom_entreprise' => 'required',
-            // 'description_produit' => 'required',
+            'password' => 'required|min:8',
+            'nom_entreprise' => 'required|string|max:255',
+            'nom_stand' => 'required|string|max:255',
+            'description_stand' => 'nullable|string',
         ]);
 
-        User::create([
-            // 'name' => $request->nom,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'nom_entreprise' => $request->nom_entreprise,
-            // 'description_produit' => $request->description_produit,
-            'role' => 'en_attente',
-        ]);
+        DB::transaction(function () use ($validated) {
+            // creation User 
+            $user = User::create([
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'nom_entreprise' => $validated['nom_entreprise'],
+                'role' => 'entrepreneur_en_attente',
+            ]);
 
-        return redirect('/attente');
+            // creation Stand lié à User
+            Stand::create([
+                'user_id' => $user->id,
+                'nom_stand' => $validated['nom_stand'],
+                'description_stand' => $validated['description_stand'],
+            ]);
+
+        });
+
+        return redirect('/attente')->with('success', 'Votre demande a été soumise !');
     }
 }
 

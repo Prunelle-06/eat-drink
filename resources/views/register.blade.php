@@ -15,33 +15,50 @@
             <h1 class="form-title">Demande de stand</h1>
             <form method="POST" action="{{ url('/inscription') }}">
                 @csrf          
-                {{-- <div class="form-group">
-                    <input type="text" name="nom" placeholder="Nom complet" required>
-                </div> --}}
+                {{-- Champs User --}}
 
                 <div class="form-group">
-                    <input type="text" name="mon_entreprise" placeholder="Nom de l'entreprise" required>
+                    <input type="text" name="nom_entreprise" value="{{ old('nom_entreprise') }}" placeholder="Nom de l'entreprise" required>
                 </div>
+                @error('nom_entreprise')
+                    <p>{{ $message }}</p>
+                @enderror
                 
                 <div class="form-group">
-                    <input type="email" name="email" placeholder="Adresse email" required>
+                    <input type="email" name="email" value="{{ old('email') }}" placeholder="Adresse email" required>
                 </div>
+                @error('email')
+                    <p>{{ $message }}</p>
+                @enderror
                 
+                {{-- Champs Stand --}}
                 <div class="form-group">
-                    <input name="nom_stand" placeholder="Nom du stand" required>
+                    <input name="nom_stand" value="{{ old('nom_stand') }}" placeholder="Nom du stand" required>
                 </div>
+                @error('nom_stand')
+                    <p>{{ $message }}</p>
+                @enderror
 
                 <div class="form-group">
-                    <textarea name="description_stand" placeholder="Decrivez votre stand" required></textarea>
+                    <textarea name="description_stand" value="{{ old('description_stand') }}" placeholder="Decrivez votre stand"></textarea>
                 </div>
+                @error('description_stand')
+                    <p>{{ $message }}</p>
+                @enderror
                
                 <div class="form-group">
-                    <input type="password" name="password" placeholder="Mot de passe" required>
+                    <input type="password" name="password" value="{{ old('password') }}" placeholder="Mot de passe" required>
                 </div>
+                @error('password')
+                    <p>{{ $message }}</p>
+                @enderror
                 
                 <div class="form-group">
-                    <input type="password" name="password_confirmation" placeholder="Confirmer le mot de passe" required>
+                    <input type="password" name="password_confirmation" value="{{ old('password_confirmation') }}" placeholder="Confirmer le mot de passe" required>
                 </div>
+                @error('password_confirmation')
+                    <p>{{ $message }}</p>
+                @enderror
                 
                 <button type="submit" class="submit-btn">Soumettre la demande</button>
             </form>
