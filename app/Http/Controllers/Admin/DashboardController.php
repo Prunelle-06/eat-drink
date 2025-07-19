@@ -28,8 +28,10 @@ class DashboardController extends Controller
     // Rejette une demande 
     public function reject($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete(); 
+        DB::transaction(function () use ($id) {
+            Stand::where('user_id', $id)->delete();     
+            User::findOrFail($id)->delete();
+        });
 
         return back()->with('success', "La demande a été rejetée.");
     }

@@ -8,6 +8,9 @@
 <body>
     @include('layouts.header')
 
+    @if (Session::has('success'))
+        <p>{{ Session::get('success') }}</p>
+    @endif
     <section class="container-dashboard-admin">
         <!-- Section Tableau -->
         <section class="admin-table-section" id="pending-requests">
