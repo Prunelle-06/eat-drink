@@ -19,15 +19,15 @@ class InscriptionController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required',
             'nom_entreprise' => 'required',
-            'description_produit' => 'required',
+            // 'description_produit' => 'required',
         ]);
 
         User::create([
-            'name' => $request->nom,
+            // 'name' => $request->nom,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'nom_entreprise' => $request->nom_entreprise,
-            'description_produit' => $request->description_produit,
+            // 'description_produit' => $request->description_produit,
             'role' => 'en_attente',
         ]);
 

@@ -15,21 +15,21 @@
             <h1 class="form-title">Demande de stand</h1>
             <form method="POST" action="{{ url('/inscription') }}">
                 @csrf          
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <input type="text" name="nom" placeholder="Nom complet" required>
+                </div> --}}
+
+                <div class="form-group">
+                    <input type="text" name="mon_entreprise" placeholder="Nom de l'entreprise" required>
                 </div>
                 
                 <div class="form-group">
                     <input type="email" name="email" placeholder="Adresse email" required>
                 </div>
                 
-                <div class="form-group">
-                    <input type="text" name="nom_entreprise" placeholder="Nom de l'entreprise" required>
-                </div>
-                
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <textarea name="description_produit" placeholder="Décris tes produits en quelques mots..." required></textarea>
-                </div>
+                </div> --}}
                 
                 <div class="form-group">
                     <input type="password" name="password" placeholder="Mot de passe" required>
