@@ -17,7 +17,7 @@ Route::get('/attente', function () {
 });
  
 // Route ADMIN
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware('is_admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::post('/users/{id}/approve', [DashboardController::class, 'approve'])->name('admin.approve');
     Route::post('/users/{id}/reject', [DashboardController::class, 'reject'])->name('admin.reject');
