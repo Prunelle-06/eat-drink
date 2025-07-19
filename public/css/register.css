@@ -1,17 +1,26 @@
 :root {
-    --primary: #2D3748; /* Gris anthracite */
-    --secondary: #4A5568; /* Gris moyen */
-    --accent: #38B2AC; /* Turquoise doux */
-    --light: #F7FAFC; /* Blanc très léger */
-    --text: #2D3748;
-}
-:root {
   --primary: #4A5568; 
   --secondary: #6B717E;  /* Gris bleuté */
   --dark: #1F2232;     /* Noir profond */
   --light: #F9F9F9;    /* Blanc pur */
   --accent: #4ECDC4;   /* Turquoise gardé pour les CTA */
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color:whitesmoke;
+  color: var(--couleur-texte-sombre);
+  line-height: 1.6;
+  overflow-x: hidden; 
+}
+
 section {
     display: flex;
     justify-content: center;

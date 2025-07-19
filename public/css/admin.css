@@ -1,12 +1,34 @@
-.admin-dashboard-container {
-    max-width: 1200px;
+:root {
+  --primary: #4A5568; 
+  --secondary: #6B717E;  /* Gris bleuté */
+  --dark: #1F2232;     /* Noir profond */
+  --light: #F9F9F9;    /* Blanc pur */
+  --accent: #4ECDC4;   /* Turquoise gardé pour les CTA */
+}
+
+*  {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color:whitesmoke;
+  color: var(--couleur-texte-sombre);
+  line-height: 1.6;
+  overflow-x: hidden; 
+}
+
+.container-dashboard-admin {
     margin: 2rem auto;
-    padding: 0 1rem;
+    padding: 0 2rem;
 }
 
 /* Section Tableau */
 .admin-table-section {
-    margin-top: 3rem;
+    margin: 3rem 0;
 }
 .admin-table {
     width: 100%;
@@ -57,7 +79,8 @@
 
 /* Section Statistiques */
 .admin-stats-section {
-    margin-bottom: 3rem;
+    margin: 3rem 0;
+    margin-bottom: 5rem;
 }
 .stats-cards {
     display: grid;

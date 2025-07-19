@@ -11,4 +11,9 @@ class Stand extends Model
         'description_stand',
         'user_id',
     ];
+
+
+    public function users() {
+        return $this->belongsTo(User::class);
+    }
 }
