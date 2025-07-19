@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('nom_entreprise');
-            $table->string('role')->default('en_attente');
+            $table->string('role')->default('entrepreneur_en_attente');
             $table->rememberToken();
             $table->timestamps();
         });

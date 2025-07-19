@@ -4,44 +4,62 @@
     <meta charset="UTF-8">
     <title>Dashboard Admin</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 </head>
 <body>
-    <header>
-    
-    </header>
+    @include('layouts.header')
 
-    <main class="admin-dashboard">
-        <h2>Tableau de bord admin</h2><br>
-        <table class="admin-table">
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Email</th>
-                    <th>Entreprise</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Akouavi D.</td>
-                    <td>akouavi@email.com</td>
-                    <td>Akou Délices</td>
-                    <td>
-                        <button class="btn-approve">Approuver</button>
-                        <button class="btn-reject">Rejeter</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Marius T.</td>
-                    <td>marius@food.com</td>
-                    <td>Le Petit Goût</td>
-                    <td>
-                        <button class="btn-approve">Approuver</button>
-                        <button class="btn-reject">Rejeter</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </main>
+    <!-- Section Tableau -->
+    <section class="admin-table-section" id="pending-requests">
+        <h2>Demandes en attente de validation</h2>
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Nom Entreprise</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($users as $user)
+                    <tr>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->nom_entreprise }}</td>
+                        <td class="actions-cell">
+                            <form action="" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn-action btn-approve">✓ Approuver</button>
+                            </form>
+                            <form action="" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn-action btn-reject">✗ Rejeter</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Section Statistiques -->
+    <section class="admin-stats-section">
+        <h1>Tableau de bord administrateur</h1>
+        
+        <div class="stats-cards">
+            <div class="stat-card">
+                <h3>Demandes en attente</h3>
+                <p class="stat-value"></p>
+                <a href="#pending-requests" class="stat-link">Voir</a>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Stands approuvés</h3>
+                <p class="stat-value"></p>
+                <a href="#approved-stands" class="stat-link">Voir</a>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
