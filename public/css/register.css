@@ -41,6 +41,7 @@ input, textarea {
     border: 1px solid #E2E8F0;
     border-radius: 8px;
     font-size: 1rem;
+    resize: none;
     transition: all 0.2s ease;
 }
 input:focus, textarea:focus {

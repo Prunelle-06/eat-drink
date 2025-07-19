@@ -27,10 +27,14 @@
                     <input type="email" name="email" placeholder="Adresse email" required>
                 </div>
                 
-                {{-- <div class="form-group">
-                    <textarea name="description_produit" placeholder="Décris tes produits en quelques mots..." required></textarea>
-                </div> --}}
-                
+                <div class="form-group">
+                    <input name="nom_stand" placeholder="Nom du stand" required>
+                </div>
+
+                <div class="form-group">
+                    <textarea name="description_stand" placeholder="Decrivez votre stand" required></textarea>
+                </div>
+               
                 <div class="form-group">
                     <input type="password" name="password" placeholder="Mot de passe" required>
                 </div>
