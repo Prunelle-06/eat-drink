@@ -21,7 +21,7 @@ Route::post('/login', [LoginController::class, 'login']);
 
 
 Route::get('/attente', function () {
-    return view('home');
+    return view('pending');
 })->middleware(['auth', 'can:acces-attente']);
  
 // Route ADMIN

@@ -1,0 +1,123 @@
+:root {
+    --primary: #4A5568;
+    --secondary: #00A699;
+    --dark: #2D2926;
+    --light: #F7F7F7;
+    --accent: #6B717E;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    justify-content: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color:whitesmoke;
+    color: var(--couleur-texte-sombre);
+    line-height: 1.6;
+    overflow-x: hidden; 
+}
+
+.waiting-container {
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    margin: 40px 0;
+    border-radius: 20px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    transform-style: preserve-3d;
+}
+.waiting-header {
+    background: var(--secondary);
+    color: white;
+    padding: 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.waiting-header h1 {
+    /* font-family: 'Playfair Display', serif; */
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 2;
+}
+.waiting-header::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    animation: pulse 8s infinite linear;
+}
+.waiting-content {
+    padding: 3rem;
+    position: relative;
+}
+.status-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    border-left: 5px solid var(--secondary);
+    transition: all 0.3s ease;
+}
+.status-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+.status-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(0, 166, 153, 0.1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 1.5rem;
+    animation: bounce 2s infinite;
+}
+.status-icon svg {
+    width: 40px;
+    height: 40px;
+    fill: var(--secondary);
+}
+.status-message {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+}
+.admin-contact {
+    background: rgba(0, 166, 153, 0.05);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-top: 2rem;
+    border-left: 3px solid var(--primary);
+}
+.flash-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--secondary);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateX(200%);
+    animation: slideIn 0.5s forwards, fadeOut 0.5s forwards 3s;
+    z-index: 1000;
+}
