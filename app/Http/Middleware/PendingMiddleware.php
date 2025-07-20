@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Middleware\Admin;
+namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Gate;
 
-class AdminMiddleware
+class PendingMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,9 +15,9 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Gate::Allows("acces-admin")) {
-            return $next($request);
+        if(auth()->user()->role === "entrepreneur_en_attente") {
+            return abort(403);
         }
-        return abort(403);
+        return $next($request);
     }
 }

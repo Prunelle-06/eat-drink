@@ -21,30 +21,22 @@ class LoginController extends Controller
         ]);
 
         $user = User::where('email', $request->email)->first();
-
+            
+        Auth::login($user);
+        $request->session()->regenerate();
         
-        // Vérifier si le compte est approuvé
-        if (!in_array($user->role, ['admin', 'entrepreneur_approuve'])) {
+        // Redirection selon le rôle
+        return match($user->role) {
+            'admin' => redirect()->intended('/admin'),
+            'entrepreneur_approuve' => redirect()->intended('/attente'),
+            default => redirect('/attente')
+        };
+
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withErrors([
-                'email' => 'Votre compte est en attente de validation',
-                ])->onlyInput('email');
-            }
-            
-            Auth::login($user);
-            $request->session()->regenerate();
-            
-            // Redirection selon le rôle
-            return match($user->role) {
-                'admin' => redirect()->intended('/admin'),
-                'entrepreneur_approuve' => redirect()->intended('/attente'),
-                default => redirect('/attente')
-            };
-
-
-            if (!$user || !Hash::check($request->password, $user->password)) {
-                return back()->withErrors([
-                    'email' => 'Identifiants incorrects',
-                ])->onlyInput('email');
+                'email' => 'Identifiants incorrects',
+            ])->onlyInput('email');
         }
     }
 

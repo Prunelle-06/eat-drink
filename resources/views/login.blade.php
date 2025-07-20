@@ -15,6 +15,12 @@
     @include('layouts.header')
     <section class="login-form">
         <h1>Connexion</h1>
+        
+        @if($errors->any())
+            <div style="color: red; background: lightred; padding: 16px">
+                {{ $errors->first() }}
+            </div>
+        @endif
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
@@ -27,9 +33,6 @@
                     required
                     autofocus>
             </div>
-            @error('email')
-                <p>{{ $message }}</p>
-            @enderror
             
             <div class="form-group">
                 <input type="password" 
@@ -37,9 +40,6 @@
                     placeholder="Mot de passe" 
                     required>
             </div>
-            @error('password')
-                <p>{{ $message }}</p>
-            @enderror
 
             <div class="form-group remember">
                 <input type="checkbox" name="remember" id="remember">
