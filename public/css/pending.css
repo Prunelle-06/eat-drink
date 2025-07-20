@@ -43,7 +43,6 @@ body {
     overflow: hidden;
 }
 .waiting-header h1 {
-    /* font-family: 'Playfair Display', serif; */
     font-size: 2rem;
     margin-bottom: 0.5rem;
     position: relative;
