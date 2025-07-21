@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\ProductController;
 
 // Route page acceuil
 Route::get('/', function () {
@@ -24,10 +25,17 @@ Route::get('/attente', function () {
     return view('pending');
 })->middleware(['auth', 'can:acces-attente']);
  
-// Route ADMIN
+// Routes ADMIN
 Route::prefix('admin')->middleware(['auth', 'is_admin', 'is_pending'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::post('/users/{id}/approve', [DashboardController::class, 'approve'])->name('admin.approve');
     Route::post('/users/{id}/reject', [DashboardController::class, 'reject'])->name('admin.reject');
+});
+
+
+Route::controller(ProductController::class)->group(function () {
+    Route::get('/products', 'index')->name('products.index');
+    Route::get('/products/create', 'create')->name('products.create');
+    Route::post('/products', 'store')->name('products.store');
 });
 
