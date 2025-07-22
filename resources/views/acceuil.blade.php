@@ -15,7 +15,7 @@
           <p>La plateforme complète pour les exposants et visiteurs de l'événement Eat&Drink. Inscrivez votre stand, gérez vos produits et recevez des commandes en ligne.</p>
           <div class="button-group">
               <a href="/inscription" class="btn btn-primary">Demander un stand</a>
-              <a href="#exposants" class="btn btn-secondary">Voir les exposants</a>
+              <a href="{{ url('/exposant') }}" class="btn btn-secondary">Voir les exposants</a>
           </div>
       </div>
     </section>

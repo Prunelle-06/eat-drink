@@ -39,3 +39,19 @@ Route::controller(ProductController::class)->group(function () {
     Route::post('/products', 'store')->name('products.store');
 });
 
+use Illuminate\Http\Request;
+
+Route::post('/ajouter-au-panier/{id}', function ($id, Request $request) {
+    $panier = session()->get('panier', []);
+    $panier[] = "stand_" . $id;
+    session(['panier' => $panier]);
+
+    return back()->with('success', 'Stand ' . $id . ' ajouté au panier !');
+})->name('ajouter.stand.au.panier');
+
+
+
+
+Route::get('/exposant', function () {
+    return view('exposant');
+})->name('exposant');
