@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    @include('layouts.header')
+    @include('layouts.header', ['position' => 'sticky'])
     <!-- section hero -->
     <section class="hero">
       <div class="container">

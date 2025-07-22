@@ -22,7 +22,7 @@
       <main class="main-inscription">
     <div class="formulaire">
     <h1>Formulaire d'inscription</h1>
-    <form method="POST" action="{{ url('/inscription') }}">
+    {{-- <form method="POST" action="{{ url('/inscription') }}">
         @csrf
         <input type="text" value="{{ old("nom") }}" name="nom" placeholder="Nom complet" required><br><br>
         @error("nom")
@@ -39,7 +39,7 @@
         <textarea name="description_produit" placeholder="Décris tes produits ici..." required></textarea><br><br>
         <input value="{{ old("password") }}"  type="password" name="password" placeholder="Mot de passe" required><br><br>
         <button type="submit">Soumettre la demande</button>
-    </form>
+    </form> --}}
 </div>
 <main>
 

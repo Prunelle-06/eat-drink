@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceuil eat&drink</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 </head>
 <style>
     .login-form{
@@ -13,38 +13,51 @@
 </style>
 <body>
     @include('layouts.header')
-     <section class="login-form">
-           <h1>Page Login</h1>
-           <form method="POST" action="{{ url('/inscription') }}">
-                @csrf          
+    <section style="display: flex; justify-content: center;">
+        <section class="login-form">
+            <h1>Connexion</h1>
+            
+            @if($errors->any())
+                <div style="color: red; background: lightred; padding: 16px">
+                    {{ $errors->first() }}
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
+                        
                 <div class="form-group">
-                    <input type="text" name="nom" placeholder="Nom complet" required>
+                    <input type="email" 
+                        name="email" 
+                        placeholder="Adresse email" 
+                        value="{{ old('email') }}"
+                        required
+                        autofocus>
                 </div>
                 
                 <div class="form-group">
-                    <input type="email" name="email" placeholder="Adresse email" required>
+                    <input type="password" 
+                        name="password" 
+                        placeholder="Mot de passe" 
+                        required>
+                </div>
+
+                <div class="form-group remember">
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember">Se souvenir de moi</label>
                 </div>
                 
-                <div class="form-group">
-                    <input type="text" name="nom_entreprise" placeholder="Nom de l'entreprise" required>
+                <button type="submit" class="submit-btn">Connexion</button>
+
+                <div class="links">
+                    <a href="">Mot de passe oublié ?</a>
+                    @if(Route::has('register'))
+                        <a href="{{ route('register') }}">Créer un compte</a>
+                    @endif
                 </div>
-                
-                <div class="form-group">
-                    <textarea name="description_produit" placeholder="Décris tes produits en quelques mots..." required></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <input type="password" name="password" placeholder="Mot de passe" required>
-                </div>
-                
-                <div class="form-group">
-                    <input type="password" name="password_confirmation" placeholder="Confirmer le mot de passe" required>
-                </div>
-                
-                <button type="submit" class="submit-btn">Soumettre la demande</button>
             </form>
-     
-        </section>       
+        </section>
+    </section>      
   
     @include('layouts.footer')
 </body>

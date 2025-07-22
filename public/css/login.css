@@ -1,0 +1,99 @@
+:root {
+  --primary: #4A5568; 
+  --secondary: #6B717E;  /* Gris bleuté */
+  --dark: #1F2232;     /* Noir profond */
+  --light: #F9F9F9;    /* Blanc pur */
+  --accent: #4ECDC4;   /* Turquoise gardé pour les CTA */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color:whitesmoke;
+  color: var(--couleur-texte-sombre);
+  line-height: 1.6;
+  overflow-x: hidden; 
+}
+
+
+.login-form {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 40px 0;
+}
+.login-form h1 {
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 26px;
+    color: #333;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #00A699;
+    outline: none;
+}
+.form-group.remember {
+    display: flex;
+    align-items: center;
+}
+.form-group.remember input {
+    margin-right: 8px;
+}
+.submit-btn {
+    width: 100%;
+    background: #00A699;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.submit-btn:hover {
+    background: #4ECDC4;
+}
+.links {
+    margin-top: 20px;
+    text-align: center;
+}
+.links a {
+    color: #00A699;
+    text-decoration: none;
+    margin: 0 8px;
+    font-size: 14px;
+}
+.links a:hover {
+    text-decoration: underline;
+}
+.error-message {
+    background: #ffe5e5;
+    color: #b80000;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 14px;
+}
