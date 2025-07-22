@@ -10,7 +10,7 @@ use App\Http\Controllers\ProductController;
 // Route page acceuil
 Route::get('/', function () {
     return view('acceuil');
-})->middleware('is_pending');
+});
 
 // Routes inscription(demende de stand)
 Route::get('/inscription', [InscriptionController::class, 'formulaire'])->name('register')->middleware('is_pending');
