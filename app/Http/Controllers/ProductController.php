@@ -31,7 +31,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'nom_produit' => 'required|min:3',
+            'nom_produit' => ['required', 'min:3', 'max:50', 'regex:/^(?!\d+$)[\pL\pN\s\-]+$/u'],
             'description' => 'required|min:8|max:255',
             'prix' => 'required|numeric',
             'photo' => 'required|image',
@@ -40,13 +40,15 @@ class ProductController extends Controller
         $messages = [
             'nom_produit.required' => 'Le nom du produit est requis',
             'nom_produit.min' => 'Ce champ doit contenir au moins :min caractères',
-
+            'nom_produit.max' => 'Ce champ doit contenir au plus :max caractères',
+            'nom_produit.regex' => 'Le nom du produit doit contenir au moins une lettre',
+            
             'description.required' => 'Le nom du produit est requis',
             'description.min' => 'Ce champ doit contenir au moins :min caractères',
             'description.max' => 'Ce champ doit contenir au plus :max caractères',
 
             'prix.required' => 'Le prix est obligatoire',
-            'prix.numeric' => 'Le prix doit etre un nombre valide',
+            'prix.numeric' => 'Le prix doit etre un nombre',
 
             'photo.required' => 'Une image du produit est requise',
             'photo.image' => 'Le fichier sélectionné doit etre une image',

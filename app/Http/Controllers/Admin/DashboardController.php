@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Stand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\EntrepreneurApprovedNotification;
 
 class DashboardController extends Controller
 {
@@ -23,6 +24,12 @@ class DashboardController extends Controller
     {
         $user = User::findOrFail($id);
         $user->update(['role' => 'entrepreneur_approuve']);
+
+        // Envoi de la notification
+        $user->notify(new EntrepreneurApprovedNotification(
+            $user->nom_entreprise,
+            $user->stand->nom_stand
+        ));
 
         return back()->with('success', "Le stand {$user->nom_entreprise} a été approuvé !");
     }

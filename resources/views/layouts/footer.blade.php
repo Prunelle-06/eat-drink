@@ -18,7 +18,7 @@
                 La plateforme de gestion des stands pour l'événement culinaire annuel.
             </p>
             <div class="contact-info">
-                <div class="contact-item">📧 contact@eatdrink.bn</div>
+                <div class="contact-item">📧 equip@eatdrink.com</div>
                 <div class="contact-item">📞 +57 96 79 00</div>
                 <div class="contact-item">🏢 123 Rue Saint-Michel, Cotonou</div>
             </div>
