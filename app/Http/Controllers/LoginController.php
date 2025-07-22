@@ -29,7 +29,7 @@ class LoginController extends Controller
         return match($user->role) {
             'admin' => redirect()->intended('/admin'),
             'entrepreneur_approuve' => redirect()->intended('/attente'),
-            default => redirect('/attente')
+            'entrepreneur_en_attente' => redirect('/attente')
         };
 
 

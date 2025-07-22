@@ -45,6 +45,7 @@
                     <p>{{ $message }}</p>
                 @enderror
                
+                {{-- Champs mot de passe --}}
                 <div class="form-group">
                     <input type="password" name="password" value="{{ old('password') }}" placeholder="Mot de passe" required>
                 </div>

@@ -14,38 +14,46 @@
             @csrf
             <div class="form-group">
                 <label for="nom">Nom du produit</label>
-                <input type="text" id="nom" name="nom_produit" value="{{ old('nom_produit') }}" required>
+                <input type="text" class="@error('nom_produit')
+                    is-invalid
+                @enderror" id="nom" name="nom_produit" value="{{ old('nom_produit') }}">
+                @error('nom_produit') 
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
             </div>
-            @error('nom_produit') 
-                <p>{{ $message }}</p>
-            @enderror
 
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea id="description" name="description" value="{{ old('description') }}" rows="4" required></textarea>
+                <textarea id="description" class="@error('description')
+                    is-invalid
+                @enderror" name="description" value="{{ old('description') }}" rows="4"></textarea>
+                @error('description') 
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
             </div>
-            @error('description') 
-                <p>{{ $message }}</p>
-            @enderror
 
             <div class="form-group">
                 <label for="prix">Prix</label>
-                <input type="text" id="prix" name="prix" value="{{ old('prix') }}" required>
+                <input type="text" class="@error('prix')
+                    is-invalid
+                @enderror" id="prix" name="prix" value="{{ old('prix') }}">
+                @error('prix') 
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
             </div>
-            @error('prix') 
-                <p>{{ $message }}</p>
-            @enderror
 
             <div class="form-group">
                 <label for="photo">Photo</label>
                 <div class="custom-file">
-                    <input type="file" id="photo" name="photo" value="{{ old('photo') }}" accept="image/*" required>
+                    <input type="file" class="@error('photo')
+                    is-invalid
+                @enderror" id="photo" name="photo" value="{{ old('photo') }}" accept="image/*">
                     <span id="file-name">Aucune image sélectionnée</span>
                 </div>
+                @error('photo') 
+                    <p class="error-message">{{ $message }}</p>
+                @enderror
             </div>
-            @error('photo') 
-                <p>{{ $message }}</p>
-            @enderror
 
             <button type="submit">Soumettre</button>
         </form>

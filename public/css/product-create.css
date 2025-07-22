@@ -51,6 +51,16 @@ textarea:focus {
     outline: none;
     border-color: #00A699;
 }
+.is-invalid {
+    border-color: #dc3545;
+    background-color: #fff5f5;
+}
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 6px;
+    font-style: italic;
+}
 button {
     width: 100%;
     padding: 12px;

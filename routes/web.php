@@ -10,9 +10,9 @@ use App\Http\Controllers\ProductController;
 // Route page acceuil
 Route::get('/', function () {
     return view('acceuil');
-})->middleware('is_pending');
+});
 
-// Routes inscription(demende de stand)
+// Routes inscription(demande de stand)
 Route::get('/inscription', [InscriptionController::class, 'formulaire'])->name('register')->middleware('is_pending');
 Route::post('/inscription', [InscriptionController::class, 'soumettre']);
 
@@ -34,8 +34,8 @@ Route::prefix('admin')->middleware(['auth', 'is_admin', 'is_pending'])->group(fu
 
 
 Route::controller(ProductController::class)->group(function () {
-    Route::get('/products', 'index')->name('products.index');
-    Route::get('/products/create', 'create')->name('products.create');
-    Route::post('/products', 'store')->name('products.store');
+    Route::get('/produits', 'index')->name('products.index');
+    Route::get('/produits/create', 'create')->name('products.create');
+    Route::post('/produits', 'store')->name('products.store');
 });
 

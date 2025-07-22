@@ -34,13 +34,29 @@ class ProductController extends Controller
             'nom_produit' => 'required|min:3',
             'description' => 'required|min:8|max:255',
             'prix' => 'required|numeric',
+            'photo' => 'required|image',
+        ];
+
+        $messages = [
+            'nom_produit.required' => 'Le nom du produit est requis',
+            'nom_produit.min' => 'Ce champ doit contenir au moins :min caractères',
+
+            'description.required' => 'Le nom du produit est requis',
+            'description.min' => 'Ce champ doit contenir au moins :min caractères',
+            'description.max' => 'Ce champ doit contenir au plus :max caractères',
+
+            'prix.required' => 'Le prix est obligatoire',
+            'prix.numeric' => 'Le prix doit etre un nombre valide',
+
+            'photo.required' => 'Une image du produit est requise',
+            'photo.image' => 'Le fichier sélectionné doit etre une image',
         ];
 
         if($request->image != "") {
             $rules['photo'] = 'photo';
         }
 
-        $validator = Validator::make($request->all(),$rules);
+        $validator = Validator::make($request->all(),$rules, $messages);
 
             if($validator->fails()) {
                 return redirect()->route('products.create')->withInput()->withErrors($validator);
