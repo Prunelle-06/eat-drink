@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="{{ asset('css/pending.css') }}">
 </head>
 <body>
+    @include('layouts.header')
+
     @if (Session::has('success'))
         <p class="flash-message">{{ Session::get('success') }}</p>
     @endif

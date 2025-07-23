@@ -28,7 +28,7 @@ class LoginController extends Controller
         // Redirection selon le rôle
         return match($user->role) {
             'admin' => redirect()->intended('/admin'),
-            'entrepreneur_approuve' => redirect()->intended('/attente'),
+            'entrepreneur_approuve' => redirect()->intended('/dashboard'),
             'entrepreneur_en_attente' => redirect('/attente')
         };
 

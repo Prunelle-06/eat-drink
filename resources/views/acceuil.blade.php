@@ -14,7 +14,7 @@
           <h1>Gérez votre stand culinaire en toute simplicité</h1>
           <p>La plateforme complète pour les exposants et visiteurs de l'événement Eat&Drink. Inscrivez votre stand, gérez vos produits et recevez des commandes en ligne.</p>
           <div class="button-group">
-              <a href="/inscription" class="btn btn-primary">Demander un stand</a>
+              <a href="{{ route('register') }}" class="btn btn-primary">Demander un stand</a>
               <a href="{{ url('/exposant') }}" class="btn btn-secondary">Voir les exposants</a>
           </div>
       </div>
@@ -63,7 +63,7 @@
                   <li>Consulter les commandes passées par les visiteurs</li>
               </ul>
               @auth
-                  <a href="{{ route('products.entrepreneur') }}" class="btn btn-primary">Accéder à mon espace</a>
+                  <a href="{{ route('dashboard.entrepreneur') }}" class="btn btn-primary">Accéder à mon espace</a>
               @else
                   <a href="" class="btn btn-primary">S'inscrire comme exposant</a>
               @endauth

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Stand;
+use App\Models\Product;
 
 class BoardController extends Controller
 {
@@ -28,8 +29,11 @@ class BoardController extends Controller
 
         $userStand = $user->load('stand');
 
+        $products =  Product::with('user')->orderBy('created_at', 'ASC')->get();
+
         return view('entrepreneur.dashboard', [
-            'userStand' => $userStand 
+            'userStand' => $userStand,
+            'products' => $products
         ]);
     }
 

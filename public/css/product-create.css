@@ -7,15 +7,33 @@
 body {
     background-color: #f0f2f5;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
 }
 
+.btn-retour {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-top: 40px;
+  margin-right: 350px;
+  background-color: #3490dc; 
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+.btn-retour:hover {
+  background-color: #2779bd;
+}
+
 .form-container {
     background-color: white;
     padding: 30px;
-    margin: 50px 0;
+    margin-top: 15px;
+    margin-bottom: 40px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     max-width: 450px;

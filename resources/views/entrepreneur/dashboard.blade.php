@@ -30,10 +30,10 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a href="#">
+                    <a href="#produits">
                         <i class="fas fa-utensils"></i>
                         <span>Mes Produits</span>
-                        <span class="badge">3</span>
+                        <span class="badge">{{ $products->count() }}</span>
                     </a>
                 </div>
                 <div class="menu-item">
@@ -49,12 +49,14 @@
                         <span>Mon Stand</span>
                     </a>
                 </div>
-                <div class="menu-item">
-                    <a href="{{ route('logout') }}">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Déconnexion</span>
-                    </a>
-                </div>
+                <form action="{{ route('logout') }}" method="POST">
+                    <div class="menu-item">
+                        <button type="submit">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Déconnexion</span>
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -89,7 +91,7 @@
                 <div class="stat-card">
                     <div class="header">
                         <div>
-                            <div class="value">8</div>
+                            <div class="value">{{ $products->count() }}</div>
                             <div class="label">Produits</div>
                         </div>
                         <i class="fas fa-utensils"></i>
@@ -100,8 +102,7 @@
             <!-- Recent Orders -->
             <div class="card">
                 <div class="card-header">
-                    <h3>Commandes récentes</h3>
-                    <a href="#">Voir tout</a>
+                    <h3>Commandes</h3>
                 </div>
                 <table class="table">
                     <thead>
@@ -117,9 +118,9 @@
                         <tr>
                             <td>#ED-2541</td>
                             <td class="products-cell">
-                                <div class="product-line">2x Crêpe Nutella <span class="product-price">5.00 €</span></div>
-                                <div class="product-line">1x Jus d'Orange <span class="product-price">3.00 €</span></div>
-                                <div class="product-line">3x Beignet <span class="product-price">2.50 €</span></div>
+                                <div class="product-line">2x Crêpe Nutella <span class="product-price">500 CFA</span></div>
+                                <div class="product-line">1x Jus d'Orange <span class="product-price">300 CFA</span></div>
+                                <div class="product-line">3x Beignet <span class="product-price">250 CFA</span></div>
                             </td>
                             <td>42,50 CFA</td>
                             <td><span class="status pending">En attente</span></td>
@@ -128,7 +129,7 @@
                         <tr>
                             <td>#ED-2539</td>
                             <td class="products-cell"> 
-                                <div class="product-line">3x Beignet <span class="product-price">2.50 €</span></div>
+                                <div class="product-line">3x Beignet <span class="product-price">250 CFA</span></div>
                             </td>
                             <td>35,00 CFA</td>
                             <td><span class="status pending">En attente</span></td>
@@ -137,8 +138,8 @@
                         <tr>
                             <td>#ED-2535</td>
                             <td class="products-cell">
-                                <div class="product-line">1x Jus d'Orange <span class="product-price">3.00 €</span></div>
-                                <div class="product-line">3x Beignet <span class="product-price">2.50 €</span></div>
+                                <div class="product-line">1x Jus d'Orange <span class="product-price">300 CFA</span></div>
+                                <div class="product-line">3x Beignet <span class="product-price">250 CFA</span></div>
                             </td>
                             <td>28,75 CFA</td>
                             <td><span class="status pending">En attente</span></td>
@@ -149,21 +150,21 @@
             </div>
 
             <!-- Top Products -->
-            <div class="card">
+            <div class="card" id="produits">
                 <div class="card-header">
                     <h3>Mes produits</h3>
-                    <a href="#">Ajouter un produit</a>
+                    <a href="{{ route('products.create') }}">Ajouter un produit</a>
                 </div>
                 <div class="products-grid">
-                    <!-- Product 1 -->
+                    @foreach ($products as $product)                    
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Produit">
+                            <img src="{{ asset('uploads/products/'.$product->iphoto) }}" alt="">
                         </div>
                         <div class="product-details">
-                            <h3>Crêpe au sucre</h3>
-                            <p>Crêpe traditionnelle bretonne avec du beurre et du sucre</p>
-                            <div class="product-price">3,50 CFA</div>
+                            <h3>{{ $product->nom_produit }}</h3>
+                            <p>{{ $product->description  }}</p>
+                            <div class="product-price">{{ $product->prix }} CFA</div>
                             <div class="product-actions">
                                 <button class="btn btn-primary">
                                     <i class="fas fa-pen"></i> Modifier
@@ -171,38 +172,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Product 2 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Produit">
-                        </div>
-                        <div class="product-details">
-                            <h3>Crêpe Nutella</h3>
-                            <p>Crêpe garnie de Nutella et de bananes fraîches</p>
-                            <div class="product-price">5,00 CFA</div>
-                            <div class="product-actions">
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-pen"></i> Modifier
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Product 3 -->
-                    <div class="product-card">
-                        <div class="product-image">
-                            <img src="https://images.unsplash.com/photo-1615873968403-89e068629265?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Produit">
-                        </div>
-                        <div class="product-details">
-                            <h3>Galette complète</h3>
-                            <p>Galette de blé noir avec jambon, fromage et œuf</p>
-                            <div class="product-price">7,50 CFA</div>
-                            <div class="product-actions">
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-pen"></i> Modifier
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>

@@ -24,19 +24,21 @@
             </ul>
         </div>
         <div class="global">
+        @foreach($stands as $stand)
         <div class="card">
             <img src="{{ asset('images/ex5.jpg') }}" alt="stand culinaire">
-            <h3>Restaurant l'art culinaire</h3>
-            <p>⭐⭐⭐⭐👨🏼‍🍳-Spéliacisé dans la cuisine africaine</p>
+            <h3>{{ $stand->nom_stand }}</h3>
+            <p>⭐⭐⭐⭐👨🏼‍🍳- {{ $stand->nom_description }}</p>
             <div class="btn">
                 <button class="produits">Produits</button>
                 <button class="add-card">🛒 ajouter au panier</button>
             </div>
         </div>
+        @endforeach
         
         
         
-        <div class="card">
+        {{-- <div class="card">
             <img src="{{ asset('images/ex4.jpg') }}" alt="stand culinaire">
             <h3>Restaurant l'art culinaire</h3>
             <p>⭐⭐⭐⭐👨🏼‍🍳-Spéliacisé dans la cuisine africaine</p>
@@ -109,7 +111,7 @@
                 <button class="produits">Produits</button>
                 <button class="add-card">🛒 ajouter au panier</button>
             </div>
-        </div>
+        </div> --}}
         </div>
         </div>
 

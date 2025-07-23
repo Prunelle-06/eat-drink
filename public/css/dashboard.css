@@ -70,6 +70,9 @@ body {
 .menu-item.active a {
     color: var(--primary);
 }
+.menu-item.active button {
+    color: var(--primary);
+}
 .menu-item a {
     display: flex;
     align-items: center;
@@ -78,7 +81,24 @@ body {
     text-decoration: none;
     font-weight: 500;
 }
+.menu-item button {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bolder;
+    /* color: red; */
+    text-decoration: none;
+    font-weight: 500;
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
 .menu-item a:hover {
+    color: var(--primary);
+}
+.menu-item button:hover {
     color: var(--primary);
 }
 .menu-item i {

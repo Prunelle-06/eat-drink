@@ -51,4 +51,8 @@ class User extends Authenticatable
     public function stand() {
         return $this->hasOne(Stand::class);
     }
+
+    public function produits() {
+        return $this->hasMany(Produit::class);
+    }
 }

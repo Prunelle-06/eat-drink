@@ -80,7 +80,6 @@ class ProductController extends Controller
             // Enregistrement d'images dans le dossier uploads/products
             $photo->move(public_path('uploads/products'), $imageName);
     
-            // Sauvegarde de l'image dans la BD
             $product->photo = $imageName;
             $product->save();
         }
