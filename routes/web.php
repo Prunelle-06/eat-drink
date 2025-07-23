@@ -55,3 +55,4 @@ Route::post('/ajouter-au-panier/{id}', function ($id, Request $request) {
 Route::get('/exposant', function () {
     return view('exposant');
 })->name('exposant');
+
