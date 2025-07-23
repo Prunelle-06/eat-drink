@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -39,4 +40,21 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/produits/create', 'create')->name('products.create');
     Route::post('/produits', 'store')->name('products.store');
 });
+
+
+Route::get('/dashboard', [BoardController::class, 'index']);
+
+
+Route::post('/ajouter-au-panier/{id}', function ($id, Request $request) {
+    $panier = session()->get('panier', []);
+    $panier[] = "stand_" . $id;
+    session(['panier' => $panier]);
+
+    return back()->with('success', 'Stand ' . $id . ' ajouté au panier !');
+})->name('ajouter.stand.au.panier');
+
+
+Route::get('/exposant', function () {
+    return view('exposant');
+})->name('exposant');
 
