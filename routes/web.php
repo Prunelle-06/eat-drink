@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Entrepreneur\BoardController;
 use App\Http\Controllers\ProductController;
 
 // Route page acceuil
@@ -38,4 +39,8 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('/produits/create', 'create')->name('products.create');
     Route::post('/produits', 'store')->name('products.store');
 });
+
+
+Route::get('/dashboard', [BoardController::class, 'index']);
+
 

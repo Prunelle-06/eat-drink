@@ -13,12 +13,16 @@
 </style>
 <body>
     @include('layouts.header')
+
+    @if (Session::has('error'))
+        <p class="error-message">{{ Session::get('error') }}</p>
+    @endif
     <section style="display: flex; justify-content: center;">
         <section class="login-form">
             <h1>Connexion</h1>
             
             @if($errors->any())
-                <div style="color: red; background: lightred; padding: 16px">
+                <div class="error-message">
                     {{ $errors->first() }}
                 </div>
             @endif
