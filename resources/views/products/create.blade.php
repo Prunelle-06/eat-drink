@@ -22,7 +22,7 @@
 
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea id="description" name="description" value="{{ old('description') }}" rows="4" required></textarea>
+             <textarea id="description" name="description" rows="4" required>{{ old('description') }}</textarea>
             </div>
             @error('description') 
                 <p>{{ $message }}</p>
@@ -48,6 +48,8 @@
             @enderror
 
             <button type="submit">Soumettre</button>
+            <a href="{{ route('products.index') }}" class="btn-retour">← Retour</a>
+
         </form>
     </div>
 

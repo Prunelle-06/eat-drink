@@ -14,7 +14,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('products.list');
+        
+       $products = Product::where('user_id', auth()->id())->get();
+       return view('products.list', compact('products'));
     }
 
     /**
@@ -50,6 +52,7 @@ class ProductController extends Controller
         $product->nom_produit = $request->nom_produit;
         $product->description = $request->description;
         $product->prix = $request->prix;
+        $product->user_id = auth()->id();
         $product->photo = $request->photo;
         $product->save();
 
@@ -73,34 +76,73 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+         $product = Product::where('id', $id)
+                      ->where('user_id', auth()->id()) // Sécuriser que le produit appartient bien à l'utilisateur
+                      ->firstOrFail();
+
+        return view('products.show', compact('product'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $product = Product::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+        return view('products.edit', compact('product'));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $product = Product::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+
+            $rules = [
+                'nom_produit' => 'required|min:3',
+                'description' => 'required|min:8|max:255',
+                'prix' => 'required|numeric',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withInput()->withErrors($validator);
+            }
+
+            $product->update($request->only(['nom_produit', 'description', 'prix']));
+
+            if ($request->hasFile('photo')) {
+                $photo = $request->file('photo');
+                $imageName = time().'.'.$photo->getClientOriginalExtension();
+                $photo->move(public_path('uploads/products'), $imageName);
+                $product->photo = $imageName;
+                $product->save();
+                }
+
+            return redirect()->route('products.index')->with('success', 'Produit mis à jour.');
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
-    }
+        $product = Product::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+
+            if ($product->photo && file_exists(public_path('uploads/products/' . $product->photo))) {
+                unlink(public_path('uploads/products/' . $product->photo));
+            }
+
+            $product->delete();
+
+            return redirect()->route('products.index')->with('success', 'Produit supprimé.');
+     }
 }
  
 

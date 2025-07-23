@@ -1,14 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    @if (Session::has('success'))
-        <p>{{ Session::get('success') }}</p>
+@extends('layouts.app')
+
+@section('title', 'Mes produits')
+
+@section('content')
+    <h2>Liste de mes produits</h2>
+
+    @if(session('success'))
+        <div style="color:green;">{{ session('success') }}</div>
     @endif
-</body>
-</html>
+
+    <a href="{{ route('products.create') }}">Ajouter un nouveau produit</a>
+
+    @if($products->count() > 0)
+        <ul>
+            @foreach($products as $product)
+                <li>
+                    <strong>{{ $product->nom_produit }}</strong> - {{ $product->prix }} €
+                    <br>
+                    <img src="{{ asset('uploads/products/'.$product->photo) }}" alt="Photo" style="max-width:100px;">
+                    <br>
+                    <a href="{{ route('products.edit', $product->id) }}">Modifier</a>
+                    <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('Confirmer la suppression ?')">Supprimer</button>
+                    </form>
+                </li>
+            @endforeach
+        </ul>
+    @else
+        <p>Vous n'avez pas encore ajouté de produit.</p>
+    @endif
+@endsection

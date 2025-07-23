@@ -1,26 +1,23 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
+    use HasFactory;
+
     protected $fillable = [ 
-        'nom_stand',
-        'description_stand',
+        'nom_produit',
+        'description',
+        'prix',
+        'photo',
         'user_id',
-        
     ];
-    public function users()
+
+    public function user()
     {
-        return
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
-     public function products()
-     {
-         return 
-         $this->belongsTo(User::class);
-    }
-        
 }

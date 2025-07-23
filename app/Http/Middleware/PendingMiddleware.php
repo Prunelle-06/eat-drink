@@ -13,11 +13,13 @@ class PendingMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
-    {
-        if(auth()->user()->role === "entrepreneur_en_attente") {
-            return abort(403);
-        }
-        return $next($request);
+public function handle(Request $request, Closure $next): Response
+{
+    if (auth()->check() && auth()->user()->role === "entrepreneur_en_attente") {
+        return abort(403);
     }
+
+    return $next($request);
+}
+
 }

@@ -32,11 +32,17 @@ Route::prefix('admin')->middleware(['auth', 'is_admin', 'is_pending'])->group(fu
     Route::post('/users/{id}/reject', [DashboardController::class, 'reject'])->name('admin.reject');
 });
 
-
+Route::middleware(['auth', 'is_approved'])->group(function () {
 Route::controller(ProductController::class)->group(function () {
     Route::get('/products', 'index')->name('products.index');
     Route::get('/products/create', 'create')->name('products.create');
     Route::post('/products', 'store')->name('products.store');
+    Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
+});
 });
 
 use Illuminate\Http\Request;
