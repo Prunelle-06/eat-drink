@@ -6,5 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    //
+    protected $fillable = [ 
+        'nom_stand',
+        'description_stand',
+        'user_id',
+        
+    ];
+    public function users()
+    {
+        return
+        $this->belongsTo(User::class);
+    }
+     public function products()
+     {
+         return 
+         $this->belongsTo(User::class);
+    }
+        
 }

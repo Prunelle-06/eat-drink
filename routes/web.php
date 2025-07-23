@@ -40,7 +40,3 @@ Route::controller(ProductController::class)->group(function () {
     Route::post('/produits', 'store')->name('products.store');
 });
 
-
-Route::get('/dashboard', [BoardController::class, 'index']);
-
-
