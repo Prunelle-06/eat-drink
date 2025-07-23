@@ -17,8 +17,7 @@
             </div>
             <div class="all-links">
               <div class="nav-links">
-                <a href="#">L'evenement</a>
-                <a href="#exposants">Exposants</a>
+                <a href="{{ url('/exposant') }}">Exposants</a>
                 <a href="#features">Fonctionnalités</a>
               </div>
               <div class="cta-button">

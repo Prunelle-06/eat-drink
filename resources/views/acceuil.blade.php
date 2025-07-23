@@ -63,7 +63,7 @@
                   <li>Consulter les commandes passées par les visiteurs</li>
               </ul>
               @auth
-                  <a href="" class="btn btn-primary">Accéder à mon espace</a>
+                  <a href="{{ route('products.entrepreneur') }}" class="btn btn-primary">Accéder à mon espace</a>
               @else
                   <a href="" class="btn btn-primary">S'inscrire comme exposant</a>
               @endauth

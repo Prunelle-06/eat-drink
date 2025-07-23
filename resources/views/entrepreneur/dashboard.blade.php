@@ -19,8 +19,14 @@
             <div class="sidebar-menu">
                 <div class="menu-item active">
                     <a href="#">
-                        <i class="fas fa-home"></i>
+                        {{-- <i class="fas fa-home"></i> --}}
                         <span>Tableau de bord</span>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="{{ url('/') }}">
+                        <i class="fas fa-home"></i>
+                        <span>Acceuil</span>
                     </a>
                 </div>
                 <div class="menu-item">
@@ -44,7 +50,7 @@
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a href="">
+                    <a href="{{ route('logout') }}">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Déconnexion</span>
                     </a>

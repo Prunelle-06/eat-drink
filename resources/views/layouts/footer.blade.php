@@ -26,17 +26,16 @@
           <div class="footer-column">
             <h3>Navigation</h3>
             <ul class="footer-links">
-                <li><a href="/">Accueil</a></li>
-                <li><a href="#event">L'événement</a></li>
-                <li><a href="#exposants">Exposants</a></li>
-                <li><a href="#fonctionnalites">Fonctionnalités</a></li>
+                <li><a href="{{ url('/') }}">Accueil</a></li>
+                <li><a href="{{ route('exposant') }}">Exposants</a></li>
+                <li><a href="#features">Fonctionnalités</a></li>
             </ul>
           </div>
           <div class="footer-column">
             <h3>Compte</h3>
             <ul class="footer-links">
-              <li><a href="">Connexion</a></li>
-              <li><a href="">Inscription</a></li>
+              <li><a href="{{ route('login') }}">Connexion</a></li>
+              <li><a href="{{ route('register') }}">Inscription</a></li>
               <li><a href="#">Mot de passe oublié</a></li>
             </ul>
           </div>

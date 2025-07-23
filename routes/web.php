@@ -22,6 +22,13 @@ Route::post('/inscription', [InscriptionController::class, 'soumettre']);
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 
+Route::post('/logout', function(Request $request) {
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return view('login');
+})->name('logout');
+
 
 Route::get('/attente', function () {
     return view('pending');
@@ -42,7 +49,7 @@ Route::controller(ProductController::class)->group(function () {
 });
 
 
-Route::get('/dashboard', [BoardController::class, 'index']);
+Route::get('/dashboard', [BoardController::class, 'index'])->name('products.entrepreneur');
 
 
 Route::post('/ajouter-au-panier/{id}', function ($id, Request $request) {
