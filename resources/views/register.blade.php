@@ -17,6 +17,13 @@
                 {{-- Champs User --}}
 
                 <div class="form-group">
+                    <input type="text" name="nom_complet" value="{{ old('nom_complet') }}" placeholder="Nom complet" required>
+                </div>
+                @error('nom_complet')
+                    <p>{{ $message }}</p>
+                @enderror
+
+                <div class="form-group">
                     <input type="text" name="nom_entreprise" value="{{ old('nom_entreprise') }}" placeholder="Nom de l'entreprise" required>
                 </div>
                 @error('nom_entreprise')

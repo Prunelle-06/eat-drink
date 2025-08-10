@@ -15,10 +15,14 @@
             <div class="sidebar-header">
                 <h2>Eat&Drink</h2>
                 <p>Tableau de bord entrepreneur</p>
+                <div>
+                    <i class="fa-solid fa-user"></i>
+                    <span>{{ $userInfo->nom_complet }}</span>
+                </div>
             </div>
             <div class="sidebar-menu">
                 <div class="menu-item active">
-                    <a href="#">
+                    <a href="">
                         {{-- <i class="fas fa-home"></i> --}}
                         <span>Tableau de bord</span>
                     </a>
@@ -33,22 +37,22 @@
                     <a href="#produits">
                         <i class="fas fa-utensils"></i>
                         <span>Mes Produits</span>
-                        <span class="badge">{{ $products->count() }}</span>
+                        <span class="badge">{{ $userInfo->products->count() }}</span>
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a href="">
+                    <a href="#commandes">
                         <i class="fas fa-shopping-cart"></i>
                         <span>Commandes</span>
                         <span class="badge">5</span>
                     </a>
                 </div>
-                <div class="menu-item">
-                    <a href="">
+                {{-- <div class="menu-item">
+                    <a href="{{ route('dashboard.stand.show', $userInfo->stand) }}">
                         <i class="fas fa-store"></i>
                         <span>Mon Stand</span>
                     </a>
-                </div>
+                </div> --}}
                 <form action="{{ route('logout') }}" method="POST">
                     <div class="menu-item">
                         <button type="submit">
@@ -69,8 +73,8 @@
                 <div class="user-menu">                  
                     <div class="user-profile">
                         <div class="user-info">
-                            <h4> {{ $userStand->nom_entreprise }} </h4>
-                            <p> {{ $userStand->stand->nom_stand }}</p>
+                            <h4> {{ $userInfo->nom_entreprise }} </h4>
+                            <p> {{ $userInfo->stand->nom_stand }}</p>
                         </div>
                     </div>
                 </div>
@@ -78,7 +82,7 @@
 
 
             <!-- Stats Cards -->
-            <div class="stats-cards">
+            <div class="stats-cards" id="commandes">
                 <div class="stat-card">
                     <div class="header">
                         <div>
@@ -91,7 +95,7 @@
                 <div class="stat-card">
                     <div class="header">
                         <div>
-                            <div class="value">{{ $products->count() }}</div>
+                            <div class="value">{{ $userInfo->products->count() }}</div>
                             <div class="label">Produits</div>
                         </div>
                         <i class="fas fa-utensils"></i>
@@ -156,7 +160,7 @@
                     <a href="{{ route('products.create') }}">Ajouter un produit</a>
                 </div>
                 <div class="products-grid">
-                    @foreach ($products as $product)                    
+                    @foreach ($userInfo->products as $product)                    
                     <div class="product-card">
                         <div class="product-image">
                             <img src="{{ asset('uploads/products/'.$product->iphoto) }}" alt="">
@@ -167,7 +171,7 @@
                             <div class="product-price">{{ $product->prix }} CFA</div>
                             <div class="product-actions">
                                 <button class="btn btn-primary">
-                                    <i class="fas fa-pen"></i> Modifier
+                                    <i class="fa-regular fa-pen-to-square"></i> Modifier
                                 </button>
                             </div>
                         </div>
@@ -180,5 +184,8 @@
 
 
 
+
+
+    <script src="{{ asset('js/dashboard-user.js') }}"></script>
 </body>
 </html>

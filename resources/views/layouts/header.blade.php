@@ -17,7 +17,7 @@
             </div>
             <div class="all-links">
               <div class="nav-links">
-                <a href="{{ url('/exposant') }}">Exposants</a>
+                <a href="{{ url('/stands') }}">Exposants</a>
                 <a href="#features">Fonctionnalités</a>
               </div>
               <div class="cta-button">

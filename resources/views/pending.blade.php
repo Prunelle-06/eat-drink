@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="{{ asset('css/pending.css') }}">
 </head>
 <body>
-    @include('layouts.header')
 
     @if (Session::has('success'))
         <p class="flash-message">{{ Session::get('success') }}</p>
     @endif
     
-    <div class="waiting-container">
+    <div style="display: flex; align-items: center; justify-content: center">
+        <div class="waiting-container">
         <div class="waiting-header">
             <h1>Votre demande est en cours de traitement</h1>
         </div>
@@ -38,6 +38,7 @@
                 <p>Temps de traitement moyen : 24-48 heures</p>
             </div>
         </div>
+    </div>
     </div>
 
 

@@ -27,7 +27,7 @@
             <h3>Navigation</h3>
             <ul class="footer-links">
                 <li><a href="{{ url('/') }}">Accueil</a></li>
-                <li><a href="{{ route('exposant') }}">Exposants</a></li>
+                <li><a href="{{ route('stands.index') }}">Exposants</a></li>
                 <li><a href="#features">Fonctionnalités</a></li>
             </ul>
           </div>

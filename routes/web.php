@@ -34,7 +34,7 @@ Route::post('/logout', function(Request $request) {
 
 Route::get('/attente', function () {
     return view('pending');
-})->middleware(['auth', 'can:acces-attente']);
+})->middleware(['auth']);
  
 // Routes ADMIN
 Route::prefix('admin')->middleware(['auth', 'is_admin', 'is_pending'])->group(function () {
@@ -53,17 +53,10 @@ Route::controller(ProductController::class)->group(function () {
 
 
 Route::get('/dashboard', [BoardController::class, 'index'])->name('dashboard.entrepreneur');
+// Route::get('/dashboard', [BoardController::class, 'show'])->name('dashboard.stand.show');
 
 
-// Route::post('/ajouter-au-panier/{id}', function ($id, Request $request) {
-//     $panier = session()->get('panier', []);
-//     $panier[] = "stand_" . $id;
-//     session(['panier' => $panier]);
-
-//     return back()->with('success', 'Stand ' . $id . ' ajouté au panier !');
-// })->name('ajouter.stand.au.panier');
-
-
-Route::get('/exposant', [StandController::class, 'index'])->name('exposant');
+Route::get('/stands', [StandController::class, 'index'])->name('stands.index');
+Route::get('/stands/{stand}', [StandController::class, 'show'])->name('stands.show');
 
 

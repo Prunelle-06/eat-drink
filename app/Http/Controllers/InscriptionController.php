@@ -19,16 +19,18 @@ class InscriptionController extends Controller
     {
         $validated = $request->validate([
             'email' => 'required|email|unique:users',
+            'nom_complet' => 'required|string|min:3|max:50',
             'password' => 'required|min:8',
-            'nom_entreprise' => 'required|string|max:255',
-            'nom_stand' => 'required|string|max:255',
-            'description_stand' => 'nullable|string',
+            'nom_entreprise' => 'required|string|min:3|max:50',
+            'nom_stand' => 'required|string|min:3|max:50',
+            'description_stand' => 'nullable|string|max:1000',
         ]);
 
         DB::transaction(function () use ($validated) {
             // creation User 
             $user = User::create([
                 'email' => $validated['email'],
+                'nom_complet' => $validated['nom_complet'],
                 'password' => Hash::make($validated['password']),
                 'nom_entreprise' => $validated['nom_entreprise'],
                 'role' => 'entrepreneur_en_attente',

@@ -21,20 +21,14 @@ class BoardController extends Controller
             return redirect()->route('login')->with('error', 'Veuillez vous connecter');
         }
 
-        // Récupération de l'utilisateur avec vérification
-        $user = Auth::user();       
+        $user = User::with('stand')->get();       
         if (!$user) {
             return redirect()->route('login')->with('error', 'Session invalide');
         }
 
-        $userStand = $user->load('stand');
+        $userInfo = Auth::user()->load(['stand', 'products']);
 
-        $products =  Product::with('user')->orderBy('created_at', 'ASC')->get();
-
-        return view('entrepreneur.dashboard', [
-            'userStand' => $userStand,
-            'products' => $products
-        ]);
+        return view('entrepreneur.dashboard', compact('userInfo'));
     }
 
     /**
@@ -56,9 +50,19 @@ class BoardController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+    public function show(Stand $stand) {
+        
+        // if (auth()->id() !== $stand->user_id) {
+        //     abort(403, 'Accès non authorisé'); 
+        // }
+
+        // $stand->load(['user.products']); 
+    
+        // return view('exposants.show', [
+        //     'stand' => $stand,
+        //     'products' => $stand->user->products     
+        // ]);
+       
     }
 
     /**

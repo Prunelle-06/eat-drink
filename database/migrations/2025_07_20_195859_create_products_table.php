@@ -17,8 +17,11 @@ return new class extends Migration
             $table->text('description');
             $table->integer('prix');
             $table->string('photo');
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
         });
+
+        Schema::EnableForeignKeyConstraints();
     }
 
     /**
@@ -26,6 +29,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropForeign(["user_id"]);
+        });
         Schema::dropIfExists('products');
     }
 };

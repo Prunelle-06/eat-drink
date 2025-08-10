@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        // 'name',
+        'nom_complet',
         'email',
         'nom_entreprise',
         'role',
@@ -52,7 +52,7 @@ class User extends Authenticatable
         return $this->hasOne(Stand::class);
     }
 
-    public function produits() {
-        return $this->hasMany(Produit::class);
+    public function products() {
+        return $this->hasMany(Product::class);
     }
 }

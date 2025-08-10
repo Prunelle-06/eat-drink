@@ -15,6 +15,7 @@ class AdminUserSeeder extends Seeder
     {
         DB::table("users")->insert([
             'email' => 'admin@eatdrink.com',
+            'nom_complet' => 'admin',
             'nom_entreprise' => 'Plateforme Admin',
             'role' => 'admin',
             'password' => bcrypt('password-admin'),

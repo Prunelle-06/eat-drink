@@ -19,7 +19,7 @@ class DashboardController extends Controller
         ]);
     }
 
-    // Approuve une demande  
+
     public function approve($id)
     {
         $user = User::findOrFail($id);

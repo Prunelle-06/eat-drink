@@ -1,0 +1,140 @@
+ document.addEventListener('DOMContentLoaded', function() {
+    // Gestion des quantités
+    const quantityInputs = document.querySelectorAll('.quantity-input');
+    const minusBtns = document.querySelectorAll('.quantity-btn.minus');
+    const plusBtns = document.querySelectorAll('.quantity-btn.plus');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const cartCount = document.querySelector('.cart-count');
+    const cartItemsEl = document.querySelector('.cart-items');
+    const cartTotalEl = document.querySelector('.cart-total span:last-child');
+    const emptyCartMsg = document.querySelector('.empty-cart-message');
+    const msgOrderSuccess = document.querySelector('.msg-order-success');
+    const clearCartBtn = document.getElementById('clear-cart')
+
+    let cart = [];
+
+    const savedCart = localStorage.getItem('shoppingCart');
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+        cart.forEach(item => {
+            const productEl = document.querySelector(`[data-id="${item.id}"]`);
+            if (productEl) {
+                productEl.querySelector('.quantity-input').value = item.quantity;
+            }
+        });
+
+        updateCartUI();
+    }
+
+    // Mise à jour du panier
+    function updateCart() {
+        // Filtrer les produits avec quantité > 0
+        cart = Array.from(document.querySelectorAll('.product-card'))
+            .map(productEl => {
+                const input = productEl.querySelector('.quantity-input');
+        
+                return {
+                    id: productEl.dataset.id,
+                    name: productEl.querySelector('.product-title').textContent,
+                    price: parseInt(productEl.querySelector('.product-price').textContent),
+                    quantity: parseInt(input.value)
+                };
+            })
+            .filter(item => item.quantity > 0);
+        
+        localStorage.setItem('shoppingCart', JSON.stringify(cart));
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        // Mettre à jour le compteur
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = `${totalItems} article(s)`;
+        
+        // Mettre à jour la liste des articles
+        if (cart.length > 0) {
+            emptyCartMsg.style.display = 'none';
+            cartItemsEl.innerHTML = '';
+            
+            cart.forEach(item => {
+                const cartItemEl = document.createElement('div');
+                cartItemEl.className = 'cart-item';
+                cartItemEl.innerHTML = `
+                    <span class="cart-item-name">${item.name} × ${item.quantity}</span>
+                    <span class="cart-item-price">${(item.price * item.quantity).toFixed(2)} CFA</span>
+                `;
+                cartItemsEl.appendChild(cartItemEl);
+            });
+            
+            // Calculer le total
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotalEl.textContent = `${total.toFixed(2)} CFA`;
+            
+            // Activer le bouton de commande
+            checkoutBtn.disabled = false;
+            checkoutBtn.className = 'btn btn-primary';
+
+            clearCartBtn.className = 'btn btn-clear';
+            clearCartBtn.disabled = false
+        } else {
+            emptyCartMsg.style.display = 'block';
+            cartTotalEl.textContent = '0.00 CFA';
+            checkoutBtn.disabled = true;
+            checkoutBtn.className = 'btn btn-disabled';
+
+            clearCartBtn.className = 'btn btn-disabled';
+            clearCartBtn.disabled = true
+        }
+    }
+
+    minusBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.nextElementSibling;
+            if (parseInt(input.value) > 0) {
+                input.value = parseInt(input.value) - 1;
+                msgOrderSuccess.style.display = "none";
+                updateCart();
+            }
+        });
+    });
+
+    plusBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            input.value = parseInt(input.value) + 1;
+            msgOrderSuccess.style.display = "none";
+            updateCart();
+        });
+    });
+
+    quantityInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            if (parseInt(this.value) < 0) this.value = 0;
+            updateCart();
+        });
+    });
+
+    checkoutBtn.addEventListener('click', function() {
+        if (cart.length > 0) {
+            msgOrderSuccess.style.display = "block";
+            msgOrderSuccess.textContent = `Commande passée avec succès! \nTotal: ${cartTotalEl.textContent}`;
+            // Réinitialiser les quantités
+            quantityInputs.forEach(input => input.value = 0);
+            updateCart();
+        }
+    });
+
+    // Vider le panier
+    function clearCart() {
+        cart = [];
+        localStorage.removeItem('shoppingCart');
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.value = 0;
+        });
+
+        updateCartUI();
+    }
+
+    clearCartBtn.addEventListener('click', clearCart);
+
+});
