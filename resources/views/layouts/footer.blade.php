@@ -13,12 +13,12 @@
       <div class="container">
         <div class="footer-content">
           <div class="footer-column">
-            <h3>Eat&Drink</h3>
+            <h3>Taste&Stay</h3>
             <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 20px;">
                 La plateforme de gestion des stands pour l'événement culinaire annuel.
             </p>
             <div class="contact-info">
-                <div class="contact-item">📧 equip@eatdrink.com</div>
+                <div class="contact-item">📧 equip@tastestay.com</div>
                 <div class="contact-item">📞 +57 96 79 00</div>
                 <div class="contact-item">🏢 123 Rue Saint-Michel, Cotonou</div>
             </div>
@@ -41,7 +41,7 @@
           </div>
         </div>
         <div class="copyright">
-            © 2025 Eat&Drink. Tous droits réservés.
+            © 2025 Taste&Stay. Tous droits réservés.
         </div>
       </div>
     </footer>

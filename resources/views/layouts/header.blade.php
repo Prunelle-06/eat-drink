@@ -13,7 +13,7 @@
       <div class="container">
         <nav>
             <div class="logo">
-                Eat<span>&</span>Drink
+                Taste<span>&</span>Stay
             </div>
             <div class="all-links">
               <div class="nav-links">
