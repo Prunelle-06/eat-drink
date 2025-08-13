@@ -161,7 +161,7 @@
               @endauth
           </div>
           <div class="info-image">
-              <img src="{{ asset('images/ex5.jpg') }}" alt="Stand culinaire">
+              <img src="{{ asset('images/img.png') }}" alt="">
           </div>
         </div>
       </div>
@@ -172,7 +172,7 @@
         <div class="container">
             <h2 class="section-title">Ce qu'ils disent de nous</h2>
             <div class="testimonial-slider">
-                {{-- Affichage des dynamiques des témoignages --}}
+                {{-- Affichage dynamique des témoignages --}}
             </div>
         </div>
     </section>

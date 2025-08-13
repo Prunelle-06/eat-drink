@@ -55,6 +55,10 @@ Route::controller(ProductController::class)->group(function () {
 Route::get('/dashboard', [BoardController::class, 'index'])->name('dashboard.entrepreneur');
 // Route::get('/dashboard', [BoardController::class, 'show'])->name('dashboard.stand.show');
 
+Route::get('/dashboard/visiteur', function() {
+    return view('visiteur.dashboard');
+});
+
 
 Route::get('/stands', [StandController::class, 'index'])->name('stands.index');
 Route::get('/stands/{stand}', [StandController::class, 'show'])->name('stands.show');
