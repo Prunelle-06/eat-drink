@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('acceuil');
 });
 
-// Routes inscription(demande de stand)
+// Routes inscription
 Route::get('/inscription', [InscriptionController::class, 'formulaire'])->name('register');
 Route::post('/inscription', [InscriptionController::class, 'soumettre']);
 

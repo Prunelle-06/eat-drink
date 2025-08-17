@@ -17,8 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('nom_entreprise');
-            $table->string('role')->default('entrepreneur_en_attente');
+             $table->enum('type', ['visiteur', 'exposant']);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -129,8 +129,8 @@
                 <h2>Prêt à vivre l'expérience Taste&Stay ?</h2>
                 <p>Inscrivez-vous dès maintenant en tant qu'exposant ou visiteur privilégié</p>
                 <div class="cta-buttons">
-                    <a href="{{ route('register') }}?type=exhibitor" class="btn btn-primary">Devenir exposant</a>
-                    <a href="{{ route('register') }}?type=visitor" class="btn btn-secondary">S'inscrire comme visiteur</a>
+                    <a href="/inscription#exposant" class="btn btn-primary">Devenir exposant</a>
+                    <a href="/inscription#visiteur" class="btn btn-secondary">S'inscrire comme visiteur</a>
                 </div>
             </div>
         </div>

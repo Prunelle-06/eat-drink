@@ -32,6 +32,20 @@ body {
     min-height: 100vh;
 }
 
+.flash-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--secondary);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateX(200%);
+    animation: slideIn 0.5s forwards, fadeOut 0.5s forwards 3s;
+    z-index: 1000;
+}
+
 /* Sidebar */
 .sidebar {
     background: var(--dark);

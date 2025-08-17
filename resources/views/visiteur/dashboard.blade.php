@@ -10,6 +10,9 @@
 </head>
 <body>
     <div class="dashboard">
+        @if (Session::has('success'))
+            <p class="flash-message">{{ Session::get('success') }}</p>
+        @endif
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">

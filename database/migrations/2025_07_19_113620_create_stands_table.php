@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nom_stand');
             $table->string('description_stand')->nullable();
+            $table->string('image_stand');
+            $table->string('statut')->default('en_attente');
             $table->foreignId('user_id')->unique()->constrained();
             $table->timestamps();
         });

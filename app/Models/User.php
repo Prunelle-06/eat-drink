@@ -20,8 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'nom_complet',
         'email',
-        'nom_entreprise',
-        'role',
+        'type',
         'password'
     ];
 
@@ -50,6 +49,14 @@ class User extends Authenticatable
 
     public function stand() {
         return $this->hasOne(Stand::class);
+    }
+
+    public function isExposant() {
+        return $this->type === 'exposant';
+    }
+
+    public function isVisiteur() {
+        return $this->type === 'visiteur';
     }
 
     public function products() {

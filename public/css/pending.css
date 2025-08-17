@@ -7,10 +7,10 @@
 }
 :root {
   --primary: #4A5568; 
-  --secondary: #6B717E;  /* Gris bleuté */
-  --dark: #1F2232;     /* Noir profond */
-  --light: #F9F9F9;    /* Blanc pur */
-  --accent: #4ECDC4;   /* Turquoise gardé pour les CTA */
+  --secondary: #6B717E;  
+  --dark: #1F2232;     
+  --light: #F9F9F9;   
+  --accent: #4ECDC4;  
 }
 
 * {
