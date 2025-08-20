@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->hasOne(Stand::class);
     }
 
+    public function products()
+    {
+        return $this->hasManyThrough(Product::class, Stand::class);
+    }
+
     public function isExposant() {
         return $this->type === 'exposant';
     }
@@ -59,7 +64,8 @@ class User extends Authenticatable
         return $this->type === 'visiteur';
     }
 
-    public function products() {
-        return $this->hasMany(Product::class);
+    public function isAdmin() {
+        return $this->type === 'admin';
     }
+
 }

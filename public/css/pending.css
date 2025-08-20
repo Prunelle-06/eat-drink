@@ -5,13 +5,13 @@
     --light: #F7F7F7;
     --accent: #6B717E;
 }
-:root {
+/* :root {
   --primary: #4A5568; 
   --secondary: #6B717E;  
   --dark: #1F2232;     
   --light: #F9F9F9;   
   --accent: #4ECDC4;  
-}
+} */
 
 * {
     margin: 0;
@@ -99,6 +99,14 @@ body {
     width: 40px;
     height: 40px;
     fill: var(--secondary);
+}
+.stand-name {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--secondary);
 }
 .status-message {
     text-align: center;

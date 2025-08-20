@@ -46,7 +46,8 @@
         <!-- Liste des produits -->
         <h2 class="section-title">Nos Spécialités</h2>
         
-        <div class="products-grid">
+        @if($products->count() > 0) 
+            <div class="products-grid">
             @foreach ($products as $product)
             <div class="product-card" data-id="{{ $product->id }}">
                 <div class="product-image">
@@ -69,6 +70,21 @@
             </div>
             @endforeach
         </div>
+        @else
+        <div class="no-products-container">
+            <div class="no-products-content">
+                <div class="no-products-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                </div>
+                <h3 class="no-products-title">Aucun produit disponible</h3>
+                <p class="no-products-message">Ce stand ne contient aucun produit pour le moment.</p>
+            </div>
+        </div>
+        @endif
 
         <!-- Panier -->
         <div class="cart-section">

@@ -8,7 +8,12 @@
 </head>
 <body>
 <body>
-    @include('layouts.header', ['position' => 'relative'])
+    {{-- @include('layouts.header', ['position' => 'relative']) --}}
+    <a class="logo-link" href="{{ route('home') }}">
+        <div class="logo">
+            Taste<span>&</span>Stay
+        </div>
+    </a>
     <section id="main-section" 
             data-form-type="{{ old('form_type', 'exposant') }}"
             data-has-exposant-errors="{{ $errors->has('exposant_nom_complet') || $errors->has('exposant_email') || $errors->has('nom_stand') || $errors->has('description_stand') || $errors->has('image_stand') || $errors->has('exposant_password') || $errors->has('exposant_password_confirmation') ? 'true' : 'false' }}"
@@ -136,7 +141,7 @@
         </div>
     </section>
 
-    @include('layouts.footer')
+    {{-- @include('layouts.footer') --}}
 
 
 

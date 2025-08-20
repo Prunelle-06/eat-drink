@@ -13,11 +13,11 @@ use App\Http\Controllers\ProductController;
 // Route page acceuil
 Route::get('/', function () {
     return view('acceuil');
-});
+})->name('home');
 
 // Routes inscription
-Route::get('/inscription', [InscriptionController::class, 'formulaire'])->name('register');
-Route::post('/inscription', [InscriptionController::class, 'soumettre']);
+Route::get('/inscription', [InscriptionController::class, 'create'])->name('register');
+Route::post('/inscription', [InscriptionController::class, 'store']);
 
 // Routes Connexion
 Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -28,13 +28,15 @@ Route::post('/logout', function(Request $request) {
     Auth::logout();
     $request->session()->invalidate();
     $request->session()->regenerateToken();
-    return redirect()->route('login');
-})->name('logout');
+    $request->session()->regenerate();
+
+    return redirect()->route('login')->with('success', 'Déconnexion réussie');
+})->middleware('auth')->name('logout');
 
 
 Route::get('/attente', function () {
     return view('pending');
-})->middleware(['auth']);
+});
  
 // Routes ADMIN
 Route::prefix('admin')->middleware(['auth', 'is_admin', 'is_pending'])->group(function () {

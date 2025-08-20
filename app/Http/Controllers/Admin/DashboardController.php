@@ -13,33 +13,39 @@ class DashboardController extends Controller
 {
     public function index() {
         return view('admin.dashboard', [
-            'pendingCount' => User::where('role', 'entrepreneur_en_attente')->count(), 
-            'approvedCount' => User::where('role', 'entrepreneur_approuve')->count(), 
-            'pendingRequests' => User::with('stand')->where('role', 'entrepreneur_en_attente')->get(), 
+            'pendingCount' => Stand::where('statut', 'en_attente')->count(), 
+            'approvedCount' => Stand::where('statut', 'approuve')->count(), 
+            'pendingRequests' => Stand::with('user')->where('statut', 'en_attente')->get(), 
         ]);
     }
 
 
     public function approve($id)
     {
-        $user = User::findOrFail($id);
-        $user->update(['role' => 'entrepreneur_approuve']);
+        $stand = Stand::with('user')->findOrFail($id);
+        $stand->update(['statut' => 'approuve']);
 
         // Envoi de la notification
-        $user->notify(new EntrepreneurApprovedNotification(
-            $user->nom_entreprise,
-            $user->stand->nom_stand
-        ));
+        if($stand->user) {
+            $stand->user->notify(new EntrepreneurApprovedNotification(
+                $stand->user->nom_complet,
+                $stand->nom_stand
+            ));
+        }
 
-        return back()->with('success', "Le stand {$user->nom_entreprise} a été approuvé !");
+        return back()->with('success', "Le stand {$stand->nom_stand} a été approuvé !");
     }
 
     // Rejette une demande 
     public function reject($id)
     {
         DB::transaction(function () use ($id) {
-            Stand::where('user_id', $id)->delete();     
-            User::findOrFail($id)->delete();
+            $stand = Stand::with('user')->findOrFail($id);
+
+            if ($stand->user) {
+                $stand->user->delete();
+            }
+            $stand->delete();
         });
 
         return back()->with('success', "La demande a été rejetée.");

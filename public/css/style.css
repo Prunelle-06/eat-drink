@@ -30,6 +30,7 @@ body {
 /* Style section hero */
 .hero {
   padding: 5rem 0;
+  height: 90vh;
   text-align: center;
 }
 .hero h1 {

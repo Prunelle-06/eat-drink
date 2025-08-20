@@ -21,21 +21,41 @@ body {
   overflow-x: hidden; 
 }
 
+main {
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.logo-link {
+    text-decoration: none;
+    color: var(--dark);
+    margin-top: 25px;
+}
+.logo {
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.logo span {
+  color: var(--accent);
+}
 
 .login-form {
-    background: white;
+    background: white; 
     padding: 40px 30px;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     width: 100%;
     max-width: 400px;
-    margin: 40px 0;
+    margin: 37px 0;
 }
 .login-form h1 {
     margin-bottom: 25px;
     text-align: center;
     font-size: 26px;
-    color: #333;
+    color: var(--primary);
 }
 .form-group {
     margin-bottom: 20px;
@@ -88,6 +108,7 @@ input[type="password"]:focus {
 .links a:hover {
     text-decoration: underline;
 }
+
 .error-message {
     background: #ffe5e5;
     color: #b80000;
@@ -96,4 +117,17 @@ input[type="password"]:focus {
     margin-bottom: 20px;
     text-align: center;
     font-size: 14px;
+}
+.flash-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--secondary);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateX(200%);
+    animation: slideIn 0.5s forwards, fadeOut 0.5s forwards 3s;
+    z-index: 1000;
 }

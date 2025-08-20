@@ -15,7 +15,7 @@ class EntrepreneurApprovedNotification extends Notification
      * Create a new notification instance.
      */
     public function __construct(
-        private string $nom_entreprise,
+        private string $nom_complet,
         private string $nom_stand
     )
     {
@@ -38,12 +38,12 @@ class EntrepreneurApprovedNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("{$this->nom_entreprise}, votre stand {$this->nom_stand} a été approuvé ! 🎉")
-            ->line("Félicitations! {$this->nom_entreprise} votre demande d'inscription sur Eat&Drink a été approuvée par notre équipe.")
+            ->subject("{$this->nom_complet}, votre stand {$this->nom_stand} a été approuvé ! 🎉")
+            ->line("Félicitations! {$this->nom_complet} votre demande d'inscription sur Taste&Stay a été approuvée par notre équipe.")
             ->line('Vous pouvez désormais :')
             ->line('✅Gérer vos produits : Ajoutez, modifiez ou supprimez vos offres depuis votre espace.')
             ->line('✅Recevoir des commandes : Les visiteurs peuvent réserver vos produits en ligne.')
-            ->action('Accédez à votre dashboard', url('/'))
+            ->action('Accédez à votre dashboard', route('dashboard.entrepreneur'))
             ->line('Merci de nous faire confiance!');
     }
 

@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceuil eat&drink</title>
+    <title></title>
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 </head>
-<style>
-    .login-form{
-        min-height: 100vh;
-    }
-</style>
 <body>
-    @include('layouts.header')
+    {{-- @include('layouts.header') --}}
 
     @if (Session::has('error'))
         <p class="error-message">{{ Session::get('error') }}</p>
     @endif
-    <section style="display: flex; justify-content: center;">
+    @if (Session::has('success'))
+        <p class="flash-message">{{ Session::get('success') }}</p>
+    @endif
+
+    <main>
+        <a class="logo-link" href="{{ route('home') }}">
+            <div class="logo">
+                Taste<span>&</span>Stay
+            </div>
+        </a>
         <section class="login-form">
             <h1>Connexion</h1>
             
@@ -61,8 +65,8 @@
                 </div>
             </form>
         </section>
-    </section>      
+    </main>      
   
-    @include('layouts.footer')
+    {{-- @include('layouts.footer') --}}
 </body>
 </html>

@@ -40,9 +40,14 @@
                         <span class="badge">5</span>
                     </li>
                 </a>
-                <li class="nav-item" style="color: #FA003F;">
-                    <i class="fas fa-sign-out-alt" style="color: #FA003F;"></i> Déconnexion
-                </li>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <li class="nav-item" style="color: #FA003F;">
+                        <button type="submit">
+                            <i class="fas fa-sign-out-alt" style="color: #FA003F;"></i> Déconnexion
+                        </button>
+                    </li>
+                </form>
             </ul>
         </aside>
 
@@ -51,8 +56,8 @@
             <!-- Header -->
             <header class="header">
                 <div class="user-profile">
-                    <span>Bonjour, Emma!</span>
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Profil" class="user-avatar">
+                    <span>Bonjour, {{ Auth::User()->nom_complet }}</span>
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiNFNUU3RUIiLz4KPHN2ZyB4PSIyNSIgeT0iMjUiIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMTIgMTJDMTQuMjA5MSAxMiAxNiA5Ljc2MTQyIDE2IDdDMTYgNC4yMzg1OCAxNC4yMDkxIDIgMTIgMkM5Ljc5MDg2IDIgOCA0LjIzODU4IDggN0M4IDkuNzYxNDIgOS43OTA4NiAxMiAxMiAxMlpNMTIgMTRDOC42ODYyOSAxNCA2IDE2LjY4NjMgNiAyMEg2VjIySDdWMjBDNyAxNy43OTA5IDkuNzkwODYgMTUgMTIgMTVDMTQuMjA5MSAxNSAxNyAxNy43OTA5IDE3IDIwVjIySDI0VjIwQzE4IDE2LjY4NjMgMTUuMzEzNyAxNCAxMiAxNFoiIGZpbGw9IiM5Q0EzQUYiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Profil" class="user-avatar">
                 </div>
             </header>
 

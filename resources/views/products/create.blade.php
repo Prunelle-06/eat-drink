@@ -8,7 +8,12 @@
     <title>Formulaire Produit</title>
 </head>
 <body>
-    <a href="{{ route('dashboard.entrepreneur') }}" class="btn-retour">Retour</a>
+    {{-- <a href="{{ route('dashboard.entrepreneur') }}" class="btn-retour">Retour</a> --}}
+    <a class="back-link" href="{{ route('dashboard.entrepreneur') }}">
+        <div class="back">
+            Retour
+        </div>
+    </a>
     <div class="form-container">
         <h2>Ajouter un produit</h2>
         <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">

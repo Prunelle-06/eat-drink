@@ -1,6 +1,6 @@
 :root {
-    --primary: #6C63FF;
-    --secondary: #4D44DB;
+    --primary: #00A699;
+    --secondary: #3ab7ae;
     --light: #F8F9FA;
     --dark: #212529;
     --gray: #6C757D;
@@ -215,6 +215,35 @@ body {
     border: 1px solid var(--light-gray);
     border-radius: 4px;
     outline: none;
+}
+
+/* Design aucun produit disponible */
+.no-products-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 2px dashed #dee2e6;
+}
+.no-products-content {
+    text-align: center;
+    color: #6c757d;
+}
+.no-products-icon {
+    color: #adb5bd;
+    margin-bottom: 1rem;
+}
+.no-products-title {
+    color: #495057;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+.no-products-message {
+    color: #6c757d;
+    margin: 0;
 }
 
 .cart-section {

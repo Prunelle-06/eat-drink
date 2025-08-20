@@ -54,6 +54,7 @@
                     </a>
                 </div> --}}
                 <form action="{{ route('logout') }}" method="POST">
+                    @csrf
                     <div class="menu-item">
                         <button type="submit">
                             <i class="fas fa-sign-out-alt"></i>

@@ -55,20 +55,17 @@ document.addEventListener('DOMContentLoaded', function() {
     {
       quote: "Cette plateforme a révolutionné notre participation aux événements culinaires. La gestion des commandes est incroyablement fluide.",
       name: "Marie D.",
-      title: "Cheffe pâtissière - Douceurs Parisiennes",
-      image: "images/avatar1.jpg"
+      title: "Cheffe pâtissière - Douceurs Parisiennes"
     },
     {
       quote: "En tant que visiteur, j'ai pu découvrir des artisans exceptionnels et commander des produits uniques en quelques clics seulement.",
       name: "Pierre L.",
-      title: "Food blogger - Saveurs du Monde",
-      image: "images/avatar2.jpg"
+      title: "Food blogger - Saveurs du Monde"
     },
     {
       quote: "L'outil analytique nous a permis d'optimiser notre offre et de doubler nos ventes lors du dernier salon.",
       name: "Sophie M.",
-      title: "Directrice - Vins & Terroirs",
-      image: "images/avatar3.jpg"
+      title: "Directrice - Vins & Terroirs"
     }
   ];
   
@@ -97,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <p>${testimonial.quote}</p>
         </div>
         <div class="testimonial-author">
-          <img src="${testimonial.image}" alt="${testimonial.name}">
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiNFNUU3RUIiLz4KPHN2ZyB4PSIyNSIgeT0iMjUiIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMTIgMTJDMTQuMjA5MSAxMiAxNiA5Ljc2MTQyIDE2IDdDMTYgNC4yMzg1OCAxNC4yMDkxIDIgMTIgMkM5Ljc5MDg2IDIgOCA0LjIzODU4IDggN0M4IDkuNzYxNDIgOS43OTA4NiAxMiAxMiAxMlpNMTIgMTRDOC42ODYyOSAxNCA2IDE2LjY4NjMgNiAyMEg2VjIySDdWMjBDNyAxNy43OTA5IDkuNzkwODYgMTUgMTIgMTVDMTQuMjA5MSAxNSAxNyAxNy43OTA5IDE3IDIwVjIySDI0VjIwQzE4IDE2LjY4NjMgMTUuMzEzNyAxNCAxMiAxNFoiIGZpbGw9IiM5Q0EzQUYiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="${testimonial.name}">
           <div>
             <h4>${testimonial.name}</h4>
             <span>${testimonial.title}</span>

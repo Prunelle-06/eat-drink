@@ -14,14 +14,20 @@ class Product extends Model
         'description',
         'prix',
         'photo',
-        'user_id',
+        'stand_id',
         
     ];
 
-
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)
+                    ->through('stand');
     }
-        
+
+    public function stand()
+    {
+        return $this->belongsTo(Stand::class);
+    }
+
+       
 }

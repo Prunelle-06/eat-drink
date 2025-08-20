@@ -24,6 +24,25 @@ body {
   overflow-x: hidden; 
 }
 
+.logo-link {
+    text-decoration: none;
+    color: var(--dark);
+    margin-top: 20px;
+    margin-bottom: -10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.logo {
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.logo span {
+  color: var(--accent);
+}
+
 section {
     max-width: 485px;
     margin: 3rem auto;

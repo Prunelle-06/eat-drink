@@ -9,7 +9,7 @@
     @include('layouts.header')
 
     @if (Session::has('success'))
-        <p>{{ Session::get('success') }}</p>
+        <p class="flash-message">{{ Session::get('success') }}</p>
     @endif
     <section class="container-dashboard-admin">
         <!-- Section Tableau -->
@@ -19,22 +19,24 @@
                 <table class="admin-table">
                     <thead>
                         <tr>
+                            <th>Nom complet</th>
                             <th>Email</th>
-                            <th>Nom Entreprise</th>
+                            <th>Nom Stand</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($pendingRequests as $user)
+                        @foreach($pendingRequests as $stand)
                         <tr>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->nom_entreprise }}</td>
+                            <td>{{ $stand->user->nom_complet }}</td>
+                            <td>{{ $stand->user->email }}</td>
+                            <td>{{ $stand->nom_stand }}</td>
                             <td class="actions-cell">
-                                <form action="{{ route('admin.approve', $user->id) }}" method="POST" class="d-inline">
+                                <form action="{{ route('admin.approve', $stand->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn-action btn-approve">✓ Approuver</button>
                                 </form>
-                                <form action="{{ route('admin.reject', $user->id) }}" method="POST" class="d-inline">
+                                <form action="{{ route('admin.reject', $stand->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn-action btn-reject">✗ Rejeter</button>
                                 </form>
@@ -54,13 +56,13 @@
                 <div class="stat-card">
                     <h3>Demandes en attente</h3>
                     <p class="stat-value">{{ $pendingCount }}</p>
-                    <a href="#pending-requests" class="stat-link">Voir</a>
+                    <a href="" class="stat-link">Voir</a>
                 </div>
                 
                 <div class="stat-card">
                     <h3>Stands approuvés</h3>
                     <p class="stat-value">{{ $approvedCount }}</p>
-                    <a href="#approved-stands" class="stat-link">Voir</a>
+                    <a href="" class="stat-link">Voir</a>
                 </div>
             </div>
         </section>

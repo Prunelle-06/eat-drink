@@ -189,3 +189,114 @@ body {
 .stand-card:nth-child(1) { animation-delay: 0.1s; }
 .stand-card:nth-child(2) { animation-delay: 0.2s; }
 .stand-card:nth-child(3) { animation-delay: 0.3s; }
+
+
+/* Design message de non presence de stands */
+.no-stands-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    /* background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); */
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 5rem 0;
+    overflow: hidden;
+}
+.floating-elements {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.float-element {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.3;
+    animation: float 6s ease-in-out infinite;
+}
+
+.float-element.el-1 { top: 20%; left: 10%; animation-delay: 0s; }
+.float-element.el-2 { top: 60%; left: 80%; animation-delay: 2s; }
+.float-element.el-3 { top: 30%; left: 70%; animation-delay: 4s; }
+.float-element.el-4 { top: 70%; left: 20%; animation-delay: 1s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+.no-stands-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+.icon-wrapper {
+    font-size: 4rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+.no-stands-content h3 {
+    color: #495057;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+.no-stands-content p {
+    color: #6c757d;
+    margin-bottom: 2rem;
+}
+.btn-refresh {
+    background: var(--se-condary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-refresh:hover {
+    background: #00A699;
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+@keyframes float-reverse {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(10px) rotate(-1deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .no-stands {
+        padding: 3rem 2rem;
+        margin: 20px;
+    }
+
+    .no-stands i {
+        font-size: 4rem;
+    }
+
+    .no-stands h3 {
+        font-size: 1.7rem;
+    }
+
+    .no-stands p {
+        font-size: 1rem;
+    }
+}

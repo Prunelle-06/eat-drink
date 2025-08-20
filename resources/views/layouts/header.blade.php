@@ -12,9 +12,11 @@
     <header style="background: {{ $position ?? 'sticky' }};">
       <div class="container">
         <nav>
-            <div class="logo">
-                Taste<span>&</span>Stay
-            </div>
+           <a class="logo-link" href="{{ route('home') }}">
+              <div class="logo">
+                  Taste<span>&</span>Stay
+              </div>
+            </a>
             <div class="all-links">
               <div class="nav-links">
                 <a href="{{ url('/stands') }}">Exposants</a>

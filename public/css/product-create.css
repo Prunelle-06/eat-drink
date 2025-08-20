@@ -13,20 +13,25 @@ body {
     min-height: 100vh;
 }
 
-.btn-retour {
-  display: inline-block;
-  padding: 10px 20px;
-  margin-top: 40px;
-  margin-right: 350px;
-  background-color: #3490dc; 
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+.back-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: var(--dark);
+    margin-top: 25px;
+    background: #00A699;
+    border-radius: 8px;
+    padding: 10px 23px;
 }
-.btn-retour:hover {
-  background-color: #2779bd;
+.back {
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.back-link:hover {
+  background-color: #4ECDC4;
 }
 
 .form-container {

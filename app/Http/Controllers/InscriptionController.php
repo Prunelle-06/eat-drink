@@ -5,19 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Stand;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
 class InscriptionController extends Controller
 {
-    public function formulaire()
+    public function create()
     {
         return view('register');
     }
 
-    public function soumettre(Request $request)
+    public function store(Request $request)
     {
         $formType = $request->input('form_type');
+        $user = null;
 
         if($formType === 'exposant') {
             $validated = $request->validate([
@@ -29,7 +31,7 @@ class InscriptionController extends Controller
                 'image_stand' => 'required|image|max:5120',
             ]);
 
-            DB::transaction(function () use ($validated) {
+            DB::transaction(function () use ($validated, $request) {
                 // creation User 
                 $user = User::create([
                     'email' => $validated['exposant_email'],
@@ -38,18 +40,27 @@ class InscriptionController extends Controller
                     'type' => 'exposant'
                 ]);
 
+                // Gestion de l'insertion de l'image
+                $imageName = null;
+                if($request->hasFile('image_stand')) {
+                    $image = $request->image_stand;
+                    $ext = $image->getClientOriginalExtension();
+                    $imageName = time().'.'.$ext;
+                    $image->move(public_path('uploads/img_stands'), $imageName);
+                }
+
                 // creation Stand lié à User
                 Stand::create([
                     'user_id' => $user->id,
                     'nom_stand' => $validated['nom_stand'],
-                    'image_stand' => $validated['image_stand'],
+                    'image_stand' => $imageName,
                     'description_stand' => $validated['description_stand'],
-                    'statut' => 'en_attente',
+                    'statut' => 'en_attente'
                 ]);
 
+                Auth::login($user);
+                $request->session()->regenerate();
             });
-
-            return redirect('/attente')->with('success', 'Votre demande a été soumise !');
 
         } elseif($formType === 'visiteur') {
             $validated = $request->validate([
@@ -58,15 +69,22 @@ class InscriptionController extends Controller
                 'visiteur_password' => 'required|min:8',
             ]);
 
-            User::create([
+            $user = User::create([
                 'email' => $validated['visiteur_email'],
                 'nom_complet' => $validated['visiteur_nom_complet'],
                 'password' => Hash::make($validated['visiteur_password']),
                 'type' => 'visiteur'
             ]);
 
-            return redirect('/dashboard/visiteur')->with('success', 'Inscription réussie !');
+            Auth::login($user);
+            $request->session()->regenerate();
         }
+
+        // Redirection selon le type d'utilisateur
+        return match($formType) {
+            'visiteur' => redirect('/dashboard/visiteur')->with('success', 'Inscription réussie !'),
+            'exposant' => redirect('/attente')->with('success', 'Votre demande a été soumise !'),
+        };
 
     }
 }

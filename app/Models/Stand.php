@@ -22,6 +22,15 @@ class Stand extends Model
         return $this->belongsTo(User::class, "user_id", "id");
     }
 
+    public function products() {
+        return $this->hasMany(Product::class);
+    }
+
+    public function isApproved()
+    {
+        return $this->statut === 'approuve';
+    }
+
 }
       
    
