@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Stand;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,22 +17,26 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $foodNames = [
+        $produits = [
             'Crêpe Nutella', 'Galette Complète', 'Smoothie Detox', 
             'Salade César', 'Bagel Saumon', 'Pancakes Syrop',
             'Café Spécialité', 'Thé Artisanal', 'Cookie Maison',
-            'Tarte Citron', 'Sandwich Club', 'Jus Pressé'
+            'Tarte Citron', 'Sandwich Club', 'Jus Pressé',
+            'Croissant aux Amandes', 'Tarte Tatin', 'Coq au Vin',
+            'Bouillabaisse', 'Ratatouille', 'Crème Brûlée',
+            'Macarons Assortis', 'Foie Gras', 'Fromages Affinés',
+            'Confit de Canard', 'Soupe à l\'Oignon', 'Éclair au Chocolat'
         ];
 
         return [
-            'nom_produit' => $this->faker->randomElement($foodNames),
+            'nom_produit' => $this->faker->randomElement($produits),
             'description' => $this->faker->sentence(10),
             'prix' => $this->faker->numberBetween(300, 2000),
-            'photo' => 'products/' . $this->faker->randomElement([
+            'photo' => $this->faker->randomElement([
                 'crepe.jpg', 'jus.jpg', 'sandwich.jpg',
                 'salade.jpg', 'dessert.jpg', 'cafe.jpg'
             ]),
-            // 'user_id' => User::factory(),
+            'stand_id' => Stand::factory()->approuve()
         ];
     }
 }

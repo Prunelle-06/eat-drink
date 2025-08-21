@@ -15,20 +15,21 @@ class UserStandProductSeeder extends Seeder
      */
     public function run(): void
     {
-        // Création des 10 users avec leur statut et leur stand
-        $users = User::factory(10)
-            ->has(Stand::factory())
-            ->create();
+        // Créer les visiteurs
+        User::factory(10)->visiteur()->create();
 
-        // Filtrer seulement les users approuvés
-        $approvedUsers = $users->where('role', 'entrepreneur_approuve');
+        // Créer des stands avec leurs exposants
+        Stand::factory(16)->approuve()->create();
+        Stand::factory(9)->enAttente()->create();
+        Stand::factory(7)->rejete()->create();
 
-        // Vérifier qu'il y a bien des users approuvés avant de créer des produits
-        if ($approvedUsers->isNotEmpty()) {
-            Product::factory(60)
-                ->create([
-                    'user_id' => fn() => $approvedUsers->random()->id
-            ]);
-        } 
+        // Récuperation stand approuvés
+        $standsApprouves = Stand::where('statut', 'approuve')->get();
+
+        foreach ($standsApprouves as $stand) {
+            Product::factory()
+                ->count(rand(0, 13)) // Entre 3 et 8 produits par stand
+                ->create(['stand_id' => $stand->id]);
+        }
     }
 }

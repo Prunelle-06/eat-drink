@@ -26,10 +26,9 @@ class UserFactory extends Factory
         return [
             'nom_complet' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'nom_entreprise' => fake()->company(),
-            'role' => $this->faker->randomElement([
-                'entrepreneur_en_attente', 
-                'entrepreneur_approuve'
+            'type' => $this->faker->randomElement([
+                'visiteur', 
+                'exposant'
             ]),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
@@ -37,6 +36,19 @@ class UserFactory extends Factory
         ];
     }
 
+    public function visiteur(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => 'visiteur',
+        ]);
+    }
+
+    public function exposant(): static {
+        return $this->state(fn (array $attributes) => [
+            'type' => 'exposant',
+        ]);
+    }
+    
     /**
      * Indicate that the model's email address should be unverified.
      */
