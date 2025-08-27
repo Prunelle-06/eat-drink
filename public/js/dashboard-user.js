@@ -11,3 +11,41 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     })
 })
+
+function toggleProducts(button) {
+    const container = button.parentElement;
+    const preview = container.querySelector('.products-preview');
+    const icon = button.querySelector('.expand-icon');
+    const expandText = button.querySelector('.expand-text');
+    const allProducts = preview.querySelectorAll('.product-line');
+    
+    const isExpanded = preview.classList.contains('expanded');
+    
+    if (isExpanded) {
+        // Réduire - masquer les produits après les 2 premiers
+        preview.classList.remove('expanded');
+        icon.classList.remove('rotated');
+        
+        // Masquer tous les produits après le 2ème
+        allProducts.forEach((product, index) => {
+            if (index >= 2) {
+                product.style.display = 'none';
+            }
+        });
+        
+        const hiddenCount = allProducts.length - 2;
+        expandText.textContent = `Voir plus (${hiddenCount} produit${hiddenCount > 1 ? 's' : ''})`;
+        
+    } else {
+        // Étendre - afficher tous les produits
+        preview.classList.add('expanded');
+        icon.classList.add('rotated');
+        
+        // Afficher tous les produits
+        allProducts.forEach(product => {
+            product.style.display = 'flex';
+        });
+        
+        expandText.textContent = 'Voir moins';
+    }
+}

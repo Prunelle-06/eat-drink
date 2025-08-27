@@ -22,12 +22,20 @@
                 <li class="nav-item active">
                     Tableau de bord
                 </li>
-                <li class="nav-item">
-                    <i class="fa-solid fa-home"></i> Accueil
-                </li>
+                <a href="{{ route('home') }}">
+                    <li class="nav-item">
+                        <i class="fa-solid fa-home"></i> Accueil
+                    </li>
+                </a>
                 <li class="nav-item">
                     <i class="fa-solid fa-user"></i> Profil
                 </li>
+                <a href="{{ route('stands.index') }}">
+                    <li class="nav-item">
+                        <i class="fas fa-store"></i> Voir stands
+                        <span class="badge">{{$stands->count() }}</span>
+                    </li>
+                </a>
                 <a href="#favoris">
                     <li class="nav-item">
                         <i class="fa-solid fa-heart"></i> Favoris
@@ -37,14 +45,14 @@
                 <a href="#commandes">
                     <li class="nav-item">
                         <i class="fa-solid fa-cart-arrow-down"></i> Commandes
-                        <span class="badge">5</span>
+                        <span class="badge">{{ $orders->count() }}</span>
                     </li>
                 </a>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <li class="nav-item" style="color: #FA003F;">
-                        <button type="submit">
-                            <i class="fas fa-sign-out-alt" style="color: #FA003F;"></i> Déconnexion
+                    <li class="nav-item logout-item">
+                        <button class="logout-button" type="submit">
+                            <i class="fas fa-sign-out-alt" style="color: #e15b5b;"></i> Déconnexion
                         </button>
                     </li>
                 </form>
@@ -72,7 +80,7 @@
                     <p>Favoris</p>
                 </div>
                 <div class="stat-card">
-                    <h3>3</h3>
+                    <h3>{{ $orders->count() }}</h3>
                     <p>Commandes en cours</p>
                 </div>
             </div>
@@ -111,71 +119,60 @@
                 <i class="fa-solid fa-cart-arrow-down"></i> Mes Commandes
             </h1>
 
-            <!-- Commande 1 -->
+            @if($orders->count() > 0)
+            @foreach ($orders as $order)               
             <div class="order-card">
                 <div class="order-header">
                     <div>
-                        <span class="order-id">Commande #ED-48921</span>
-                        <span class="order-date">12 août 2023 à 10:30</span>
+                        <span class="order-id">{{ $order->order_number }}</span>
+                        <span class="order-date">{{ $order->created_at->translatedFormat('j F Y à H:i') }}</span>
                     </div>
-                    <span class="order-status status-delivered">Livrée</span>
+                    @if($order->status === "pending")
+                    <span class="order-status status-delivered">En attente</span>
+                    @endif
                 </div>
                 <div class="order-details">
                     <div class="order-items">
+                        @foreach ($order->items as $product)                    
                         <div class="order-item">
-                            <span class="item-name">Assortiment fromages AOP</span>
-                            <span class="item-price">24,90 CFA</span>
+                            <span class="item-name">{{ $product->product_name }} @if($product->quantity > 1) x {{ $product->quantity }} @endif</span>
+                            <span class="item-price">{{ number_format($product->product_price, 0, ',', ' ') }} CFA</span>
                         </div>
-                        <div class="order-item">
+                        @endforeach
+                        {{-- <div class="order-item">
                             <span class="item-name">Bouteille Chardonnay</span>
                             <span class="item-price">18,50 CFA</span>
                         </div>
                         <div class="order-item">
                             <span class="item-name">Frais de livraison</span>
                             <span class="item-price">5,00 CFA</span>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="order-total">
                         <span class="total-label">Total</span>
-                        <span class="total-amount">48,40 CFA</span>
+                        <span class="total-amount">{{ number_format($order->total_amount, 0, ',', ' ') }} CFA</span>
                     </div>
                     <div class="order-actions">
                         <button class="action-btn btn-primary">Commander à nouveau</button>
+                        <button class="action-btn btn-canceled">Annuler la commande</button>
                         <button class="action-btn btn-secondary">Contacter le stand</button>
                     </div>
                 </div>
             </div>
+            @endforeach
+            @else
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-shopping-basket"></i>
+                </div>
+                <h2 class="empty-title">Aucune commande pour le moment</h2>
+                <p class="empty-message">Vous n'avez pas encore passé de commande. Découvrez nos stands et trouvez des produits qui vous plaisent !</p>
+                <a href="{{ route('stands.index') }}" class="cta-button">
+                    <i class="fas fa-store"></i> Découvrir les stands
+                </a>
+            </div>
+            @endif            
 
-            <!-- Commande 2 -->
-            <div class="order-card">
-                <div class="order-header">
-                    <div>
-                        <span class="order-id">Commande #ED-48765</span>
-                        <span class="order-date">11 août 2023 à 15:15</span>
-                    </div>
-                    <span class="order-status status-pending">En attente</span>
-                </div>
-                <div class="order-details">
-                    <div class="order-items">
-                        <div class="order-item">
-                            <span class="item-name">Pizza Napolitaine</span>
-                            <span class="item-price">14,90 CFA</span>
-                        </div>
-                        <div class="order-item">
-                            <span class="item-name">Tiramisu</span>
-                            <span class="item-price">7,50 CFA</span>
-                        </div>
-                    </div>
-                    <div class="order-total">
-                        <span class="total-label">Total</span>
-                        <span class="total-amount">22,40 CFA</span>
-                    </div>
-                    <div class="order-actions">
-                        <button class="action-btn btn-primary">Suivre ma commande</button>
-                        <button class="action-btn btn-secondary">Contacter le stand</button>
-                    </div>
-                </div>
-            </div>
         </div>
         </main>
     </div>

@@ -315,10 +315,19 @@ body {
 .cart-total {
     display: flex;
     justify-content: space-between;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    padding-top: 5px;
+}
+
+.total-plus-coasts {
+    display: flex;
+    justify-content: space-between;
     font-size: 1.2rem;
     font-weight: 600;
-    margin: 20px 0;
-    padding-top: 20px;
+    margin: 15px 0;
+    padding-top: 15px;
     border-top: 1px solid var(--light-gray);
 }
 
@@ -349,21 +358,21 @@ body {
 .btn-primary:hover {
     background-color: var(--secondary);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+    box-shadow: 0 5px 15px rgb(169, 244, 209);
 }
 
 .btn-clear {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #d34253;
+    background-color: #D61E33;
     width: 30%;
     color: #fff;
 }
-.btn-clear:hover  {
+/* .btn-clear:hover  {
     background-color: #D61E33;
     box-shadow: 0 5px 15px #8b1523;
-}
+} */
 
 .btn-disabled {
     background-color: var(--light-gray);

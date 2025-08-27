@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Stand;
 use App\Models\Product;
+use App\Models\Order;
 
 class BoardController extends Controller
 {
@@ -20,15 +21,28 @@ class BoardController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Veuillez vous connecter');
         }
-
-        $user = User::with('stand')->get();       
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Session invalide');
+        
+        $user = Auth::user();
+        if (!$user->stand) {
+            return redirect()->back()->with('error', 'Vous n\'avez pas de stand.');
         }
 
         $userInfo = Auth::user()->load(['stand', 'products']);
 
-        return view('entrepreneur.dashboard', compact('userInfo'));
+        $orders = Order::with(['user', 'items'])
+                      ->where('stand_id', $user->stand->id)
+                      ->orderBy('created_at', 'asc')
+                      ->get();
+
+        $stats = [
+            'pending' => Order::forStand($user->stand->id)->pending()->count(),
+            'confirmed' => Order::forStand($user->stand->id)->confirmed()->count(),
+            'total_revenue' => Order::forStand($user->stand->id)
+                                   ->where('status', '!=', 'cancelled')
+                                   ->sum('total_amount')
+        ];
+
+        return view('entrepreneur.dashboard', compact('userInfo', 'orders', 'stats'));
     }
 
     /**

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://kit.fontawesome.com/724f54335b.js" crossorigin="anonymous"></script>
@@ -14,7 +14,7 @@
         <div class="stand-header">
             <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80" class="stand-banner" alt="Crêperie Bretonne">
             
-            <div class="stand-info">
+            <div class="stand-info" data-stand-id="{{ $stand->id }}" data-user-id="{{ $stand->user->id }}">
                 <h1 class="stand-title">{{ $stand->nom_stand }}</h1>
                 
                 <div class="stand-owner">
@@ -104,9 +104,15 @@
                 <span>Total</span>
                 <span>0.00 CFA</span>
             </div>
+
+            <div class="total-plus-coasts">
+                <span>Total + Frais</span>
+                <span>0.00 CFA</span>
+            </div>
             
             <div class="bouttons">
                 <button id="checkout-btn" class="btn btn-disabled" disabled>
+                    <i class="fas fa-shopping-cart"></i>
                     Passer la commande
                 </button>
 

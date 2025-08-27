@@ -22,13 +22,13 @@
             </div>
             <div class="sidebar-menu">
                 <div class="menu-item active">
-                    <a href="">
+                    <a href="#board">
                         {{-- <i class="fas fa-home"></i> --}}
                         <span>Tableau de bord</span>
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a href="{{ url('/') }}">
+                    <a href="{{ route('home') }}">
                         <i class="fas fa-home"></i>
                         <span>Acceuil</span>
                     </a>
@@ -44,7 +44,7 @@
                     <a href="#commandes">
                         <i class="fas fa-shopping-cart"></i>
                         <span>Commandes</span>
-                        <span class="badge">5</span>
+                        <span class="badge">{{ $orders->count() }}</span>
                     </a>
                 </div>
                 {{-- <div class="menu-item">
@@ -55,9 +55,9 @@
                 </div> --}}
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <div class="menu-item">
+                    <div class="menu-item logout-item">
                         <button type="submit">
-                            <i class="fas fa-sign-out-alt"></i>
+                            <i class="fas fa-sign-out-alt" style="color: #b80000;"></i>
                             <span>Déconnexion</span>
                         </button>
                     </div>
@@ -69,12 +69,11 @@
         <!-- Main Content -->
         <div class="main-content">
             <!-- Header -->
-            <div class="header">
+            <div id="board" class="header">
                 <h1>Tableau de bord</h1>
                 <div class="user-menu">                  
                     <div class="user-profile">
                         <div class="user-info">
-                            <h4> {{ $userInfo->nom_entreprise }} </h4>
                             <p> {{ $userInfo->stand->nom_stand }}</p>
                         </div>
                     </div>
@@ -87,7 +86,19 @@
                 <div class="stat-card">
                     <div class="header">
                         <div>
-                            <div class="value">24</div>
+                            <div class="value">{{ number_format($stats['total_revenue'], 0, ',', ' ') }} CFA</div>
+                            <div class="label">Chiffre d'affaires</div>
+                        </div>
+                        <i class="fas fa-euro-sign"></i>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 65%"></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <div class="value">{{ $orders->count() }}</div>
                             <div class="label">Commandes</div>
                         </div>
                         <i class="fas fa-shopping-bag"></i>
@@ -102,6 +113,18 @@
                         <i class="fas fa-utensils"></i>
                     </div>
                 </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <div class="value">4.8</div>
+                            <div class="label">Note moyenne</div>
+                        </div>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 96%"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- Recent Orders -->
@@ -113,6 +136,7 @@
                     <thead>
                         <tr>
                             <th>Commande</th>
+                            <th>Client</th>
                             <th>Produits</th>
                             <th>Montant</th>
                             <th>Statut</th>
@@ -120,36 +144,38 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>#ED-2541</td>
+                        @foreach ($orders as $order)                     
+                        <tr> 
+                            <td>#{{ $order->order_number }}</td>
+                            <td>{{ $order->user->nom_complet }}</td>
                             <td class="products-cell">
-                                <div class="product-line">2x Crêpe Nutella <span class="product-price">500 CFA</span></div>
-                                <div class="product-line">1x Jus d'Orange <span class="product-price">300 CFA</span></div>
-                                <div class="product-line">3x Beignet <span class="product-price">250 CFA</span></div>
+                                <div class="products-container">
+                                    <div class="products-preview" data-order-id="{{ $order->id }}">
+                                        @foreach ($order->items as $index => $product)
+                                            <div class="product-line" 
+                                                @if($index >= 2) style="display: none;" @endif>
+                                                {{ $product->quantity }}x {{ $product->product_name }}
+                                                <span class="price-product">{{ number_format($product->product_price, 0, ',', ' ') }} CFA</span>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    @if($order->items->count() > 2)
+                                        <button class="expand-button" onclick="toggleProducts(this)">
+                                            <span class="expand-text">
+                                                Voir plus ({{ $order->items->count() - 2 }} produit{{ $order->items->count() - 2 > 1 ? 's' : '' }})
+                                            </span>
+                                            <span class="expand-icon">▼</span>
+                                        </button>
+                                    @endif
+                                </div>
                             </td>
-                            <td>42,50 CFA</td>
-                            <td><span class="status pending">En attente</span></td>
-                            <td>12/06/20025</td>
-                        </tr>
-                        <tr>
-                            <td>#ED-2539</td>
-                            <td class="products-cell"> 
-                                <div class="product-line">3x Beignet <span class="product-price">250 CFA</span></div>
+                            <td class="total-amount">{{ number_format($order->total_amount, 0, ',', ' ') }} CFA</td>
+                            <td><span class="status {{ $order->status }}">
+                                {{ $order->status }}</span>
                             </td>
-                            <td>35,00 CFA</td>
-                            <td><span class="status pending">En attente</span></td>
-                            <td>11/06/20025</td>
+                            <td>{{ $order->created_at->translatedFormat('j F Y') }}</td>
                         </tr>
-                        <tr>
-                            <td>#ED-2535</td>
-                            <td class="products-cell">
-                                <div class="product-line">1x Jus d'Orange <span class="product-price">300 CFA</span></div>
-                                <div class="product-line">3x Beignet <span class="product-price">250 CFA</span></div>
-                            </td>
-                            <td>28,75 CFA</td>
-                            <td><span class="status pending">En attente</span></td>
-                            <td>10/06/20025</td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -164,7 +190,7 @@
                     @foreach ($userInfo->products as $product)                    
                     <div class="product-card">
                         <div class="product-image">
-                            <img src="{{ asset('uploads/products/'.$product->iphoto) }}" alt="">
+                            <img src="{{ asset('uploads/products/'.$product->photo) }}" alt="">
                         </div>
                         <div class="product-details">
                             <h3>{{ $product->nom_produit }}</h3>
@@ -172,7 +198,8 @@
                             <div class="product-price">{{ $product->prix }} CFA</div>
                             <div class="product-actions">
                                 <button class="btn btn-primary">
-                                    <i class="fa-regular fa-pen-to-square"></i> Modifier
+                                    {{-- <i class="fa-regular fa-pen-to-square"></i> --}}
+                                    Modifier
                                 </button>
                             </div>
                         </div>

@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StandController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Entrepreneur\BoardController;
+use App\Http\Controllers\Visitor\BoardVisitorController;
 use App\Http\Controllers\ProductController;
 
 // Route page acceuil
@@ -57,12 +59,20 @@ Route::controller(ProductController::class)->group(function () {
 Route::get('/dashboard', [BoardController::class, 'index'])->name('dashboard.entrepreneur');
 // Route::get('/dashboard', [BoardController::class, 'show'])->name('dashboard.stand.show');
 
-Route::get('/dashboard/visiteur', function() {
-    return view('visiteur.dashboard');
-});
-
+Route::get('/dashboard/visiteur', [BoardVisitorController::class, 'index'])->name('visiteur.orders');
 
 Route::get('/stands', [StandController::class, 'index'])->name('stands.index');
 Route::get('/stands/{stand}', [StandController::class, 'show'])->name('stands.show');
+
+
+// Routes pour les commandes
+Route::middleware('auth')->controller(OrderController::class)->group(function () {
+
+    Route::post('/orders', 'store')->name('orders.store');
+    Route::get('/orders/{order}', 'show')->name('orders.show');
+    
+    // Dashboard exposant
+    Route::patch('/orders/{order}/status', 'updateStatus')->name('orders.update-status');
+});
 
 

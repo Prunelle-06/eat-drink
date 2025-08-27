@@ -7,9 +7,15 @@
     const cartCount = document.querySelector('.cart-count');
     const cartItemsEl = document.querySelector('.cart-items');
     const cartTotalEl = document.querySelector('.cart-total span:last-child');
+    const totalPlusCoasts = document.querySelector('.total-plus-coasts span:last-child');
     const emptyCartMsg = document.querySelector('.empty-cart-message');
     const msgOrderSuccess = document.querySelector('.msg-order-success');
-    const clearCartBtn = document.getElementById('clear-cart')
+    const clearCartBtn = document.getElementById('clear-cart');
+
+    // Récupérer l'ID du stand depuis la page
+    const standId = document.querySelector('[data-stand-id]')?.dataset.standId;
+    // const userId = document.querySelector('[data-user-id]')?.dataset.userId;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
     let cart = [];
 
@@ -36,6 +42,7 @@
                 return {
                     id: productEl.dataset.id,
                     name: productEl.querySelector('.product-title').textContent,
+                    description: productEl.querySelector('.product-description').textContent,
                     price: parseInt(productEl.querySelector('.product-price').textContent),
                     quantity: parseInt(input.value)
                 };
@@ -69,6 +76,7 @@
             // Calculer le total
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             cartTotalEl.textContent = `${total.toFixed(2)} CFA`;
+            totalPlusCoasts.textContent = `${(parseInt(total) + 500).toFixed(2)} CFA`;
             
             // Activer le bouton de commande
             checkoutBtn.disabled = false;
@@ -114,13 +122,82 @@
         });
     });
 
-    checkoutBtn.addEventListener('click', function() {
-        if (cart.length > 0) {
+
+    // Envoi de la commande
+    checkoutBtn.addEventListener('click', async function() {
+        if (cart.length === 0) return;
+
+        this.disabled = true;
+        this.textContent = 'Envoi en cours...';
+
+        try {
+            const orderData = {
+                stand_id: standId,
+                items: cart.map(item => ({
+                    product_id: parseInt(item.id),
+                    quantity: item.quantity
+                }))
+            };
+
+            const response = await fetch('/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                msgOrderSuccess.style.display = "block";
+                msgOrderSuccess.className = "msg-order-success success";
+                msgOrderSuccess.innerHTML = `
+                    <div class="order-success-content">
+                        <div class="display: flex">
+                            <i class="fas fa-check-circle"></i>
+                            <h4>Commande passée avec succès !</h4>
+                        </div>
+                        <small>Vous pouvez suivre votre commande dans votre <a href="">tableau de bord</a>.</small>
+                    </div>
+                `;
+                
+                clearCart();
+                
+                // Masquer le message après 5 secondes
+                // setTimeout(() => {
+                //     msgOrderSuccess.style.display = "none";
+                // }, 5000);
+                
+            } else {
+                msgOrderSuccess.style.display = "block";
+                msgOrderSuccess.className = "msg-order-success error";
+                msgOrderSuccess.innerHTML = `
+                    <div class="order-error-content">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h4>Erreur lors de la commande</h4>
+                        <p>${result.message}</p>
+                    </div>
+                `;
+            }
+
+        } catch (error) {
+            console.error('Erreur:', error);
             msgOrderSuccess.style.display = "block";
-            msgOrderSuccess.textContent = `Commande passée avec succès! \nTotal: ${cartTotalEl.textContent}`;
-            // Réinitialiser les quantités
-            quantityInputs.forEach(input => input.value = 0);
-            updateCart();
+            msgOrderSuccess.className = "msg-order-success error";
+            msgOrderSuccess.innerHTML = `
+                <div class="order-error-content">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h4>Erreur de connexion</h4>
+                    <p>Impossible de passer la commande. Veuillez réessayer.</p>
+                </div>
+            `;
+        } finally {
+            // Réactiver le bouton
+            this.disabled = false;
+            this.textContent = 'Passer la commande';
         }
     });
 
