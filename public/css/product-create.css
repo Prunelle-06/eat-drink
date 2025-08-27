@@ -18,20 +18,17 @@ body {
     justify-content: center;
     align-items: center;
     text-decoration: none;
-    color: var(--dark);
     margin-top: 25px;
-    background: #00A699;
-    border-radius: 8px;
+    margin-left: -385px;
     padding: 10px 23px;
 }
 .back {
-  font-size: 1.1rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-}
-.back-link:hover {
-  background-color: #4ECDC4;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: underline;
+    color: #077fc9;
+    display: flex;
+    align-items: center;
 }
 
 .form-container {

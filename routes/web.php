@@ -50,9 +50,11 @@ Route::prefix('admin')->middleware(['auth', 'is_admin', 'is_pending'])->group(fu
 
 // Route page produits
 Route::controller(ProductController::class)->group(function () {
-    Route::get('/produits', 'index')->name('products.index');
     Route::get('/produits/create', 'create')->name('products.create');
     Route::post('/produits', 'store')->name('products.store');
+    Route::get('/products/{product}/edit','edit')->name('products.edit'); 
+    Route::put('/products/{product}/update','update')->name('products.update'); 
+    Route::delete('/products/{product}','destroy')->name('products.destroy'); 
 });
 
 

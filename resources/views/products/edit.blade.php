@@ -14,14 +14,15 @@
         </div>
     </a>
     <div class="form-container">
-        <h2>Ajouter un produit</h2>
-        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+        <h2>Modifier un produit</h2>
+        <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+            @method('put')
             @csrf
             <div class="form-group">
                 <label for="nom">Nom du produit</label>
                 <input type="text" class="@error('nom_produit')
                     is-invalid
-                @enderror" id="nom" name="nom_produit" value="{{ old('nom_produit', ) }}">
+                @enderror" id="nom" name="nom_produit" value="{{ old('nom_produit', $product->nom_produit) }}">
                 @error('nom_produit') 
                     <p class="error-message">{{ $message }}</p>
                 @enderror
@@ -31,7 +32,7 @@
                 <label for="description">Description</label>
                 <textarea id="description" class="@error('description')
                     is-invalid
-                @enderror" name="description" value="{{ old('description') }}" rows="4"></textarea>
+                @enderror" name="description" value="{{ old('description', $product->description) }}" rows="4"></textarea>
                 @error('description') 
                     <p class="error-message">{{ $message }}</p>
                 @enderror
@@ -41,7 +42,7 @@
                 <label for="prix">Prix</label>
                 <input type="text" class="@error('prix')
                     is-invalid
-                @enderror" id="prix" name="prix" value="{{ old('prix') }}">
+                @enderror" id="prix" name="prix" value="{{ old('prix', $product->prix) }}">
                 @error('prix') 
                     <p class="error-message">{{ $message }}</p>
                 @enderror
@@ -50,7 +51,7 @@
             <div class="form-group">
                 <label for="photo">Photo</label>
                 <div class="custom-file">
-                    <input type="file" class="@error('photo')
+                    <input type="file" class="@error('photo', $product->photo)
                     is-invalid
                 @enderror" id="photo" name="photo" value="{{ old('photo') }}" accept="image/*">
                     <span id="file-name">Aucune image sélectionnée</span>
@@ -60,7 +61,7 @@
                 @enderror
             </div>
 
-            <button type="submit">Soumettre</button>
+            <button type="submit">Modifier</button>
         </form>
     </div>
 

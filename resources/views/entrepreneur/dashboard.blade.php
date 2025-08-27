@@ -68,6 +68,9 @@
 
         <!-- Main Content -->
         <div class="main-content">
+            @if (Session::has('success'))
+                <p class="flash-message">{{ Session::get('success') }}</p>
+            @endif
             <!-- Header -->
             <div id="board" class="header">
                 <h1>Tableau de bord</h1>
@@ -127,7 +130,7 @@
                 </div>
             </div>
 
-            <!-- Recent Orders -->
+            <!-- Commandes -->
             <div class="card">
                 <div class="card-header">
                     <h3>Commandes</h3>
@@ -194,13 +197,11 @@
                         </div>
                         <div class="product-details">
                             <h3>{{ $product->nom_produit }}</h3>
-                            <p>{{ $product->description  }}</p>
+                            <p>{{ $product->description }}</p>
                             <div class="product-price">{{ $product->prix }} CFA</div>
                             <div class="product-actions">
-                                <button class="btn btn-primary">
-                                    {{-- <i class="fa-regular fa-pen-to-square"></i> --}}
-                                    Modifier
-                                </button>
+                                <a class="btn btn-primary" href="{{ route('products.edit', $product->id) }}">Modifier</a>
+                                <a class="btn btn-primary btn-delete" onclick="deleteProduct({{ $product->id }})" href="">Supprimer</a>
                             </div>
                         </div>
                     </div>

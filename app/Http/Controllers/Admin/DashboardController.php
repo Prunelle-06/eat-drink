@@ -19,7 +19,7 @@ class DashboardController extends Controller
         ]);
     }
 
-
+    // Approuver la demande
     public function approve($id)
     {
         $stand = Stand::with('user')->findOrFail($id);
@@ -36,7 +36,7 @@ class DashboardController extends Controller
         return back()->with('success', "Le stand {$stand->nom_stand} a été approuvé !");
     }
 
-    // Rejette une demande 
+    // Rejetter une demande 
     public function reject($id)
     {
         DB::transaction(function () use ($id) {
