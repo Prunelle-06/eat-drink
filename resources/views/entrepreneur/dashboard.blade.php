@@ -13,7 +13,7 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <h2>Eat&Drink</h2>
+                <h2>Taste&Stay</h2>
                 <p>Tableau de bord entrepreneur</p>
                 <div>
                     <i class="fa-solid fa-user"></i>
@@ -135,6 +135,7 @@
                 <div class="card-header">
                     <h3>Commandes</h3>
                 </div>
+                @if($orders->count() > 0) 
                 <table class="table">
                     <thead>
                         <tr>
@@ -181,14 +182,27 @@
                         @endforeach
                     </tbody>
                 </table>
+                @else
+                <div class="card-empty">
+                    <div class="empty-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <h2 class="empty-title">Aucune commande pour le moment</h2>
+                    <p class="empty-message">Votre stand n'a pas encore reçu de commandes. Vos commandes apparaîtront ici lorsqu'elles seront passées.</p>
+                    <a href="#" class="button">
+                        <i class="fas fa-store"></i> Voir mon stand
+                    </a>
+                </div>
+                @endif
             </div>
 
-            <!-- Top Products -->
+            <!-- Produits -->
             <div class="card" id="produits">
                 <div class="card-header">
                     <h3>Mes produits</h3>
                     <a href="{{ route('products.create') }}">Ajouter un produit</a>
                 </div>
+                @if($userInfo->products->count() > 0) 
                 <div class="products-grid">
                     @foreach ($userInfo->products as $product)                    
                     <div class="product-card">
@@ -200,13 +214,48 @@
                             <p>{{ $product->description }}</p>
                             <div class="product-price">{{ $product->prix }} CFA</div>
                             <div class="product-actions">
-                                <a class="btn btn-primary" href="{{ route('products.edit', $product->id) }}">Modifier</a>
-                                <a class="btn btn-primary btn-delete" onclick="deleteProduct({{ $product->id }})" href="">Supprimer</a>
+                                <a class="btn btn-primary" href="{{ route('products.edit', $product->id) }}"> <i class="fa-regular fa-pen-to-square"></i> </a>
+                                <button class="btn btn-primary btn-delete" onclick="deleteProduct({{ $product->id }})"> <i class="fa-solid fa-trash"></i> </button>
+                                <form id="delete-product-form-{{ $product->id }}" action="{{ route('products.destroy',$product->id) }}" method="post">
+                                    @csrf
+                                    @method('delete')
+                                </form>
                             </div>
                         </div>
                     </div>
                     @endforeach
                 </div>
+                @else
+                <div class="card-empty">
+                    <div class="empty-icon">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <h2 class="empty-title">Aucun produit enregistré</h2>
+                    <p class="empty-message">Vous n'avez pas encore de produits pour votre stand. Ajoutez vos premiers produits pour commencer à vendre.</p>
+                    <a href="{{ route('products.create') }}" class="button">
+                        <i class="fas fa-plus"></i> Ajouter un produit
+                    </a>
+                </div>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal de confirmation de suppression de produit --}}
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 class="modal-title">Confirmation</h3>
+            </div>
+            <div class="modal-body">
+                <p class="modal-message">Êtes-vous sûr de vouloir supprimer ce produit ?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Annuler</button>
+                <button class="modal-btn modal-btn-delete" onclick="confirmDelete()">Supprimer</button>
             </div>
         </div>
     </div>

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->integer('prix');
             $table->string('photo');
-            $table->foreignId('stand_id')->constrained();
+            $table->foreignId('stand_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
 

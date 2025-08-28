@@ -17,8 +17,8 @@ return new class extends Migration
             $table->decimal('product_price', 8, 2);
             $table->integer('quantity');
             $table->decimal('subtotal', 10, 2);
-            $table->foreignId('order_id')->constrained();
-            $table->foreignId('product_id')->constrained();
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

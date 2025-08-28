@@ -84,7 +84,7 @@ button, a {
     background: #cdcdcdfe;
 }
 .menu-item.active {
-    background-color: #f7fcf3;
+    background-color: #c9cac7cf;
 }
 .menu-item.active a {
     color: var(--primary);
@@ -434,28 +434,28 @@ tbody tr:nth-child(odd) {
 .product-actions {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
 }
 a.btn {
     text-decoration: none;
 }
-a.btn-delete {
-    background: #cb3f4d;
+button.btn-delete {
+    background: #e45d6a;
 }
-a.btn-delete:hover {
-    background: #ec8993;
+button.btn-delete:hover {
+    background: #ed717d;
 }
 .btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3px 5px;
+    padding: 6px 9px;
     border-radius: 6px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     border: none;
-    width: 90px;
+    /* width: 90px; */
     transition: all 0.3s;
 }
 .btn-primary {
@@ -465,3 +465,146 @@ a.btn-delete:hover {
 .btn-primary:hover {
     background-color: var(--secondary);
 }
+
+/* Modal de suprression de produit */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-container {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-container {
+    transform: translateY(0);
+}
+
+.modal-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-icon {
+    font-size: 48px;
+    color: #e74c3c;
+    margin-bottom: 10px;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.modal-body {
+    padding: 20px;
+    text-align: center;
+}
+
+.modal-message {
+    color: #6c757d;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.modal-footer {
+    padding: 20px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    border-top: 1px solid #eee;
+}
+
+.modal-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 100px;
+}
+
+.modal-btn-cancel {
+    background: #f8f9fa;
+    color: #6c757d;
+}
+
+.modal-btn-cancel:hover {
+    background: #e9ecef;
+}
+
+.modal-btn-delete {
+    background: #e74c3c;
+    color: white;
+}
+
+.modal-btn-delete:hover {
+    background: #c0392b;
+}
+
+/* Commande et produits vides */
+.card-empty {
+    background: transparent;
+    padding: 30px;
+    text-align: center;
+}
+.empty-icon {
+    font-size: 64px;
+    color: #a0aec0;
+    margin-bottom: 20px;
+}
+.empty-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 12px;
+}
+.empty-message {
+    color: #718096;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+.button {
+    display: inline-block;
+    background: #4a6cf7;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.button:hover {
+    background: #3451b2;
+    transform: translateY(-2px);
+}
+.button i {
+    margin-right: 8px;
+}
+

@@ -177,7 +177,13 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        File::delete(public_path('uploads/img_products/'.$product->image));
+
+        $product->delete();
+
+        return redirect()->route('dashboard.entrepreneur')->with('success', 'Produit ' . $product->nom_produit . ' supprimé avec succès !');
     }
 }
  

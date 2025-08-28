@@ -49,3 +49,47 @@ function toggleProducts(button) {
         expandText.textContent = 'Voir moins';
     }
 }
+
+// Suppression officiel d'un produit
+// function deleteProduct(id) {
+//     if(confirm("Etes vous sur de vouloir supprimer ce produit ?")) {
+//         document.getElementById("delete-product-form-"+id).submit();
+//     }
+// }
+
+let currentProductId = null;
+
+function deleteProduct(id) {
+    currentProductId = id;
+    showModal();
+}
+
+function showModal() {
+    document.getElementById('deleteModal').classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('deleteModal').classList.remove('active');
+    currentProductId = null;
+}
+
+function confirmDelete() {
+    if (currentProductId) {
+        document.getElementById("delete-product-form-" + currentProductId).submit();
+    }
+    closeModal();
+}
+
+// Fermer le modal en cliquant à l'extérieur
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeModal();
+    }
+});
+
+// Fermer avec la touche Échap
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeModal();
+    }
+});

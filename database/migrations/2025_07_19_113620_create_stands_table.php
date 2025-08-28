@@ -17,7 +17,7 @@ return new class extends Migration
             $table->longText('description_stand')->nullable();
             $table->string('image_stand');
             $table->string('statut')->default('en_attente');
-            $table->foreignId('user_id')->unique()->constrained();
+            $table->foreignId('user_id')->unique()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
 
