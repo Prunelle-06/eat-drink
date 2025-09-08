@@ -85,7 +85,7 @@ class ProductController extends Controller
             $product->save();
         }
         
-        return redirect()->route('dashboard.entrepreneur')->with('success', 'Votre produit a été ajouté avec succès !');
+        return redirect()->route('dashboard.exposant')->with('success', 'Votre produit a été ajouté avec succès !');
     }
 
     /**
@@ -114,7 +114,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-         $rules = [
+        $rules = [
             'nom_produit' => ['required', 'min:3', 'max:50', 'regex:/^(?!\d+$)[\pL\pN\s\-]+$/u'],
             'description' => 'required|min:8|max:255',
             'prix' => 'required|numeric',
@@ -154,22 +154,24 @@ class ProductController extends Controller
         $product->photo = $request->photo;
         $product->save();
 
-        if($request->image != "") {
-            // Supprimer l'ancienne image
-            File::delete(public_path('uploads/img_products/'.$product->image));
+        if($request->photo != "") {
+            if(File::exists(public_path('uploads/img_products/'.$product->photo))) {
+                // Supprimer l'ancienne image
+                File::delete(public_path('uploads/img_products/'.$product->photo));
+            }
 
             $photo = $request->photo;
             $ext = $photo->getClientOriginalExtension();
             $imageName = time().'.'.$ext;
             
-            $image->move(public_path('uploads/img_products'), $imageName);
+            $photo->move(public_path('uploads/img_products'), $imageName);
     
             // Sauvegarde de l'image dans la BD
             $product->photo = $imageName;
             $product->save();
         }
         
-        return redirect()->route('dashboard.entrepreneur')->with('success', 'Produit mis à jour avec succès !');
+        return redirect()->route('dashboard.exposant')->with('success', 'Produit mis à jour avec succès !');
     }
 
     /**
@@ -183,7 +185,7 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('dashboard.entrepreneur')->with('success', 'Produit ' . $product->nom_produit . ' supprimé avec succès !');
+        return redirect()->route('dashboard.exposant')->with('success', 'Produit ' . $product->nom_produit . ' supprimé avec succès !');
     }
 }
  

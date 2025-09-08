@@ -18,7 +18,7 @@
             data-form-type="{{ old('form_type', 'exposant') }}"
             data-has-exposant-errors="{{ $errors->has('exposant_nom_complet') || $errors->has('exposant_email') || $errors->has('nom_stand') || $errors->has('description_stand') || $errors->has('image_stand') || $errors->has('exposant_password') || $errors->has('exposant_password_confirmation') ? 'true' : 'false' }}"
             data-has-visiteur-errors="{{ $errors->has('visiteur_nom_complet') || $errors->has('visiteur_email') || $errors->has('visiteur_password') || $errors->has('visiteur_password_confirmation') ? 'true' : 'false' }}"  
-            >
+                >
         
         <div class="tabs">
             <button class="tab-btn active" data-tab="exposant">Demande de stand</button>

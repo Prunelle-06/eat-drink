@@ -8,7 +8,7 @@
     <title>Formulaire Produit</title>
 </head>
 <body>
-    <a class="back-link" href="{{ route('dashboard.entrepreneur') }}">
+    <a class="back-link" href="{{ route('dashboard.exposant') }}">
         <div class="back">
             Retour
         </div>

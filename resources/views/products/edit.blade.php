@@ -8,7 +8,7 @@
     <title>Formulaire Produit</title>
 </head>
 <body>
-    <a class="back-link" href="{{ route('dashboard.entrepreneur') }}">
+    <a class="back-link" href="{{ route('dashboard.exposant') }}">
         <div class="back">
             Retour
         </div>
@@ -32,7 +32,7 @@
                 <label for="description">Description</label>
                 <textarea id="description" class="@error('description')
                     is-invalid
-                @enderror" name="description" value="{{ old('description', $product->description) }}" rows="4"></textarea>
+                @enderror" name="description" rows="4">{{ old('description', $product->description) }}</textarea>
                 @error('description') 
                     <p class="error-message">{{ $message }}</p>
                 @enderror
@@ -50,6 +50,11 @@
 
             <div class="form-group">
                 <label for="photo">Photo</label>
+                @if($product && $product->photo)
+                    <div>
+                        <img src="{{ asset('uploads/img_products/'.$product->photo) }}" alt="" style="max-width: 200px;">
+                    </div>
+                @endif
                 <div class="custom-file">
                     <input type="file" class="@error('photo', $product->photo)
                     is-invalid
@@ -61,7 +66,7 @@
                 @enderror
             </div>
 
-            <button type="submit">Modifier</button>
+            <button type="submit">Modifier le produit</button>
         </form>
     </div>
 

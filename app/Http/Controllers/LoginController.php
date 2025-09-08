@@ -44,7 +44,7 @@ class LoginController extends Controller
             }
             // Redirection selon le statut
             return match($stand->statut) {
-                'approuve' => redirect()->intended('/dashboard'),
+                'approuve' => redirect()->intended('/dashboard/exposant'),
                 'en_attente' => redirect('/attente'),
                 'rejete' => redirect('/login')->withErrors(['email' => 'Votre demande a été rejetée.']),
                 default => redirect('/attente')

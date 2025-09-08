@@ -7,8 +7,19 @@
     <script src="https://kit.fontawesome.com/724f54335b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <title>Document</title>
+
+    <style>
+        /* Logique d'affichage des sections */
+        .dashboard-sections { 
+            display: {{ $current_section === 'profil' ? 'none' : 'block' }}; 
+        }
+        .updateProfil-section { 
+            display: {{ $current_section === 'profil' ? 'block' : 'none' }}; 
+        }
+    </style>
 </head>
-<body>
+
+<body class="{{ $current_section === 'profil' ? 'show-profil' : '' }}">
     <div class="dashboard">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -21,27 +32,33 @@
                 </div>
             </div>
             <div class="sidebar-menu">
+                <div class="menu-item">
+                    <a href="{{ route('home') }}">
+                        <i class="fas fa-home"></i>
+                        <span>Retour Acceuil</span>
+                    </a>
+                </div>
                 <div class="menu-item active">
-                    <a href="#board">
+                    <a href="{{ route('dashboard.exposant') }}#board">
                         {{-- <i class="fas fa-home"></i> --}}
                         <span>Tableau de bord</span>
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a href="{{ route('home') }}">
-                        <i class="fas fa-home"></i>
-                        <span>Acceuil</span>
+                    <a href="{{ route('dashboard.exposant.profil') }}" class="{{ $current_section === 'profil' ? 'active' : '' }}">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Profil</span>
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a href="#produits">
+                    <a href="{{ route('dashboard.exposant') }}#produits" class="{{ !$current_section ? 'active' : '' }}">
                         <i class="fas fa-utensils"></i>
                         <span>Mes Produits</span>
                         <span class="badge">{{ $userInfo->products->count() }}</span>
                     </a>
                 </div>
                 <div class="menu-item">
-                    <a href="#commandes">
+                    <a href="{{ route('dashboard.exposant') }}#commandes" class="{{ !$current_section ? 'active' : '' }}">
                         <i class="fas fa-shopping-cart"></i>
                         <span>Commandes</span>
                         <span class="badge">{{ $orders->count() }}</span>
@@ -67,10 +84,11 @@
 
 
         <!-- Main Content -->
-        <div class="main-content">
+        <div class="main-content dashboard-sections">
             @if (Session::has('success'))
                 <p class="flash-message">{{ Session::get('success') }}</p>
             @endif
+
             <!-- Header -->
             <div id="board" class="header">
                 <h1>Tableau de bord</h1>
@@ -83,16 +101,15 @@
                 </div>
             </div>
 
-
             <!-- Stats Cards -->
-            <div class="stats-cards" id="commandes">
+            <div class="stats-cards">
                 <div class="stat-card">
                     <div class="header">
                         <div>
-                            <div class="value">{{ number_format($stats['total_revenue'], 0, ',', ' ') }} CFA</div>
+                            <div class="value">{{ number_format($stats['total_revenue'], 0, ',', ' ') }}</div>
                             <div class="label">Chiffre d'affaires</div>
                         </div>
-                        <i class="fas fa-euro-sign"></i>
+                        <i style="font-weight: bold; font-size: 17px">CFA</i>
                     </div>
                     <div class="progress">
                         <div class="progress-bar" style="width: 65%"></div>
@@ -131,7 +148,7 @@
             </div>
 
             <!-- Commandes -->
-            <div class="card">
+            <div class="card" id="commandes">
                 <div class="card-header">
                     <h3>Commandes</h3>
                 </div>
@@ -238,6 +255,84 @@
                 </div>
                 @endif
             </div>
+        </div>
+
+        <!-- Profil -->
+        <div class="updateProfil-section">
+            <h1>Mon Profil</h1>
+            <form method="POST" action="{{ route('dashboard.exposant.updateProfil') }}" enctype="multipart/form-data">
+                @csrf  
+                @method('PUT')
+                <input type="hidden" name="form_type" value="exposant">
+
+                {{-- Champs User --}}
+                <div class="form-group visitor-form">
+                    <input type="text" name="exposant_nom_complet" value="{{ old('exposant_nom_complet',$userInfo->nom_complet ) }}" placeholder="Nom complet *">
+                    @error('exposant_nom_complet')
+                        <p class="error-msg">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="form-group visitor-form">
+                    <input type="email" name="exposant_email" value="{{ old('exposant_email',$userInfo->email) }}" placeholder="Adresse email *">
+                    @error('exposant_email')
+                        <p class="error-msg">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Champs Stand --}}
+                <div class="form-group">
+                    <input name="nom_stand" value="{{ old('nom_stand',$userInfo->stand->nom_stand) }}" placeholder="Nom du stand *">
+                    @error('nom_stand')
+                    <p class="error-msg">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="form-group file-section">
+                    @if($userInfo->stand && $userInfo->stand->image_stand)
+                        <div>
+                            <img src="{{ asset('uploads/img_stands/'.$userInfo->stand->image_stand) }}" alt="" style="max-width: 200px;">
+                        </div>
+                    @endif
+                    <div class="file-input-wrapper">
+                        <input type="file" id="file1" name="image_stand" class="file-input">
+                        <label for="file1" class="file-label">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                            Choisir une image du stand 
+                        </label>
+                        <div class="file-info" id="info1">Aucune image sélectionnée</div>
+                    </div>
+                    @error('image_stand')
+                        <p class="error-msg">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <textarea name="description_stand" placeholder="Decrivez votre stand *">{{ old('description_stand',$userInfo->stand->description_stand) }}</textarea>
+                    @error('description_stand')
+                        <p class="error-msg">{{ $message }}</p>
+                    @enderror
+                </div>
+            
+                {{-- Champs mot de passe --}}
+                <div class="form-group">
+                    <input type="password" name="exposant_password" placeholder="Mot de passe *">
+                    @error('exposant_password')
+                        <p class="error-msg">{{ $message }}</p>
+                    @enderror
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" name="exposant_password_confirmation" placeholder="Confirmer le mot de passe">
+                    @error('exposant_password_confirmation')
+                        <p class="error-msg">{{ $message }}</p>
+                    @enderror
+                </div>
+                
+                <button type="submit" class="submit-btn">Mettre à jour le profil</button>
+            </form>
         </div>
     </div>
 

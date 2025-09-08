@@ -466,108 +466,6 @@ button.btn-delete:hover {
     background-color: var(--secondary);
 }
 
-/* Modal de suprression de produit */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.modal-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-.modal-container {
-    background: white;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    transform: translateY(-20px);
-    transition: transform 0.3s ease;
-}
-
-.modal-overlay.active .modal-container {
-    transform: translateY(0);
-}
-
-.modal-header {
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-}
-
-.modal-icon {
-    font-size: 48px;
-    color: #e74c3c;
-    margin-bottom: 10px;
-}
-
-.modal-title {
-    font-size: 20px;
-    font-weight: 600;
-    color: #2c3e50;
-    margin: 0;
-}
-
-.modal-body {
-    padding: 20px;
-    text-align: center;
-}
-
-.modal-message {
-    color: #6c757d;
-    line-height: 1.5;
-    margin: 0;
-}
-
-.modal-footer {
-    padding: 20px;
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    border-top: 1px solid #eee;
-}
-
-.modal-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    min-width: 100px;
-}
-
-.modal-btn-cancel {
-    background: #f8f9fa;
-    color: #6c757d;
-}
-
-.modal-btn-cancel:hover {
-    background: #e9ecef;
-}
-
-.modal-btn-delete {
-    background: #e74c3c;
-    color: white;
-}
-
-.modal-btn-delete:hover {
-    background: #c0392b;
-}
-
 /* Commande et produits vides */
 .card-empty {
     background: transparent;
@@ -608,3 +506,208 @@ button.btn-delete:hover {
     margin-right: 8px;
 }
 
+/* Profil exposant */
+.updateProfil-section {
+    flex: 1;
+    margin-left: 390px;
+    padding: 30px 50px;
+    transition: all 0.3s;
+}
+form {
+    margin-top: 12px;
+}
+.form-group {
+    margin-bottom: 1.5rem;
+}
+input, textarea {
+    width: 60%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+textarea {
+    height: 200px;
+}
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(56, 178, 172, 0.2);
+}
+textarea {
+    min-height: 100px;
+    resize: none;
+}
+.error-msg {
+    color: #e53e3e;
+    font-size: 0.875rem;
+}
+.submit-btn {
+    width: 60%;
+    padding: 0.75rem;
+    background-color: #34afad;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.submit-btn:hover {
+    background-color: #319795; 
+}
+.form-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--secondary);
+}
+.form-footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+/* style file input  */
+.file-section {
+    width: 100%;
+}
+.file-input-wrapper {
+    position: relative;
+    display: inline-block;
+}
+.file-input {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+}
+.file-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: linear-gradient(45deg, var(--primary), var(--dark));
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    width: auto;
+    min-width: 200px;
+    max-width: 280px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+.file-label:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+.file-label:active {
+    transform: translateY(0);
+}
+.file-label svg {
+    width: 18px;
+    height: 18px;
+}
+.file-info {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #666;
+    text-align: center;
+}
+.file-selected {
+    background: linear-gradient(45deg, #00b894, #00cec9) !important;
+}
+
+
+
+/* Modal de suprression de produit */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+.modal-container {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-container {
+    transform: translateY(0);
+}
+.modal-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+.modal-icon {
+    font-size: 48px;
+    color: #e74c3c;
+    margin-bottom: 10px;
+}
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+}
+.modal-body {
+    padding: 20px;
+    text-align: center;
+}
+.modal-message {
+    color: #6c757d;
+    line-height: 1.5;
+    margin: 0;
+}
+.modal-footer {
+    padding: 20px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    border-top: 1px solid #eee;
+}
+.modal-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 100px;
+}
+.modal-btn-cancel {
+    background: #f8f9fa;
+    color: #6c757d;
+}
+.modal-btn-cancel:hover {
+    background: #e9ecef;
+}
+.modal-btn-delete {
+    background: #e74c3c;
+    color: white;
+}
+.modal-btn-delete:hover {
+    background: #c0392b;
+}
