@@ -58,7 +58,6 @@ body {
 .logo {
     color: white;
     font-size: 1.8rem;
-    margin-bottom: 3rem;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -66,6 +65,13 @@ body {
 }
 .logo span {
     color: var(--accent);
+}
+.name-user {
+    color: #fff;
+    font-weight: 500;
+    margin-top: 5px;
+    font-size: 14px;
+    margin-bottom: 1.7rem;
 }
 .nav-menu {
     list-style: none;
@@ -77,7 +83,8 @@ body {
     text-decoration: none;
 }
 .nav-item {
-    padding: 0.8rem 1rem;
+    padding: 0.7rem 1rem;
+    font-size: 15px;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -528,4 +535,54 @@ body {
     .empty-title {
         font-size: 20px;
     }
+}
+
+/* Profil visiteur */
+.updateProfil-section {
+    flex: 1;
+    margin-left: 90px;
+    padding: 65px 50px;
+    transition: all 0.3s;
+}
+.visitor-form {
+    height: auto !important;
+}
+.form-group {
+    margin-bottom: 1.5rem;
+}
+input, textarea {
+    width: 50%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+input:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(56, 178, 172, 0.2);
+}
+textarea {
+    min-height: 100px;
+    resize: none;
+}
+.error-msg {
+    color: #e53e3e;
+    font-size: 0.875rem;
+}
+.submit-btn {
+    width: 50%;
+    padding: 0.75rem;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.submit-btn:hover {
+    background-color: #319795; 
 }

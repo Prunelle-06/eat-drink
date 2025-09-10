@@ -57,13 +57,20 @@ Route::controller(ProductController::class)->group(function () {
     Route::delete('/products/{product}','destroy')->name('products.destroy'); 
 });
 
-// Rooute dashboard exposant
+// Dashboard exposant
 Route::get('/dashboard/exposant', [BoardController::class, 'index'])->name('dashboard.exposant');
 Route::get('/dashboard/exposant/profil', [BoardController::class, 'profil'])->name('dashboard.exposant.profil');
 Route::put('/dashboard/exposant/profil', [BoardController::class, 'updateProfil'])->name('dashboard.exposant.updateProfil');
 // Route::get('/dashboard', [BoardController::class, 'show'])->name('dashboard.stand.show');
 
-Route::get('/dashboard/visiteur', [BoardVisitorController::class, 'index'])->name('visiteur.orders');
+// Dashboard Visiteur
+Route::middleware('auth')->controller(BoardVisitorController::class)->group(function () {
+
+    Route::get('/dashboard/visiteur', 'index')->name('dashboard.visiteur');
+    Route::get('/dashboard/visiteur/profil', 'profil')->name('dashboard.visiteur.profil');
+    
+    Route::put('/dashboard/visiteur/profil', 'updateProfil')->name('dashboard.visiteur.updateProfil');
+});
 
 Route::get('/stands', [StandController::class, 'index'])->name('stands.index');
 Route::get('/stands/{stand}', [StandController::class, 'show'])->name('stands.show');

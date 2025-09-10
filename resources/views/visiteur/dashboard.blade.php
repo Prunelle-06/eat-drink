@@ -7,6 +7,16 @@
     <script src="https://kit.fontawesome.com/724f54335b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('css/dashboard-visiteur.css') }}">
     <title>Document</title>
+
+    <style>
+        /* Logique d'affichage des sections */
+        .dashboard-sections { 
+            display: {{ $current_section === 'profil' ? 'none' : 'block' }}; 
+        }
+        .updateProfil-section { 
+            display: {{ $current_section === 'profil' ? 'block' : 'none' }}; 
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard">
@@ -18,31 +28,36 @@
             <div class="logo">
                 Taste<span>&</span>Stay
             </div>
+            <div class="name-user">{{ $user->nom_complet }} 123</div>
             <ul class="nav-menu">
-                <li class="nav-item active">
-                    Tableau de bord
-                </li>
                 <a href="{{ route('home') }}">
                     <li class="nav-item">
                         <i class="fa-solid fa-home"></i> Accueil
                     </li>
                 </a>
-                <li class="nav-item">
-                    <i class="fa-solid fa-user"></i> Profil
-                </li>
+                <a href="{{ route('dashboard.visiteur') }}#board">
+                    <li class="nav-item active">
+                       Tableau de bord
+                    </li>
+                </a>
+                <a href="{{ route('dashboard.visiteur.profil') }}">
+                    <li class="nav-item">
+                       <i class="fa-solid fa-user"></i> Profil
+                    </li>
+                </a>
                 <a href="{{ route('stands.index') }}">
                     <li class="nav-item">
                         <i class="fas fa-store"></i> Voir stands
                         <span class="badge">{{$stands->count() }}</span>
                     </li>
                 </a>
-                <a href="#favoris">
+                <a href="{{ route('dashboard.visiteur') }}#favoris">
                     <li class="nav-item">
                         <i class="fa-solid fa-heart"></i> Favoris
                         <span class="badge">5</span>
                     </li>
                 </a>
-                <a href="#commandes">
+                <a href="{{ route('dashboard.visiteur') }}#commandes">
                     <li class="nav-item">
                         <i class="fa-solid fa-cart-arrow-down"></i> Commandes
                         <span class="badge">{{ $orders->count() }}</span>
@@ -60,16 +75,17 @@
         </aside>
 
         <!-- Main Contenu -->
-        <main class="main-content">
+        <main class="main-content dashboard-sections">
             <!-- Header -->
             <header class="header">
                 <div class="user-profile">
-                    <span>Bonjour, {{ Auth::User()->nom_complet }}</span>
+                    <span>Bonjour, {{ $user->nom_complet }}</span>
                     <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiNFNUU3RUIiLz4KPHN2ZyB4PSIyNSIgeT0iMjUiIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMTIgMTJDMTQuMjA5MSAxMiAxNiA5Ljc2MTQyIDE2IDdDMTYgNC4yMzg1OCAxNC4yMDkxIDIgMTIgMkM5Ljc5MDg2IDIgOCA0LjIzODU4IDggN0M4IDkuNzYxNDIgOS43OTA4NiAxMiAxMiAxMlpNMTIgMTRDOC42ODYyOSAxNCA2IDE2LjY4NjMgNiAyMEg2VjIySDdWMjBDNyAxNy43OTA5IDkuNzkwODYgMTUgMTIgMTVDMTQuMjA5MSAxNSAxNyAxNy43OTA5IDE3IDIwVjIySDI0VjIwQzE4IDE2LjY4NjMgMTUuMzEzNyAxNCAxMiAxNFoiIGZpbGw9IiM5Q0EzQUYiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Profil" class="user-avatar">
                 </div>
             </header>
 
             <!-- Statistiques -->
+            <h1 style="margin-bottom: 8px" id="board">Tableau de bord</h1>
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>12</h3>
@@ -90,7 +106,7 @@
                 <i class="fa-solid fa-heart" style="color: #eb0a0a;"></i> Vos stands favoris
             </h2>
             <div class="stands-grid">
-            <a href="" class="stand-card">
+               <a href="" class="stand-card">
                 <div class="stand-image">
                     <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="">
                 </div>
@@ -111,10 +127,10 @@
                         <span class="btn btn-primary">Voir le stand</span>
                     </div>
                 </div>
-            </a>
+               </a>
             </div>
 
-        <div class="orders-container" id="commandes">
+            <div class="orders-container" id="commandes">
             <h1 class="section-title">
                 <i class="fa-solid fa-cart-arrow-down"></i> Mes Commandes
             </h1>
@@ -173,8 +189,48 @@
             </div>
             @endif            
 
-        </div>
+            </div>
         </main>
+
+        <div class="updateProfil-section">
+            <h1>Mon Profil</h1>
+            <form style="margin-top: 22px;" method="POST" action="{{ route('dashboard.visiteur.updateProfil') }}">
+                @csrf
+                @method('PUT')
+                {{-- <input type="hidden" name="form_type" value="visiteur"> --}}
+
+                <div class="form-group">
+                    <input type="text" name="visiteur_nom_complet" value="{{ old('visiteur_nom_complet',$user->nom_complet ) }}" placeholder="Nom complet *">
+                    @error('visiteur_nom_complet')
+                        <p class="error-msg">{{ $message }}</p>
+                    @enderror
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" name="visiteur_email" value="{{ old('visiteur_email', $user->email) }}" placeholder="Adresse email *">
+                    @error('visiteur_email')
+                        <p class="error-msg">{{ $message }}</p>
+                    @enderror
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" name="visiteur_password" placeholder="Mot de passe *">
+                    @error('visiteur_password')
+                        <p class="error-msg">{{ $message }}</p>
+                    @enderror
+                </div>
+                
+                <div class="form-group">
+                    <input type="password" name="visiteur_password_confirmation" placeholder="Confirmer le mot de passe (optionnel)">
+                    @error('visiteur_password_confirmation')
+                        <p class="error-msg">{{ $message }}</p>
+                    @enderror
+                </div>          
+                        
+                <button type="submit" class="submit-btn">Mettre à jour</button>
+            </form>
+        </div>
+            
     </div>
 
 

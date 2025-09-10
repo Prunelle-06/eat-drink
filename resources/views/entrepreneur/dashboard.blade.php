@@ -263,7 +263,7 @@
             <form method="POST" action="{{ route('dashboard.exposant.updateProfil') }}" enctype="multipart/form-data">
                 @csrf  
                 @method('PUT')
-                <input type="hidden" name="form_type" value="exposant">
+                {{-- <input type="hidden" name="form_type" value="exposant"> --}}
 
                 {{-- Champs User --}}
                 <div class="form-group visitor-form">
