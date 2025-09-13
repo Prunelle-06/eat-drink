@@ -24,11 +24,13 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <h2>Taste&Stay</h2>
+                <div class="logo">
+                    Taste<span>&</span>Stay
+                </div>
                 <p>Tableau de bord entrepreneur</p>
                 <div>
                     <i class="fa-solid fa-user"></i>
-                    <span>{{ $userInfo->nom_complet }}</span>
+                    <span class="name-user">{{ $userInfo->nom_complet }}</span>
                 </div>
             </div>
             <div class="sidebar-menu">
@@ -91,7 +93,7 @@
 
             <!-- Header -->
             <div id="board" class="header">
-                <h1>Tableau de bord</h1>
+                <h1 style="font-weight: 500">Tableau de bord</h1>
                 <div class="user-menu">                  
                     <div class="user-profile">
                         <div class="user-info">
@@ -106,8 +108,32 @@
                 <div class="stat-card">
                     <div class="header">
                         <div>
-                            <div class="value">{{ number_format($stats['total_revenue'], 0, ',', ' ') }}</div>
-                            <div class="label">Chiffre d'affaires</div>
+                            <div class="value">{{ number_format($stats['ca_réalisé'], 0, ',', ' ') }}</div>
+                            <div class="label">Commandes livrées ({{ $stats['delivered'] }})</div>
+                        </div>
+                        <i style="font-weight: bold; font-size: 17px">CFA</i>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 65%"></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <div class="value">{{ number_format($stats['ca_confirmé'], 0, ',', ' ') }}</div>
+                            <div class="label">Commandes confirmées ({{ $stats['confirmed'] }})</div>
+                        </div>
+                        <i style="font-weight: bold; font-size: 17px">CFA</i>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" style="width: 65%"></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <div class="value">{{ number_format($stats['ca_non_confirmé'], 0, ',', ' ') }}</div>
+                            <div class="label">Commandes non confirmées ({{ $stats['pending'] }})</div>
                         </div>
                         <i style="font-weight: bold; font-size: 17px">CFA</i>
                     </div>
@@ -119,7 +145,7 @@
                     <div class="header">
                         <div>
                             <div class="value">{{ $orders->count() }}</div>
-                            <div class="label">Commandes</div>
+                            <div class="label">Commandes recues</div>
                         </div>
                         <i class="fas fa-shopping-bag"></i>
                     </div>
@@ -128,9 +154,36 @@
                     <div class="header">
                         <div>
                             <div class="value">{{ $userInfo->products->count() }}</div>
-                            <div class="label">Produits</div>
+                            <div class="label">Vos produits</div>
                         </div>
                         <i class="fas fa-utensils"></i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <div class="value">{{ $stats['produit_plus_rentable']->nom_produit ?? 'Aucun produit' }}</div>
+                            <div class="label">Produit le plus rentable</div>
+                        </div>
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <div class="value">{{ $totalFavorites }}</div>
+                            <div class="label">Favoris totaux</div>
+                        </div>
+                        <i class="fas fa-heart"></i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <div class="value">+{{ $favoritesThisWeek }}</div>
+                            <div class="label">Favoris cette semaine</div>
+                        </div>
+                        <i class="fas fa-chart-line"></i>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -150,7 +203,7 @@
             <!-- Commandes -->
             <div class="card" id="commandes">
                 <div class="card-header">
-                    <h3>Commandes</h3>
+                    <h3 style="font-weight: 500">Commandes</h3>
                 </div>
                 @if($orders->count() > 0) 
                 <table class="table">
@@ -176,7 +229,7 @@
                                             <div class="product-line" 
                                                 @if($index >= 2) style="display: none;" @endif>
                                                 {{ $product->quantity }}x {{ $product->product_name }}
-                                                <span class="price-product">{{ number_format($product->product_price, 0, ',', ' ') }} CFA</span>
+                                                <span class="price-product">{{ number_format($product->product_price, 0, ',', ' ') }}</span>
                                             </div>
                                         @endforeach
                                     </div>
@@ -194,7 +247,7 @@
                             <td><span class="status {{ $order->status }}">
                                 {{ $order->status }}</span>
                             </td>
-                            <td>{{ $order->created_at->translatedFormat('j F Y') }}</td>
+                            <td>{{ $order->created_at->translatedFormat('j M Y') }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -216,7 +269,7 @@
             <!-- Produits -->
             <div class="card" id="produits">
                 <div class="card-header">
-                    <h3>Mes produits</h3>
+                    <h3 style="font-weight: 500">Mes produits</h3>
                     <a href="{{ route('products.create') }}">Ajouter un produit</a>
                 </div>
                 @if($userInfo->products->count() > 0) 
@@ -229,7 +282,7 @@
                         <div class="product-details">
                             <h3>{{ $product->nom_produit }}</h3>
                             <p>{{ $product->description }}</p>
-                            <div class="product-price">{{ $product->prix }} CFA</div>
+                            <div class="product-price">{{ number_format($product->prix, 0, ',', ' ') }} CFA</div>
                             <div class="product-actions">
                                 <a class="btn btn-primary" href="{{ route('products.edit', $product->id) }}"> <i class="fa-regular fa-pen-to-square"></i> </a>
                                 <button class="btn btn-primary btn-delete" onclick="deleteProduct({{ $product->id }})"> <i class="fa-solid fa-trash"></i> </button>

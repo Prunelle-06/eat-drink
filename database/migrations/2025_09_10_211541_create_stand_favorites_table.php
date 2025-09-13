@@ -11,16 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('stand_favorites', function (Blueprint $table) {
             $table->id();
-            $table->string('order_number')->unique();
-            $table->decimal('total_amount', 10, 2);
-            $table->enum('status', ['pending', 'confirmed', 'delivered', 'cancelled'])
-            ->default('pending');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('stand_id')->constrained()->onDelete('cascade');
-            $table->timestamp('confirmed_at')->nullable();
-            $table->timestamp('delivered_at')->nullable();
             $table->timestamps();
         });
 
@@ -32,9 +26,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('stand_favorites', function (Blueprint $table) {
             $table->dropForeign(["user_id", "stand_id"]);
         });
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('stand_favorites');
     }
 };

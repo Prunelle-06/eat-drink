@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Stand;
 use App\Models\Product;
+use App\Models\StandFavorite;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -28,8 +29,27 @@ class UserStandProductSeeder extends Seeder
 
         foreach ($standsApprouves as $stand) {
             Product::factory()
-                ->count(rand(0, 13)) // Entre 3 et 8 produits par stand
+                ->count(rand(0, 13)) 
                 ->create(['stand_id' => $stand->id]);
+        }
+
+        // Seeder Favoris
+        $visiteurs = User::where('type', 'visiteur')->get();
+        foreach ($visiteurs as $visiteur) {
+            // 25% de chance qu'un visiteur n'ait aucun favori
+            if (rand(1, 100) <= 25) {
+                continue;
+            }
+
+            $nombreFavoris = rand(1, 8);
+            $favoriteStands = $standsApprouves->random($nombreFavoris);
+
+            foreach ($favoriteStands as $stand) {
+                StandFavorite::factory()->create([
+                    'user_id' => $visiteur->id,
+                    'stand_id' => $stand->id,
+                ]);
+            }
         }
     }
 }

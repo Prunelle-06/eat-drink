@@ -49,6 +49,11 @@ class Order extends Model
     }
 
     // Scopes
+    public function scopeDelivered($query)
+    {
+        return $query->where('status', 'delivered');
+    }
+
     public function scopePending($query)
     {
         return $query->where('status', 'pending');

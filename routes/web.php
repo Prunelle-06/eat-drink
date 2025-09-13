@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Entrepreneur\BoardController;
 use App\Http\Controllers\Visitor\BoardVisitorController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StandFavoriteController;
 
 // Route page acceuil
 Route::get('/', function () {
@@ -67,6 +68,9 @@ Route::put('/dashboard/exposant/profil', [BoardController::class, 'updateProfil'
 Route::middleware('auth')->controller(BoardVisitorController::class)->group(function () {
 
     Route::get('/dashboard/visiteur', 'index')->name('dashboard.visiteur');
+
+    Route::get('/stands/{stand}', 'showFavoriteStand');
+    
     Route::get('/dashboard/visiteur/profil', 'profil')->name('dashboard.visiteur.profil');
     
     Route::put('/dashboard/visiteur/profil', 'updateProfil')->name('dashboard.visiteur.updateProfil');
@@ -74,6 +78,12 @@ Route::middleware('auth')->controller(BoardVisitorController::class)->group(func
 
 Route::get('/stands', [StandController::class, 'index'])->name('stands.index');
 Route::get('/stands/{stand}', [StandController::class, 'show'])->name('stands.show');
+
+
+// Route favoris
+Route::post('/stands/{stand}/toggle-favorite', [StandFavoriteController::class, 'toggleFavorite'])
+->middleware('auth')
+->name('stands.favorite.toggle');
 
 
 // Routes pour les commandes

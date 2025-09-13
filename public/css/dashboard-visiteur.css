@@ -66,12 +66,21 @@ body {
 .logo span {
     color: var(--accent);
 }
+.logo + p {
+    color: #ddd;
+    font-size: 14px;
+}
 .name-user {
     color: #fff;
     font-weight: 500;
-    margin-top: 5px;
     font-size: 14px;
-    margin-bottom: 1.7rem;
+    margin-top: 12px;
+    margin-bottom: 1.3rem;
+}
+.name-user i {
+    font-size: 15px;
+    margin-right: 3px;
+    color: var(--accent);
 }
 .nav-menu {
     list-style: none;
@@ -177,13 +186,6 @@ body {
 }
 
 /* Section Stands Favoris */
-.section-title {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-}
 .section-title i {
     color: var(--accent);
 }
@@ -297,6 +299,38 @@ body {
     transform: translateY(-2px);
 }
 
+/* Aucun stand mis en favoris */
+.no-favorites {
+    /* padding: 3rem 1rem; */
+    color: #6c757d;
+    background: white;
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.no-favorites:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+.no-favorites-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #6c757d;
+}
+.no-favorites h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #495057;
+}
+.no-favorites p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
 /* Commandes */
 .orders-container {
     max-width: 1200px;
@@ -304,8 +338,8 @@ body {
 }
 .section-title {
     font-size: 1.8rem;
-    margin-bottom: 2rem;
-    color: var(--dark);
+    margin-bottom: 1.1rem;
+    /* color: var(--dark); */
     display: flex;
     align-items: center;
     gap: 0.8rem;

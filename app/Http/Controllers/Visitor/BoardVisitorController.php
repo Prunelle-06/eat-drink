@@ -23,10 +23,24 @@ class BoardVisitorController extends Controller
             
             $stands = Stand::where('statut', 'approuve')->get();
 
+            $user = Auth::user();
+            $favorites = $user->favoriteStands()->with(['user', 'products'])->paginate(4);
+        
             $current_section = 'null';
         }
 
-        return view('visiteur.dashboard', compact('user', 'orders', 'stands', 'current_section'));
+        return view('visiteur.dashboard', compact('user', 'orders', 'stands', 'favorites', 'current_section'));
+    }
+
+    public function showFavoriteStand(StandFavorite $stand) {
+
+        $stand->load(['user', 'products'])->where('statut', 'approuve'); 
+    
+        return view('exposants.show', [
+            'stand' => $stand,
+            'products' => $stand->products 
+        ]);
+       
     }
 
     public function profil() {
@@ -41,10 +55,13 @@ class BoardVisitorController extends Controller
             
             $stands = Stand::where('statut', 'approuve')->get();
 
+            $user = Auth::user();
+            $favorites = $user->favoriteStands()->with(['user', 'products'])->paginate(4);
+
             $current_section = 'profil';
         }
 
-        return view('visiteur.dashboard', compact('user', 'orders', 'stands', 'current_section'));
+        return view('visiteur.dashboard', compact('user', 'orders', 'stands', 'favorites', 'current_section'));
     }
 
     public function updateProfil(Request $request) {

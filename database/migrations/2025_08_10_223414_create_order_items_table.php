@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
+
+        Schema::EnableForeignKeyConstraints();
     }
 
     /**
@@ -28,6 +30,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('order_items', function (Blueprint $table) {
+            $table->dropForeign(["order_id", "product_id"]);
+        });
         Schema::dropIfExists('order_items');
     }
 };

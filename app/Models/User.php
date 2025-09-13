@@ -51,6 +51,18 @@ class User extends Authenticatable
         return $this->hasOne(Stand::class);
     }
 
+    public function favoriteStands() {
+        
+        return $this->belongsToMany(Stand::class, 'stand_favorites')
+                    ->withTimestamps();
+    }
+
+    // Vérifier si un stand est en favori
+    public function hasFavorited($standId)
+    {
+        return $this->favoriteStands()->where('stand_id', $standId)->exists();
+    }
+
     public function products()
     {
         return $this->hasManyThrough(Product::class, Stand::class);

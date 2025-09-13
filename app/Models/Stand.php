@@ -30,6 +30,18 @@ class Stand extends Model
         return $this->hasMany(Product::class);
     }
 
+    public function favoritedBy() {
+    
+        return $this->belongsToMany(User::class, 'stand_favorites')
+                    ->withTimestamps();
+    }
+
+    // Compter le nombre de favoris
+    public function getFavoritesCountAttribute()
+    {
+        return $this->favoritedBy()->count();
+    }   
+
     public function isApproved()
     {
         return $this->statut === 'approuve';

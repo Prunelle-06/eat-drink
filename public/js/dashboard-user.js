@@ -50,12 +50,6 @@ function toggleProducts(button) {
     }
 }
 
-// Suppression officiel d'un produit
-// function deleteProduct(id) {
-//     if(confirm("Etes vous sur de vouloir supprimer ce produit ?")) {
-//         document.getElementById("delete-product-form-"+id).submit();
-//     }
-// }
 
 let currentProductId = null;
 

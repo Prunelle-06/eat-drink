@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <script src="https://kit.fontawesome.com/724f54335b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('css/exposant.css') }}">
+    <title>Document</title>
 </head>
 <body>
     
     @include('layouts.header', ['position' => 'sticky'])
+
+    <div id="alertBox" class="alert"></div>
 
     @if($stands->count() > 0)
     <div class="container-exposant">
@@ -20,7 +22,13 @@
 
         <div class="stands-grid">
             @foreach ($stands as $stand)
-            <a href="{{ route('stands.show', $stand) }}" class="stand-card">
+            <a href="{{ route('stands.show', $stand) }}" class="stand-card" data-stand-id="{{ $stand->id }}">
+                <button class="favorite-btn {{ Auth::check() && Auth::user()->hasFavorited($stand->id) ? 'favorited' : '' }}"
+                    onclick="toggleFavorite({{ $stand->id }}, event)"
+                    {{ Auth::guest() ? 'disabled' : '' }}>
+                    <span class="favorites-count">{{ $stand->favorites_count }}</span>
+                    ★
+                </button>
                 {{-- <div class="stand-badge">Nouveau</div> --}}
                 <div class="stand-image">
                     <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="">
@@ -78,23 +86,6 @@
 
 
 
-    <script>
-        // Animation au chargement
-        document.addEventListener('DOMContentLoaded', function() {
-            const standCards = document.querySelectorAll('.stand-card');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            standCards.forEach(card => {
-                observer.observe(card);
-            });
-        });
-    </script>
+    <script src="{{ asset('js/stand-index.js') }}"></script>
 </body>
 </html>
