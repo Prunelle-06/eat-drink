@@ -59,9 +59,16 @@ Route::controller(ProductController::class)->group(function () {
 });
 
 // Dashboard exposant
-Route::get('/dashboard/exposant', [BoardController::class, 'index'])->name('dashboard.exposant');
-Route::get('/dashboard/exposant/profil', [BoardController::class, 'profil'])->name('dashboard.exposant.profil');
-Route::put('/dashboard/exposant/profil', [BoardController::class, 'updateProfil'])->name('dashboard.exposant.updateProfil');
+Route::middleware('auth')->controller(BoardController::class)->group(function () {
+
+    Route::get('/dashboard/exposant', 'index')->name('dashboard.exposant');
+
+    Route::get('/dashboard/exposant/profil', 'profil')->name('dashboard.exposant.profil');
+    
+    Route::put('/dashboard/exposant/profil', 'updateProfil')->name('dashboard.exposant.updateProfil');
+    
+});
+
 // Route::get('/dashboard', [BoardController::class, 'show'])->name('dashboard.stand.show');
 
 // Dashboard Visiteur
@@ -80,6 +87,7 @@ Route::get('/stands', [StandController::class, 'index'])->name('stands.index');
 Route::get('/stands/{stand}', [StandController::class, 'show'])->name('stands.show');
 
 
+
 // Route favoris
 Route::post('/stands/{stand}/toggle-favorite', [StandFavoriteController::class, 'toggleFavorite'])
 ->middleware('auth')
@@ -94,5 +102,9 @@ Route::middleware('auth')->controller(OrderController::class)->group(function ()
     
     Route::patch('/orders/{order}/status', 'updateStatus')->name('orders.update-status');
 });
+
+
+
+
 
 

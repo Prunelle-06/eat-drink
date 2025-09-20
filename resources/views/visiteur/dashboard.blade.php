@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://kit.fontawesome.com/724f54335b.js" crossorigin="anonymous"></script>
@@ -31,7 +31,7 @@
             </div>
             <p>Tableau de bord client</p>
             <div class="name-user">
-                <i class="fa-solid fa-user"></i>
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiNFNUU3RUIiLz4KPHN2ZyB4PSIyNSIgeT0iMjUiIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMTIgMTJDMTQuMjA5MSAxMiAxNiA5Ljc2MTQyIDE2IDdDMTYgNC4yMzg1OCAxNC4yMDkxIDIgMTIgMkM5Ljc5MDg2IDIgOCA0LjIzODU4IDggN0M4IDkuNzYxNDIgOS43OTA4NiAxMiAxMiAxMlpNMTIgMTRDOC42ODYyOSAxNCA2IDE2LjY4NjMgNiAyMEg2VjIySDdWMjBDNyAxNy43OTA5IDkuNzkwODYgMTUgMTIgMTVDMTQuMjA5MSAxNSAxNyAxNy43OTA5IDE3IDIwVjIySDI0VjIwQzE4IDE2LjY4NjMgMTUuMzEzNyAxNCAxMiAxNFoiIGZpbGw9IiM5Q0EzQUYiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Profil" class="user-avatar">
                 <span>{{ $user->nom_complet }}</span>
             </div>
             <ul class="nav-menu">
@@ -41,7 +41,7 @@
                     </li>
                 </a>
                 <a href="{{ route('dashboard.visiteur') }}#board">
-                    <li class="nav-item active">
+                    <li class="nav-item active" style="color: #00A699">
                        Tableau de bord
                     </li>
                 </a>
@@ -59,7 +59,7 @@
                 <a href="{{ route('dashboard.visiteur') }}#favoris">
                     <li class="nav-item">
                         <i class="fa-solid fa-heart"></i> Favoris
-                        <span class="badge">{{ $favorites->count() }}</span>
+                        <span class="badge">{{ $favorites->total() }}</span>
                     </li>
                 </a>
                 <a href="{{ route('dashboard.visiteur') }}#commandes">
@@ -81,29 +81,84 @@
 
         <!-- Main Contenu -->
         <main class="main-content dashboard-sections">
-            <!-- Header -->
-            <header class="header">
-                <div class="user-profile">
-                    <span>Bonjour, {{ $user->nom_complet }}</span>
-                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiNFNUU3RUIiLz4KPHN2ZyB4PSIyNSIgeT0iMjUiIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMTIgMTJDMTQuMjA5MSAxMiAxNiA5Ljc2MTQyIDE2IDdDMTYgNC4yMzg1OCAxNC4yMDkxIDIgMTIgMkM5Ljc5MDg2IDIgOCA0LjIzODU4IDggN0M4IDkuNzYxNDIgOS43OTA4NiAxMiAxMiAxMlpNMTIgMTRDOC42ODYyOSAxNCA2IDE2LjY4NjMgNiAyMEg2VjIySDdWMjBDNyAxNy43OTA5IDkuNzkwODYgMTUgMTIgMTVDMTQuMjA5MSAxNSAxNyAxNy43OTA5IDE3IDIwVjIySDI0VjIwQzE4IDE2LjY4NjMgMTUuMzEzNyAxNCAxMiAxNFoiIGZpbGw9IiM5Q0EzQUYiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Profil" class="user-avatar">
-                </div>
-            </header>
-
             <!-- Statistiques -->
-            <h1 style="margin-bottom: 8px;" id="board">Tableau de bord</h1>
+            <div class="header">
+                <h1 id="board">Tableau de bord</h1>
+                <span>Bonjour, {{ $user->nom_complet }}</span>
+            </div>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <h3>12</h3>
-                    <p>Stands visités</p>
+                    <div class="header">
+                        <div>
+                            <h3>{{ $myVisits }}</h3>
+                            <p>Stands visités</p>
+                        </div>
+                        <i class="fas fa-eye stat-icon"></i>
+                    </div>
                 </div>
                 <div class="stat-card">
-                    <h3>{{ $favorites->count() }}</h3>
-                    <p>Favoris</p>
+                    <div class="header">
+                        <div>
+                            <h3>+{{ $myVisitsThisWeek }}</h3>
+                            <p>Stands visités cette semaine</p>
+                        </div>
+                        <i class="fas fa-calendar-week stat-icon"></i>
+                    </div>
                 </div>
                 <div class="stat-card">
-                    <h3>{{ $orders->count() }}</h3>
-                    <p>Commandes en cours</p>
+                    <div class="header">
+                        <div>
+                            <h3>{{ $favorites->total() }}</h3>
+                            <p>Favoris</p>
+                        </div>
+                        <i class="fas fa-heart stat-icon"></i>
+                    </div>
                 </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <h3>{{ number_format($statsOrders['myOrdersPending'], 0, ',', ' ') }}</h3>
+                            <p>Commandes en cours({{ $statsOrders['pending'] }})</p>
+                        </div>
+                        <i style="font-weight: bold; font-size: 17px">CFA</i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <h3>{{ number_format($statsOrders['myOrdersconfirmed'], 0, ',', ' ') }}</h3>
+                            <p>Commandes confirmées({{ $statsOrders['confirmed'] }})</p>
+                        </div>
+                        <i style="font-weight: bold; font-size: 17px">CFA</i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <h3>{{ number_format($statsOrders['myOrdersdelivered'], 0, ',', ' ') }}</h3>
+                            <p>Commandes livrées({{ $statsOrders['delivered'] }})</p>
+                        </div>
+                        <i style="font-weight: bold; font-size: 17px">CFA</i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <h3>{{ number_format($statsOrders['myOrderscancelled'], 0, ',', ' ') }}</h3>
+                            <p>Commandes annulées({{ $statsOrders['cancelled'] }})</p>
+                        </div>
+                        <i style="font-weight: bold; font-size: 17px">CFA</i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                           <h3>{{ $orders->count() }}</h3>
+                            <p>Commandes total envoyées</p>
+                        </div>
+                        <i class="fas fa-list-alt stat-icon"></i>
+                    </div>
+                </div> 
             </div>
             
             <!-- Stands Favoris -->
@@ -111,9 +166,15 @@
                 <i class="fa-solid fa-heart" style="color: #eb0a0a;"></i> Mes stands favoris
             </h2>
             @if($favorites->count() > 0)
-                <div class="stands-grid">
-                    @foreach($favorites as $favorite)                  
-                    <a href="{{ route('stands.show', $favorite) }}" class="stand-card">
+            <div class="stands-grid">
+                @foreach($favorites as $favorite)                  
+                <a href="{{ route('stands.show', $favorite) }}" data-stand-id="{{ $favorite->id }}" class="stand-card favorite-stand-card">
+
+                    <button class="favorite-btn {{ Auth::check() && Auth::user()->hasFavorited($favorite->id) ? 'favorited' : '' }}"
+                        onclick="toggleFavorite({{ $favorite->id }}, event)"
+                        {{ Auth::guest() ? 'disabled' : '' }}>
+                        ★
+                    </button>
                     <div class="stand-image">
                         <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80" alt="">
                     </div>
@@ -134,9 +195,9 @@
                             <span class="btn btn-primary">Voir le stand</span>
                         </div>
                     </div>
-                    </a>
-                    @endforeach
-                </div>
+                </a>
+                @endforeach
+            </div>
             @else
                 <div class="no-favorites">
                     <div class="no-favorites-icon">
@@ -249,5 +310,7 @@
 
 
     <script src="{{ asset('js/dashboard-visiteur.js') }}"></script>
+    <script src="{{ asset('js/stand-index.js') }}"></script>
+
 </body>
 </html>

@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+
+use Coderflex\Laravisit\Concerns\CanVisit;
+use Coderflex\Laravisit\Concerns\HasVisits;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Stand extends Model
+class Stand extends Model implements CanVisit
 {
     use HasFactory;
+    use HasVisits;
 
     protected $fillable = [
         'nom_stand',
@@ -45,7 +49,7 @@ class Stand extends Model
     public function isApproved()
     {
         return $this->statut === 'approuve';
-    }
+    } 
 
 }
       

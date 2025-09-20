@@ -12,6 +12,8 @@ use App\Models\Stand;
 use App\Models\StandFavorite;
 use App\Models\Product;
 use App\Models\Order;
+use Coderflex\Laravisit\Models\Visit;
+use Carbon\Carbon;
 
 class BoardController extends Controller
 {
@@ -69,7 +71,7 @@ class BoardController extends Controller
             ->groupBy('products.id', 'products.nom_produit', 'products.prix')
             ->orderBy('total_profit', 'desc')
             ->first(),
-        
+
         ];
 
         // Chargez le stand avec le count des favoris
@@ -83,6 +85,14 @@ class BoardController extends Controller
                 ->where('created_at', '>=', now()->subWeek())
                 ->count() : 0;
 
+        $stand = $user->stand;
+        $allVisits = Visit::where('visitable_type', Stand::class)
+                         ->where('visitable_id', $stand->id)
+                         ->orderBy('created_at', 'desc')
+                         ->get();
+        
+        $visitesToday = $allVisits->where('created_at', '>=', Carbon::today())->count();
+
         $current_section = 'null';
 
         return view('entrepreneur.dashboard', compact(
@@ -91,7 +101,10 @@ class BoardController extends Controller
             'stats', 
             'totalFavorites', 
             'favoritesThisWeek', 
-            'current_section'));
+            'allVisits',
+            'visitesToday',
+            'current_section'
+        ));
     }
 
     public function profil()
@@ -106,15 +119,73 @@ class BoardController extends Controller
 
         $stats = [
             'pending' => Order::forStand($user->stand->id)->pending()->count(),
+            'delivered' => Order::forStand($user->stand->id)->delivered()->count(),
             'confirmed' => Order::forStand($user->stand->id)->confirmed()->count(),
-            'total_revenue' => Order::forStand($user->stand->id)
+
+            'ca_réalisé' => Order::forStand($user->stand->id)
+                                   ->delivered()
+                                   ->sum('total_amount'),
+
+            'ca_confirmé' => Order::forStand($user->stand->id)
+                                   ->confirmed()
+                                   ->sum('total_amount'),
+
+            'ca_non_confirmé' => Order::forStand($user->stand->id)
+                                   ->pending()
+                                   ->sum('total_amount'),
+
+            'ca_total' => Order::forStand($user->stand->id)
                                    ->where('status', '!=', 'cancelled')
-                                   ->sum('total_amount')
+                                   ->sum('total_amount'),
+                                   
+
+            'produit_plus_rentable' => Product::join('order_items', 'products.id', '=', 'order_items.product_id')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->where('products.stand_id', $user->stand->id)  
+            ->where('orders.status', 'delivered')
+            ->selectRaw('
+                products.id,
+                products.nom_produit,
+                products.prix,
+                SUM(order_items.quantity * (order_items.product_price - products.prix)) as total_profit
+            ')
+            ->groupBy('products.id', 'products.nom_produit', 'products.prix')
+            ->orderBy('total_profit', 'desc')
+            ->first(),
+        
         ];
+
+        // Chargez le stand avec le count des favoris
+        $user->load(['stand' => function($query) {
+            $query->withCount('favoritedBy');
+        }]);
+
+        $totalFavorites = $user->stand ? $user->stand->favorited_by_count : 0;
+        $favoritesThisWeek = $user->stand ? 
+            StandFavorite::where('stand_id', $user->stand->id)
+                ->where('created_at', '>=', now()->subWeek())
+                ->count() : 0;
+
+        $stand = $user->stand;
+        $allVisits = Visit::where('visitable_type', Stand::class)
+                         ->where('visitable_id', $stand->id)
+                         ->orderBy('created_at', 'desc')
+                         ->get();
+        
+        $visitesToday = $allVisits->where('created_at', '>=', Carbon::today())->count();
         
         $current_section = 'profil';
 
-        return view('entrepreneur.dashboard', compact('userInfo', 'orders', 'stats', 'current_section'));
+        return view('entrepreneur.dashboard', compact(
+            'userInfo', 
+            'orders', 
+            'stats', 
+            'totalFavorites', 
+            'favoritesThisWeek', 
+            'allVisits',
+            'visitesToday',
+            'current_section'
+        ));
     }
 
     public function updateProfil(Request $request) {

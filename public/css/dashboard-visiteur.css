@@ -67,20 +67,26 @@ body {
     color: var(--accent);
 }
 .logo + p {
+    margin-top: 6px;
     color: #ddd;
     font-size: 14px;
 }
 .name-user {
+    display: flex;
+    align-items: center;
+    gap: 5px;
     color: #fff;
     font-weight: 500;
     font-size: 14px;
     margin-top: 12px;
     margin-bottom: 1.3rem;
 }
-.name-user i {
-    font-size: 15px;
-    margin-right: 3px;
-    color: var(--accent);
+.user-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent);
 }
 .nav-menu {
     list-style: none;
@@ -142,23 +148,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 15px;
 }
-.user-profile {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-left: auto;
-}
-.user-avatar {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--accent);
-}
-
-/* Cartes Statistiques */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -167,13 +158,26 @@ body {
 }
 .stat-card {
     background: white;
-    padding: 1.5rem;
+    padding: 1.2rem;
+    /* padding: 18px 15px; */
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     transition: transform 0.3s ease;
 }
 .stat-card:hover {
     transform: translateY(-5px);
+}
+.stat-card .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.stat-card .header i {
+    font-size: 24px;
+    color: var(--primary);
+    padding: 10px;
+    background-color: rgba(108, 99, 255, 0.1);
+    border-radius: 8px;
 }
 .stat-card h3 {
     font-size: 2rem;
@@ -183,6 +187,7 @@ body {
 .stat-card p {
     color: var(--secondary);
     font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 /* Section Stands Favoris */
@@ -191,11 +196,12 @@ body {
 }
 .stands-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.8rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
     margin-bottom: 3rem;
 }
 .stand-card {
+    position: relative;
     background: white;
     border-radius: 12px;
     overflow: hidden;
@@ -206,6 +212,36 @@ body {
 .stand-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(108, 99, 255, 0.1);
+}
+.favorite-btn {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 33px;
+    height: 33px;
+    cursor: pointer;
+    outline: none;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+    z-index: 10;
+}
+.favorite-btn:hover {
+    transform: scale(1.1);
+}
+.favorite-btn.favorited {
+    color: gold;
+}
+.favorite-btn:not(.favorited) {
+    color: #ccc;
 }
 .stand-image {
     height: 200px;

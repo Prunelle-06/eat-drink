@@ -37,7 +37,7 @@
                 <div class="menu-item">
                     <a href="{{ route('home') }}">
                         <i class="fas fa-home"></i>
-                        <span>Retour Acceuil</span>
+                        <span>Acceuil</span>
                     </a>
                 </div>
                 <div class="menu-item active">
@@ -113,9 +113,6 @@
                         </div>
                         <i style="font-weight: bold; font-size: 17px">CFA</i>
                     </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 65%"></div>
-                    </div>
                 </div>
                 <div class="stat-card">
                     <div class="header">
@@ -124,9 +121,6 @@
                             <div class="label">Commandes confirmées ({{ $stats['confirmed'] }})</div>
                         </div>
                         <i style="font-weight: bold; font-size: 17px">CFA</i>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 65%"></div>
                     </div>
                 </div>
                 <div class="stat-card">
@@ -137,15 +131,12 @@
                         </div>
                         <i style="font-weight: bold; font-size: 17px">CFA</i>
                     </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 65%"></div>
-                    </div>
                 </div>
                 <div class="stat-card">
                     <div class="header">
                         <div>
                             <div class="value">{{ $orders->count() }}</div>
-                            <div class="label">Commandes recues</div>
+                            <div class="label">Total commandes recues</div>
                         </div>
                         <i class="fas fa-shopping-bag"></i>
                     </div>
@@ -194,10 +185,26 @@
                         </div>
                         <i class="fas fa-star"></i>
                     </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: 96%"></div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <div class="value">{{ $allVisits->count() }}</div>
+                            <div class="label">Visites totales</div>
+                        </div>
+                        <i class="fas fa-users fa-2x"></i>
                     </div>
                 </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <div class="value">+{{ $visitesToday }}</div>
+                            <div class="label">Visites aujourd'hui</div>
+                        </div>
+                         <i class="fas fa-calendar-week fa-2x"></i>
+                    </div>
+                </div>
+                
             </div>
 
             <!-- Commandes -->
@@ -220,7 +227,7 @@
                     <tbody>
                         @foreach ($orders as $order)                     
                         <tr> 
-                            <td>#{{ $order->order_number }}</td>
+                            <td style="color: #4A5568; font-weight: 500;">#{{ $order->order_number }}</td>
                             <td>{{ $order->user->nom_complet }}</td>
                             <td class="products-cell">
                                 <div class="products-container">

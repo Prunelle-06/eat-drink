@@ -7,12 +7,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Order;
 use App\Models\Stand;
+use Coderflex\Laravisit\Models\Visit;
 use Illuminate\Support\Facades\Auth;
 
 class BoardVisitorController extends Controller
 {
     public function index()
     {
+        // Vérification de l'authentification
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Veuillez vous connecter');
+        }
+
         if (Auth::check() && Auth::user()->type === 'visiteur') {
             $user = Auth::user();
             
@@ -23,13 +29,56 @@ class BoardVisitorController extends Controller
             
             $stands = Stand::where('statut', 'approuve')->get();
 
-            $user = Auth::user();
             $favorites = $user->favoriteStands()->with(['user', 'products'])->paginate(4);
-        
-            $current_section = 'null';
-        }
 
-        return view('visiteur.dashboard', compact('user', 'orders', 'stands', 'favorites', 'current_section'));
+            $myVisits = Visit::where('visitable_type', Stand::class)
+                                  ->where('data->user_id', $user->id)
+                                  ->distinct('visitable_id')
+                                  ->count();
+
+            $myVisitsThisWeek = Visit::where('visitable_type', Stand::class)
+                         ->where('created_at', '>=', now()->subWeek())
+                         ->where('data->user_id', $user->id) 
+                         ->distinct('visitable_id')
+                         ->count();
+
+            $statsOrders = [
+                'pending' => Order::forClient(Auth::id())->pending()->count(),
+                'delivered' => Order::forClient(Auth::id())->delivered()->count(),
+                'confirmed' => Order::forClient(Auth::id())->confirmed()->count(),
+                'cancelled' => Order::forClient(Auth::id())->cancelled()->count(),
+                
+                'myOrdersPending' => Order::where('user_id', Auth::id())
+                                    ->where('status', 'pending')
+                                    ->sum('total_amount'),
+
+                'myOrdersconfirmed' => Order::where('user_id', Auth::id())
+                                    ->where('status', 'confirmed')
+                                    ->sum('total_amount'),
+
+                'myOrdersdelivered' => Order::where('user_id', Auth::id())
+                                    ->where('status', 'delivered')
+                                    ->sum('total_amount'),
+
+                'myOrderscancelled' => Order::where('user_id', Auth::id())
+                                    ->where('status', 'cancelled')
+                                    ->sum('total_amount'),
+
+            ];
+                                
+            $current_section = 'null';
+        } 
+
+        return view('visiteur.dashboard', compact(
+            'user', 
+            'orders', 
+            'stands', 
+            'favorites', 
+            'myVisits',  
+            'myVisitsThisWeek',   
+            'statsOrders',
+            'current_section'
+        ));
     }
 
     public function showFavoriteStand(StandFavorite $stand) {
@@ -39,8 +88,7 @@ class BoardVisitorController extends Controller
         return view('exposants.show', [
             'stand' => $stand,
             'products' => $stand->products 
-        ]);
-       
+        ]);    
     }
 
     public function profil() {
@@ -58,10 +106,54 @@ class BoardVisitorController extends Controller
             $user = Auth::user();
             $favorites = $user->favoriteStands()->with(['user', 'products'])->paginate(4);
 
+            $myVisits = Visit::where('visitable_type', Stand::class)
+                                  ->where('data->user_id', $user->id)
+                                  ->distinct('visitable_id')
+                                  ->count();
+
+            $myVisitsThisWeek = Visit::where('visitable_type', Stand::class)
+                         ->where('created_at', '>=', now()->subWeek())
+                         ->where('data->user_id', $user->id) 
+                         ->distinct('visitable_id')
+                         ->count();
+
+            $statsOrders = [
+                'pending' => Order::forClient(Auth::id())->pending()->count(),
+                'delivered' => Order::forClient(Auth::id())->delivered()->count(),
+                'confirmed' => Order::forClient(Auth::id())->confirmed()->count(),
+                'cancelled' => Order::forClient(Auth::id())->cancelled()->count(),
+                
+                'myOrdersPending' => Order::where('user_id', Auth::id())
+                                    ->where('status', 'pending')
+                                    ->sum('total_amount'),
+
+                'myOrdersconfirmed' => Order::where('user_id', Auth::id())
+                                    ->where('status', 'confirmed')
+                                    ->sum('total_amount'),
+
+                'myOrdersdelivered' => Order::where('user_id', Auth::id())
+                                    ->where('status', 'delivered')
+                                    ->sum('total_amount'),
+
+                'myOrderscancelled' => Order::where('user_id', Auth::id())
+                                    ->where('status', 'cancelled')
+                                    ->sum('total_amount'),
+
+            ];
+
             $current_section = 'profil';
         }
 
-        return view('visiteur.dashboard', compact('user', 'orders', 'stands', 'favorites', 'current_section'));
+        return view('visiteur.dashboard', compact(
+            'user', 
+            'orders', 
+            'stands', 
+            'favorites', 
+            'myVisits',  
+            'myVisitsThisWeek',   
+            'statsOrders',
+            'current_section'
+        ));
     }
 
     public function updateProfil(Request $request) {

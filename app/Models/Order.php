@@ -64,9 +64,22 @@ class Order extends Model
         return $query->where('status', 'confirmed');
     }
 
+    public function scopeCancelled($query)
+    {
+        return $query->where('status', 'cancelled');
+    }
+
     public function scopeForStand($query, $standId)
     {
         return $query->where('stand_id', $standId);
+    }
+
+    public function scopeForClient($query, $userId)
+    {
+        return $query->where('orders.user_id', $userId)
+          ->select('orders.*')
+          ->join('users', 'orders.user_id', '=', 'users.id')
+          ->where('users.type', 'visiteur');
     }
 
     public static function generateOrderNumber()

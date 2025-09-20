@@ -392,14 +392,14 @@ tbody tr:nth-child(odd) {
 }
 
 
-/* Products Section */
+/* Section produits */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
 }
 .product-card {
-    background: white;
+    /* background: white; */
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);

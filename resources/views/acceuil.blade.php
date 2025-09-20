@@ -155,7 +155,7 @@
                   <li>Consulter les commandes passées par les visiteurs</li>
               </ul>
               @auth
-                  <a href="{{ route('dashboard.exposant') }}" class="btn btn-primary">Accéder à mon espace</a>
+                  <a href="{{ route('dashboard.visiteur') }}" class="btn btn-primary">Accéder à mon espace</a>
               @else
                   <a href="" class="btn btn-primary">S'inscrire comme exposant</a>
               @endauth
