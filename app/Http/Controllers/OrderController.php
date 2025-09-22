@@ -96,11 +96,11 @@ class OrderController extends Controller
         }
     }
 
-    // Mettre à jour le statut d'une commande (exposant)
+    // Mettre à jour le statut d'une commande
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
-            'status' => 'required|in:confirmed,delivered,cancelled'
+            'status' => 'required|in:confirmed,ready'
         ]);
 
         // Vérifier que c'est bien le propriétaire du stand
@@ -115,27 +115,26 @@ class OrderController extends Controller
             case 'confirmed':
                 $order->update(['confirmed_at' => now()]);
                 break;
-            case 'delivered':
-                $order->update(['delivered_at' => now()]);
+            case 'ready':
+                $order->update(['ready_at' => now()]);
                 break;
         }
 
+        $clientName = $order->user->nom_complet;
+        $orderNumber = $order->order_number;
+
+        $message = match($request->status) {
+            'confirmed' => "La commande {$orderNumber} de {$clientName} a été confirmée",
+            'ready' => "La commande {$orderNumber} de {$clientName} est en cours de livraison"
+        };
+
         return response()->json([
             'success' => true,
-            'message' => 'Statut mis à jour avec succès !'
+            'message' => $message,
+            'status' => $request->status,
+            'client_name' => $clientName,
+            'order_number' => $orderNumber
         ]);
     }
 
-    // Voir une commande spécifique
-    public function show(Order $order)
-    {
-        // Vérifier les permissions
-        if ($order->user_id !== Auth::id() && $order->stand->user_id !== Auth::id()) {
-            abort(403, 'Action non autorisée');
-        }
-
-        $order->load(['user', 'stand.user', 'items.product']);
-
-        // return view('orders.show', compact('order'));
-    }
 }

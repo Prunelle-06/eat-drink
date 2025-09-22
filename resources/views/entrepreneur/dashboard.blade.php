@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://kit.fontawesome.com/724f54335b.js" crossorigin="anonymous"></script>
@@ -20,6 +20,9 @@
 </head>
 
 <body class="{{ $current_section === 'profil' ? 'show-profil' : '' }}">
+
+    <div id="alert-notification" class="alert"></div>
+
     <div class="dashboard">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -29,7 +32,7 @@
                 </div>
                 <p>Tableau de bord entrepreneur</p>
                 <div>
-                    <i class="fa-solid fa-user"></i>
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiByeD0iNTAiIGZpbGw9IiNFNUU3RUIiLz4KPHN2ZyB4PSIyNSIgeT0iMjUiIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cGF0aCBkPSJNMTIgMTJDMTQuMjA5MSAxMiAxNiA5Ljc2MTQyIDE2IDdDMTYgNC4yMzg1OCAxNC4yMDkxIDIgMTIgMkM5Ljc5MDg2IDIgOCA0LjIzODU4IDggN0M4IDkuNzYxNDIgOS43OTA4NiAxMiAxMiAxMlpNMTIgMTRDOC42ODYyOSAxNCA2IDE2LjY4NjMgNiAyMEg2VjIySDdWMjBDNyAxNy43OTA5IDkuNzkwODYgMTUgMTIgMTVDMTQuMjA5MSAxNSAxNyAxNy43OTA5IDE3IDIwVjIySDI0VjIwQzE4IDE2LjY4NjMgMTUuMzEzNyAxNCAxMiAxNFoiIGZpbGw9IiM5Q0EzQUYiLz4KPC9zdmc+Cjwvc3ZnPgo=" alt="Profil" class="user-avatar">
                     <span class="name-user">{{ $userInfo->nom_complet }}</span>
                 </div>
             </div>
@@ -126,6 +129,15 @@
                 <div class="stat-card">
                     <div class="header">
                         <div>
+                            <div class="value">{{ number_format($stats['ca_pret'], 0, ',', ' ') }}</div>
+                            <div class="label">Commandes pretes ({{ $stats['ready'] }})</div>
+                        </div>
+                        <i style="font-weight: bold; font-size: 17px">CFA</i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
                             <div class="value">{{ number_format($stats['ca_non_confirmé'], 0, ',', ' ') }}</div>
                             <div class="label">Commandes non confirmées ({{ $stats['pending'] }})</div>
                         </div>
@@ -213,7 +225,7 @@
                     <h3 style="font-weight: 500">Commandes</h3>
                 </div>
                 @if($orders->count() > 0) 
-                <table class="table">
+                <table class="table" style="font-style: italic">
                     <thead>
                         <tr>
                             <th>Commande</th>
@@ -222,6 +234,7 @@
                             <th>Montant</th>
                             <th>Statut</th>
                             <th>Date</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -236,7 +249,7 @@
                                             <div class="product-line" 
                                                 @if($index >= 2) style="display: none;" @endif>
                                                 {{ $product->quantity }}x {{ $product->product_name }}
-                                                <span class="price-product">{{ number_format($product->product_price, 0, ',', ' ') }}</span>
+                                                {{-- <span class="price-product">{{ number_format($product->product_price, 0, ',', ' ') }}</span> --}}
                                             </div>
                                         @endforeach
                                     </div>
@@ -250,11 +263,42 @@
                                     @endif
                                 </div>
                             </td>
-                            <td class="total-amount">{{ number_format($order->total_amount, 0, ',', ' ') }} CFA</td>
-                            <td><span class="status {{ $order->status }}">
-                                {{ $order->status }}</span>
+                            <td class="total-amount">
+                                {{ number_format($order->total_amount, 0, ',', ' ') }} CFA
                             </td>
-                            <td>{{ $order->created_at->translatedFormat('j M Y') }}</td>
+                            <td style="white-space: nowrap">
+                                @if($order->status === "pending")
+                                <span class="status {{ $order->status }}">
+                                    En attente
+                                </span>
+                                @elseif($order->status === "confirmed")
+                                <span class="status {{ $order->status }}">
+                                    Confirmée
+                                </span>
+                                @elseif($order->status === "ready")
+                                <span class="status {{ $order->status }}">
+                                    Prête
+                                </span>
+                                @elseif($order->status === "delivered")
+                                <span class="status {{ $order->status }}">
+                                    Livrée
+                                </span>
+                                @endif
+                            </td>
+                            <td>
+                                {{ $order->created_at->translatedFormat('j M Y') }}
+                            </td>
+                            <td>
+                                @if($order->status === "pending")
+                                    <button class="btn-pending" onclick="updateOrderStatus({{ $order->id }}, 'confirmed', this)">Confirmer</button>
+                                @elseif($order->status === "confirmed")
+                                    <button class="btn-confirmed" onclick="updateOrderStatus({{ $order->id }}, 'ready', this)">Pret</button>
+                                @elseif($order->status === "ready")
+                                    <span class="btn-ready">En cours</span>
+                                @elseif($order->status === "delivered")
+                                    <span class="btn-delivered">Terminé</span>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

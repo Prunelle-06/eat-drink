@@ -150,3 +150,69 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
+// Fonction pour mettre à jour le statut de commande
+async function updateOrderStatus(orderId, newStatus, buttonElement) {
+    const originalText = buttonElement.textContent;
+    buttonElement.disabled = true;
+    buttonElement.textContent = '...';
+    buttonElement.style.opacity = '0.6';
+    
+    try {
+        const response = await fetch(`/orders/${orderId}/status`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                status: newStatus
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            showNotification(data.message, 'info');
+
+            setTimeout(() => {
+                location.reload();
+            }, 4000);
+                        
+        } else {
+            // Erreur côté serveur
+            throw new Error(data.message || 'Erreur lors de la mise à jour');
+        }
+        
+    } catch (error) {
+        console.error('Erreur AJAX:', error);
+        
+        // Restaurer le bouton
+        buttonElement.disabled = false;
+        buttonElement.textContent = originalText;
+        buttonElement.style.opacity = '1';
+        
+        showNotification('Une erreur s\'est produite', 'error');
+    }
+}
+
+// Fonction pour afficher les notifications
+function showNotification(message, type = 'info') {
+ 
+    const alertNotification = document.getElementById('alert-notification');
+    alertNotification.innerHTML = message;
+    alertNotification.className = `alert alert-${type}`;
+    alertNotification.style.display = 'block';
+    
+    // Animation d'entrée
+    setTimeout(() => {
+        alertNotification.classList.add('show');
+    }, 100);
+
+    setTimeout(() => {
+        alertNotification.style.display = 'none';
+    }, 6000);
+}
+

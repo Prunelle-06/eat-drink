@@ -64,6 +64,11 @@ class Order extends Model
         return $query->where('status', 'confirmed');
     }
 
+    public function scopeReady($query)
+    {
+        return $query->where('status', 'ready');
+    }
+
     public function scopeCancelled($query)
     {
         return $query->where('status', 'cancelled');

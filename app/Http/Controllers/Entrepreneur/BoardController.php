@@ -33,12 +33,13 @@ class BoardController extends Controller
 
         $orders = Order::with(['user', 'items'])
                       ->where('stand_id', $user->stand->id)
-                      ->orderBy('created_at', 'asc')
+                      ->orderBy('created_at', 'desc')
                       ->get();
 
         $stats = [
             'pending' => Order::forStand($user->stand->id)->pending()->count(),
             'delivered' => Order::forStand($user->stand->id)->delivered()->count(),
+            'ready' => Order::forStand($user->stand->id)->ready()->count(),
             'confirmed' => Order::forStand($user->stand->id)->confirmed()->count(),
 
             'ca_réalisé' => Order::forStand($user->stand->id)
@@ -47,6 +48,10 @@ class BoardController extends Controller
 
             'ca_confirmé' => Order::forStand($user->stand->id)
                                    ->where('status', 'confirmed')
+                                   ->sum('total_amount'),
+
+            'ca_pret' => Order::forStand($user->stand->id)
+                                   ->ready()
                                    ->sum('total_amount'),
 
             'ca_non_confirmé' => Order::forStand($user->stand->id)
@@ -114,13 +119,14 @@ class BoardController extends Controller
 
         $orders = Order::with(['user', 'items'])
                       ->where('stand_id', $user->stand->id)
-                      ->orderBy('created_at', 'asc')
+                      ->orderBy('created_at', 'desc')
                       ->get();
 
         $stats = [
             'pending' => Order::forStand($user->stand->id)->pending()->count(),
-            'delivered' => Order::forStand($user->stand->id)->delivered()->count(),
             'confirmed' => Order::forStand($user->stand->id)->confirmed()->count(),
+            'ready' => Order::forStand($user->stand->id)->ready()->count(),
+            'delivered' => Order::forStand($user->stand->id)->delivered()->count(),
 
             'ca_réalisé' => Order::forStand($user->stand->id)
                                    ->delivered()
@@ -128,6 +134,10 @@ class BoardController extends Controller
 
             'ca_confirmé' => Order::forStand($user->stand->id)
                                    ->confirmed()
+                                   ->sum('total_amount'),
+
+            'ca_pret' => Order::forStand($user->stand->id)
+                                   ->ready()
                                    ->sum('total_amount'),
 
             'ca_non_confirmé' => Order::forStand($user->stand->id)

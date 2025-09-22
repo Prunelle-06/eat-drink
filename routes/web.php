@@ -98,8 +98,6 @@ Route::post('/stands/{stand}/toggle-favorite', [StandFavoriteController::class, 
 Route::middleware('auth')->controller(OrderController::class)->group(function () {
 
     Route::post('/orders', 'store')->name('orders.store');
-    Route::get('/orders/{order}', 'show')->name('orders.show');
-    
     Route::patch('/orders/{order}/status', 'updateStatus')->name('orders.update-status');
 });
 
