@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    @auth
+        <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+        <script>
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            OneSignalDeferred.push(async function(OneSignal) {
+                await OneSignal.init({
+                appId: "98be7eba-f9b7-45d9-aaa1-0e63fc3d7263",
+                });
+
+                try {
+                    // Lier l'utilisateur
+                    await OneSignal.login("{{ Auth::id() }}");
+                    
+                } catch(error) {
+                    console.error("Erreur OneSignal:", error);
+                }
+            });
+        </script>
+    @endauth
     <meta name="csrf-token" content="{{ csrf_token() }}" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -11,10 +30,13 @@
     <style>
         /* Logique d'affichage des sections */
         .dashboard-sections { 
-            display: {{ $current_section === 'profil' ? 'none' : 'block' }}; 
+            display: {{ $current_section === 'index' ? 'block' : 'none' }}; 
         }
         .updateProfil-section { 
             display: {{ $current_section === 'profil' ? 'block' : 'none' }}; 
+        }
+        .validateCode-section { 
+            display: {{ $current_section === 'fastCodeValidation' ? 'block' : 'none' }}; 
         }
     </style>
 </head>
@@ -46,6 +68,7 @@
                 <div class="menu-item active">
                     <a href="{{ route('dashboard.exposant') }}#board">
                         {{-- <i class="fas fa-home"></i> --}}
+                        <i class="fas fa-columns"></i>
                         <span>Tableau de bord</span>
                     </a>
                 </div>
@@ -75,11 +98,17 @@
                         <span>Mon Stand</span>
                     </a>
                 </div> --}}
+                <div class="menu-item">
+                    <a href="{{ route('dashboard.exposant.fastCodeValidation') }}" class="{{ $current_section === 'codeValidation' ? 'active' : '' }}">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>Code rapide</span>
+                    </a>
+                </div>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <div class="menu-item logout-item">
                         <button type="submit">
-                            <i class="fas fa-sign-out-alt" style="color: #b80000;"></i>
+                            <i class="fas fa-sign-out-alt" style="color: #e15b5b"></i>
                             <span>Déconnexion</span>
                         </button>
                     </div>
@@ -96,7 +125,9 @@
 
             <!-- Header -->
             <div id="board" class="header">
-                <h1 style="font-weight: 500">Tableau de bord</h1>
+                <h1 class="section-title">
+                    Tableau de bord
+                </h1>
                 <div class="user-menu">                  
                     <div class="user-profile">
                         <div class="user-info">
@@ -221,9 +252,9 @@
 
             <!-- Commandes -->
             <div class="card" id="commandes">
-                <div class="card-header">
-                    <h3 style="font-weight: 500">Commandes</h3>
-                </div>
+                <h1 class="section-title">
+                    <i class="fa-solid fa-cart-arrow-down"></i> Commandes
+                </h1>
                 @if($orders->count() > 0) 
                 <table class="table" style="font-style: italic">
                     <thead>
@@ -290,11 +321,11 @@
                             </td>
                             <td>
                                 @if($order->status === "pending")
-                                    <button class="btn-pending" onclick="updateOrderStatus({{ $order->id }}, 'confirmed', this)">Confirmer</button>
+                                    <button class="btn-pending" onclick="confirmOrder({{ $order->id }}, this)">Confirmer</button>
                                 @elseif($order->status === "confirmed")
-                                    <button class="btn-confirmed" onclick="updateOrderStatus({{ $order->id }}, 'ready', this)">Pret</button>
+                                    <button class="btn-confirmed" onclick="markOrderReady({{ $order->id }}, this)">Pret</button>
                                 @elseif($order->status === "ready")
-                                    <span class="btn-ready">En cours</span>
+                                    <span class="btn-ready" style="white-space: nowrap;">En cours</span>
                                 @elseif($order->status === "delivered")
                                     <span class="btn-delivered">Terminé</span>
                                 @endif
@@ -320,7 +351,9 @@
             <!-- Produits -->
             <div class="card" id="produits">
                 <div class="card-header">
-                    <h3 style="font-weight: 500">Mes produits</h3>
+                    <h1 class="section-title">
+                        <i class="fas fa-utensils"></i> Mes Produits
+                    </h1>
                     <a href="{{ route('products.create') }}">Ajouter un produit</a>
                 </div>
                 @if($userInfo->products->count() > 0) 
@@ -437,6 +470,28 @@
                 
                 <button type="submit" class="submit-btn">Mettre à jour le profil</button>
             </form>
+        </div>
+
+        <!-- Validation rapide de code -->
+        <div class="validateCode-section quick-pickup-section">
+            <h3><i class="fas fa-bolt"></i> Validation rapide par code</h3>
+            <p style="text-align: center; color: #64748b; margin-bottom: 20px;">
+                Saisissez le code à 4 chiffres fourni par le client pour valider rapidement la livraison
+            </p>
+            <div class="quick-pickup-form">
+                <input type="text" 
+                        id="quick-code-input"
+                        placeholder="Ex: 7294" 
+                        maxlength="4" 
+                        class="quick-code-input">
+                <button class="btn-quick-validate" onclick="quickValidate()">
+                    <i class="fas fa-search"></i> Chercher et valider
+                </button>
+            </div>
+            
+            <div id="quick-result" class="quick-result">
+                <!-- Résultat de la recherche -->
+            </div>
         </div>
     </div>
 

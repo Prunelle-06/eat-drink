@@ -19,9 +19,17 @@ return new class extends Migration
             ->default('pending');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('stand_id')->constrained()->onDelete('cascade');
+            
+            // Statut Commandes
             $table->timestamp('confirmed_at')->nullable();
             $table->timestamp('ready_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
+
+            // Generation de code
+            $table->string('pickup_code', 4)->nullable()->unique();
+            $table->timestamp('code_generated_at')->nullable();
+            $table->timestamp('picked_up_at')->nullable();
+            $table->boolean('code_used')->default(false);
             $table->timestamps();
         });
 

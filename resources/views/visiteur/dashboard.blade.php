@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    @auth
+        <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+        <script>
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            OneSignalDeferred.push(async function(OneSignal) {
+                await OneSignal.init({
+                appId: "98be7eba-f9b7-45d9-aaa1-0e63fc3d7263",
+                });
+
+                try {
+                    // Lier l'utilisateur
+                    await OneSignal.login("{{ Auth::id() }}");
+                    
+                } catch(error) {
+                    console.error("Erreur OneSignal:", error);
+                }
+            });
+        </script>
+    @endauth
     <meta name="csrf-token" content="{{ csrf_token() }}" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -11,10 +30,16 @@
     <style>
         /* Logique d'affichage des sections */
         .dashboard-sections { 
-            display: {{ $current_section === 'profil' ? 'none' : 'block' }}; 
+            display: {{ $current_section === 'index' ? 'block' : 'none' }}; 
         }
         .updateProfil-section { 
             display: {{ $current_section === 'profil' ? 'block' : 'none' }}; 
+        }
+        .ordersReady-section { 
+            display: {{ $current_section === 'ordersReady' ? 'block' : 'none' }}; 
+        }
+        .ordersConfirmed-section { 
+            display: {{ $current_section === 'ordersConfirmed' ? 'block' : 'none' }}; 
         }
         
     </style>
@@ -42,7 +67,7 @@
                 </a>
                 <a href="{{ route('dashboard.visiteur') }}#board">
                     <li class="nav-item active" style="color: #00A699">
-                       Tableau de bord
+                       <i class="fas fa-columns"></i> Tableau de bord
                     </li>
                 </a>
                 <a href="{{ route('dashboard.visiteur.profil') }}">
@@ -68,6 +93,34 @@
                         <span class="badge">{{ $orders->count() }}</span>
                     </li>
                 </a>
+
+                <div class="sidebar-section" onclick="toggleOrdersMenu()">
+                    <div id="orders-toggle-icon" class="section-header">
+                        <i class="fa-solid fa-shopping-bag"></i>
+                        <span>Commandes Actives</span>
+                        <i class="fas fa-chevron-down toggle-icon"></i>
+                    </div>
+                    
+                    <div class="submenu" id="orders-submenu">
+                        <!-- Sous-section Commandes confirmées -->
+                        <a href="{{ route('dashboard.visiteur.ordersConfirmed') }}" class="submenu-item {{ $current_section === 'ordersConfirmed' ? 'active' : '' }}">
+                            <i class="fa-solid fa-check-circle"></i>
+                            <span>Confirmées</span>
+                            @if($ordersConfirmed->count() > 0)
+                                <span class="badge">{{ $ordersConfirmed->count() }}</span>
+                            @endif
+                        </a>
+                        
+                        <!-- Sous-section Prêtes à retirer -->
+                        <a href="{{ route('dashboard.visiteur.ordersReady') }}" class="submenu-item {{ $current_section === 'ordersReady' ? 'active' : '' }}">
+                            <i class="fa-solid fa-bell"></i>
+                            <span>Prêtes à retirer</span>
+                            @if($ordersReady->count() > 0)
+                            <span class="badge">{{ $ordersReady->count() }}</span>
+                            @endif
+                        </a>
+                    </div>
+                </div>
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <li class="nav-item logout-item">
@@ -118,7 +171,7 @@
                     <div class="header">
                         <div>
                             <h3>{{ number_format($statsOrders['myOrdersPending'], 0, ',', ' ') }}</h3>
-                            <p>Commandes en cours({{ $statsOrders['pending'] }})</p>
+                            <p>Commandes non confirmées({{ $statsOrders['pending'] }})</p>
                         </div>
                         <i style="font-weight: bold; font-size: 17px">CFA</i>
                     </div>
@@ -126,7 +179,7 @@
                 <div class="stat-card">
                     <div class="header">
                         <div>
-                            <h3>{{ number_format($statsOrders['myOrdersconfirmed'], 0, ',', ' ') }}</h3>
+                            <h3>{{ number_format($statsOrders['myOrdersConfirmed'], 0, ',', ' ') }}</h3>
                             <p>Commandes confirmées({{ $statsOrders['confirmed'] }})</p>
                         </div>
                         <i style="font-weight: bold; font-size: 17px">CFA</i>
@@ -135,7 +188,16 @@
                 <div class="stat-card">
                     <div class="header">
                         <div>
-                            <h3>{{ number_format($statsOrders['myOrdersdelivered'], 0, ',', ' ') }}</h3>
+                            <h3>{{ number_format($statsOrders['myOrdersReady'], 0, ',', ' ') }}</h3>
+                            <p>Commandes en cours({{ $statsOrders['ready'] }})</p>
+                        </div>
+                        <i style="font-weight: bold; font-size: 17px">CFA</i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="header">
+                        <div>
+                            <h3>{{ number_format($statsOrders['myOrdersDelivered'], 0, ',', ' ') }}</h3>
                             <p>Commandes livrées({{ $statsOrders['delivered'] }})</p>
                         </div>
                         <i style="font-weight: bold; font-size: 17px">CFA</i>
@@ -144,7 +206,7 @@
                 <div class="stat-card">
                     <div class="header">
                         <div>
-                            <h3>{{ number_format($statsOrders['myOrderscancelled'], 0, ',', ' ') }}</h3>
+                            <h3>{{ number_format($statsOrders['myOrdersCancelled'], 0, ',', ' ') }}</h3>
                             <p>Commandes annulées({{ $statsOrders['cancelled'] }})</p>
                         </div>
                         <i style="font-weight: bold; font-size: 17px">CFA</i>
@@ -225,7 +287,13 @@
                         <span class="order-date">{{ $order->created_at->translatedFormat('j F Y à H:i') }}</span>
                     </div>
                     @if($order->status === "pending")
-                    <span class="order-status status-delivered">En attente</span>
+                        <span class="order-status status-{{ $order->status }}"><i class="fas fa-clock"></i> En attente</span>
+                    @elseif($order->status === "confirmed")
+                        <span class="order-status status-{{ $order->status }}"><i class="fas fa-check-circle"></i> Confirmée</span>
+                    @elseif($order->status === "ready")
+                        <span class="order-status status-{{ $order->status }}"><i class="fas fa-check"></i> En cours</span>
+                    @elseif($order->status === "delivered")
+                        <span class="order-status status-{{ $order->status }}"><i class="fas fa-check-double"></i> Livrée</span>
                     @endif
                 </div>
                 <div class="order-details">
@@ -303,6 +371,209 @@
                 <button type="submit" class="submit-btn">Mettre à jour</button>
             </form>
         </div>
+
+        {{-- Commandes pretes --}}
+        <div id="ordersReadySlider" class="ordersReady-section">
+            <div class="section-header">
+                <h2><i class="fa-solid fa-bell"></i> Commandes Pretes</h2>
+                <p class="section-subtitle">Verifiez la commande et présentez le code ci-dessous</p>
+            </div>
+
+            <div class="orders-stats">
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-info">
+                        <span class="stat-number">{{ $ordersReady->count() }}</span>
+                        <span class="stat-label">En cours de livraison</span>
+                    </div>
+                </div>
+            </div>
+            <div class="orders-slider" style="position: relative;">
+                @if(count($ordersReady) > 1)
+                    <button class="slider-nav prev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+            
+                    <button class="slider-nav next">
+                        <i class="fas fa-chevron-right"></i>
+                    </button> 
+                @endif     
+                @foreach($ordersReady as $orderReady) 
+                <div class="order-ready-card slider-card">
+                    <div class="ready-header-container">
+                       <div class="ready-header">
+                         <i class="fas fa-bell fa-shake"></i>
+                         <h3>Commande prête !</h3>
+                       </div>
+                       <span class="order-date">
+                            {{ $orderReady->ready_at->diffForHumans() }}
+                        </span>
+                    </div>
+                    
+                    <div class="order-ready-details">
+                        <p><strong><i class="fas fa-store"></i> Stand:</strong> {{ $orderReady->stand->nom_stand }}</p>
+                        <p><strong><i class="fas fa-receipt"></i> Commande:</strong> {{ $orderReady->order_number }}</p>
+                        <p><strong><i class="fas fa-cube"></i> Articles:</strong> {{ $orderReady->items->count() }} produit(s)</p>
+                        <p><strong><i class="fas fa-money-bill-wave"></i> Montant:</strong> {{ number_format($orderReady->total_amount, 0, ',', ' ') }} CFA</p>                                  
+                        <p><strong><i class="fas fa-clock"></i>
+                        Prete depuis: </strong> {{ $orderReady->ready_at->format('H:i') }} </p>
+                    </div>
+                    
+                    <div class="pickup-code-display">
+                        <h4><i class="fas fa-qrcode"></i> Code de retrait</h4>
+                        <div class="code-large">{{ $orderReady->pickup_code }}</div>
+                        <p class="code-instruction">
+                            Présentez ce code à l'exposant pour récupérer votre commande
+                        </p>
+                    </div>                
+                </div>
+                @endforeach
+                
+                @if(count($ordersReady) > 1)
+                <div class="slider-indicators">
+                    @foreach ($ordersReady as $index => $orderReady)
+                    <div class="indicator {{ $index === 0 ? 'active' : '' }}"></div>
+                    @endforeach
+                </div>
+                @endif
+            </div>
+            @if($ordersReady->isEmpty())
+                <div class="empty-orders-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-inbox fa-4x"></i>
+                    </div>
+                    <h3 class="empty-title">Aucune commande à retirer</h3>
+                    <p class="empty-message">
+                        Vos commandes apparaîtront ici lorsqu'elles seront prêtes chez les exposants.
+                    </p>
+                    <div class="empty-actions">
+                        <button class="btn-refresh" onclick="location.reload()">
+                            <i class="fas fa-sync-alt"></i> Actualiser
+                        </button>
+                        <a href="{{ route('stands.index') }}" class="cta-button btn-browse">
+                            <i class="fas fa-store"></i> Découvrir les stands
+                        </a>
+                    </div>
+                </div>
+            @endif
+        </div>
+
+        {{-- Commandes confirmées --}}
+        <div id="ordersConfirmedSlider" class="ordersConfirmed-section">
+            <div class="section-header">
+                <h2><i class="fas fa-check-circle"></i> Commandes Confirmées</h2>
+                <p class="section-subtitle">Vos commandes confirmées par les exposants</p>
+            </div>
+
+            <div class="orders-stats">
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-info">
+                        <span class="stat-number">{{ $ordersConfirmed->count() }}</span>
+                        <span class="stat-label">En attente de préparation</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="orders-grid">
+                @if(count($ordersConfirmed) > 1)
+                    <button class="slider-nav prev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+            
+                    <button class="slider-nav next">
+                        <i class="fas fa-chevron-right"></i>
+                    </button> 
+                @endif  
+                <div class="orders-slider">                  
+                    @foreach($ordersConfirmed as $orderConfirmed)
+                    <div class="order-card confirmed slider-card">
+                        <div class="card-header">
+                            <div class="order-meta">
+                                <span class="order-number">{{ $orderConfirmed->order_number }}</span>
+                                <span class="order-date">
+                                    Confirmée {{ $orderConfirmed->confirmed_at->diffForHumans() }}
+                                </span>
+                            </div>
+                            <span class="status-badge confirmed">
+                                <i class="fas fa-check-circle"></i> Confirmée
+                            </span>
+                        </div>
+    
+                        <div class="card-body">
+                            <div class="vendor-info">
+                                <div class="vendor-avatar">
+                                    <i class="fas fa-store"></i>
+                                </div>
+                                <div class="vendor-details">
+                                    <h4 class="vendor-name">{{ $orderConfirmed->stand->nom_stand }}</h4>
+                                    <p class="vendor-location">
+                                        <i class="fas fa-map-marker-alt"></i> Allée A, Stand 12
+                                    </p>
+                                </div>
+                            </div>
+    
+                            <div class="order-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-cube"></i>
+                                    <span>{{ $orderConfirmed->items->count() }} article(s)</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                    <span>
+                                    {{ number_format($orderConfirmed->total_amount, 0, ',', ' ') }} CFA
+                                    </span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Confirmée à {{ $orderConfirmed->confirmed_at->format('H:i') }}</span>
+                                </div>
+                            </div>
+    
+                            <div class="estimation-info">
+                                <i class="fas fa-hourglass-half"></i>
+                                <span>Préparation estimée : 25 min</span>
+                            </div>
+                        </div>
+    
+                        <div class="card-footer">
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-comment"></i> Contacter
+                            </button>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>  
+
+            </div>
+            @if(count($ordersConfirmed) > 1)
+                <div class="slider-indicators">
+                    @foreach ($ordersConfirmed as $index => $orderConfirmed)
+                    <div class="indicator {{ $index === 0 ? 'active' : '' }}"></div>
+                    @endforeach
+                </div>
+            @endif
+            @if($ordersConfirmed->isEmpty())
+                <div class="empty-orders-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-inbox fa-4x"></i>
+                    </div>
+                    <h3 class="empty-title">Aucune commande confirmée par un exposant pour l'instant</h3>
+                    <p class="empty-message">
+                        Vos commandes apparaîtront ici lorsqu'elles seront confirmées chez les exposants.
+                    </p>
+                    <div class="empty-actions">
+                        <button class="btn-refresh" onclick="location.reload()">
+                            <i class="fas fa-sync-alt"></i> Actualiser
+                        </button>
+                        <a href="{{ route('stands.index') }}" class="cta-button btn-browse">
+                            <i class="fas fa-store"></i> Découvrir les stands
+                        </a>
+                    </div>
+                </div>
+            @endif
+        </div>
+
             
     </div>
 

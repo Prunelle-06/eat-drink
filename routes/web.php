@@ -67,6 +67,11 @@ Route::middleware('auth')->controller(BoardController::class)->group(function ()
     
     Route::put('/dashboard/exposant/profil', 'updateProfil')->name('dashboard.exposant.updateProfil');
     
+    Route::get('/dashboard/exposant/validation-rapide', 'fastCodeValidation')->name('dashboard.exposant.fastCodeValidation');
+
+    Route::post('/orders/find-by-code', 'findOrderByCode');
+    Route::post('/orders/{order}/validate-pickup-code', 'validatePickupCode');
+    
 });
 
 // Route::get('/dashboard', [BoardController::class, 'show'])->name('dashboard.stand.show');
@@ -79,13 +84,16 @@ Route::middleware('auth')->controller(BoardVisitorController::class)->group(func
     Route::get('/stands/{stand}', 'showFavoriteStand');
     
     Route::get('/dashboard/visiteur/profil', 'profil')->name('dashboard.visiteur.profil');
+
+    Route::get('/dashboard/visiteur/commandes-pretes', 'ordersReady')->name('dashboard.visiteur.ordersReady');
+
+    Route::get('/dashboard/visiteur/commandes-confirmees', 'ordersConfirmed')->name('dashboard.visiteur.ordersConfirmed');
     
     Route::put('/dashboard/visiteur/profil', 'updateProfil')->name('dashboard.visiteur.updateProfil');
 });
 
 Route::get('/stands', [StandController::class, 'index'])->name('stands.index');
 Route::get('/stands/{stand}', [StandController::class, 'show'])->name('stands.show');
-
 
 
 // Route favoris
@@ -98,7 +106,8 @@ Route::post('/stands/{stand}/toggle-favorite', [StandFavoriteController::class, 
 Route::middleware('auth')->controller(OrderController::class)->group(function () {
 
     Route::post('/orders', 'store')->name('orders.store');
-    Route::patch('/orders/{order}/status', 'updateStatus')->name('orders.update-status');
+    Route::patch('/orders/{order}/confirm', 'confirmOrder')->name('confirm.order');
+    Route::patch('/orders/{order}/mark-ready', 'markOrderReady')->name('ready.order');
 });
 
 

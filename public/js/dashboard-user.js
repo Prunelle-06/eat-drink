@@ -152,24 +152,21 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Fonction pour mettre à jour le statut de commande
-async function updateOrderStatus(orderId, newStatus, buttonElement) {
+// Requte AJAX pour confirmer une commande 
+async function confirmOrder(orderId, buttonElement) {
     const originalText = buttonElement.textContent;
     buttonElement.disabled = true;
     buttonElement.textContent = '...';
     buttonElement.style.opacity = '0.6';
     
     try {
-        const response = await fetch(`/orders/${orderId}/status`, {
+        const response = await fetch(`/orders/${orderId}/confirm`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-                status: newStatus
-            })
+            }
         });
         
         const data = await response.json();
@@ -179,8 +176,49 @@ async function updateOrderStatus(orderId, newStatus, buttonElement) {
 
             setTimeout(() => {
                 location.reload();
-            }, 4000);
-                        
+            }, 4500);
+        } else {
+            // Erreur côté serveur
+            throw new Error(data.message || 'Erreur lors de la mise à jour');
+        }
+        
+    } catch (error) {
+        console.error('Erreur AJAX:', error);
+        
+        // Restaurer le bouton
+        buttonElement.disabled = false;
+        buttonElement.textContent = originalText;
+        buttonElement.style.opacity = '1';
+        
+        showNotification('Une erreur s\'est produite', 'error');
+    }
+}
+
+// Requte AJAX pour marquer comme pret une commande 
+async function markOrderReady(orderId, buttonElement) {
+    const originalText = buttonElement.textContent;
+    buttonElement.disabled = true;
+    buttonElement.textContent = '...';
+    buttonElement.style.opacity = '0.6';
+    
+    try {
+        const response = await fetch(`/orders/${orderId}/mark-ready`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok && data.success) {
+            showNotification(data.message, 'info');
+
+            setTimeout(() => {
+                location.reload();
+            }, 4500);
         } else {
             // Erreur côté serveur
             throw new Error(data.message || 'Erreur lors de la mise à jour');
@@ -213,6 +251,123 @@ function showNotification(message, type = 'info') {
 
     setTimeout(() => {
         alertNotification.style.display = 'none';
-    }, 6000);
+        // location.reload();
+    }, 4000);
 }
+
+// Validation rapide par recherche de code
+async function quickValidate() {
+    const quickInput = document.getElementById('quick-code-input');
+    const code = quickInput.value.trim();
+    
+    if (code.length !== 4) {
+        showNotification('Le code doit contenir 4 chiffres', 'error');
+        return;
+    }
+    
+    try {
+        // Chercher la commande par code
+        const searchResponse = await fetch(`/orders/find-by-code`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ pickup_code: code })
+        });
+        
+        const searchData = await searchResponse.json();
+        
+        if (!searchData.success) {
+            showNotification(searchData.message, 'error');
+            return;
+        }
+        
+        // Afficher les détails et demander confirmation
+        const order = searchData.order;
+        const resultDiv = document.getElementById('quick-result');
+        
+        resultDiv.innerHTML = `
+            <div class="order-preview">
+                <h4>✅ Commande trouvée</h4>
+                <p><strong>Stand:</strong> ${order.stand_name}</p>
+                <p><strong>N° Commande:</strong> ${order.order_number}</p>
+                <p><strong>Client:</strong> ${order.client_name}</p>
+                <p><strong>Articles:</strong> ${order.items_count} produit(s)</p>
+                <p><strong>Montant:</strong> ${order.total_amount} CFA</p>
+                <p><strong>Code saisi:</strong> ${order.code}</p>
+                <div class="preview-actions">
+                    <button class="btn-validate-final" onclick="finalizeQuickPickup(${order.id}, '${code}')">
+                        <i class="fas fa-check-double"></i> Confirmer la livraison
+                    </button>
+                    <button class="btn-cancel" onclick="cancelQuickValidation()">
+                        <i class="fas fa-times"></i> Annuler
+                    </button>
+                </div>
+            </div>
+        `;
+        
+    } catch (error) {
+        showNotification('Erreur lors de la recherche', 'error');
+    }
+}
+
+// Finaliser la validation rapide
+async function finalizeQuickPickup(orderId, code) {
+    try {
+        const response = await fetch(`/orders/${orderId}/validate-pickup-code`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({ pickup_code: code })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            showNotification(data.message, 'success');
+            
+            // Nettoyer l'interface
+            document.getElementById('quick-code-input').value = '';
+            document.getElementById('quick-result').innerHTML = '';
+            
+            setTimeout(() => location.reload(), 2000);
+        } else {
+            showNotification(data.message, 'error');
+        }
+    } catch (error) {
+        showNotification('Erreur lors de la validation finale', 'error');
+    }
+}
+
+function cancelQuickValidation() {
+    document.getElementById('quick-result').innerHTML = '';
+    document.getElementById('quick-code-input').value = '';
+}
+
+// Auto-focus et validation sur Enter
+document.addEventListener('DOMContentLoaded', function() {
+    // Focus automatique sur les inputs de code
+    document.querySelectorAll('.code-input').forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const orderId = this.id.replace('code-input-', '');
+                validateCode(orderId);
+            }
+        });
+    });
+    
+    // Quick validation sur Enter
+    document.getElementById('quick-code-input')?.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            quickValidate();
+        }
+    });
+});
+
+
+
+
 

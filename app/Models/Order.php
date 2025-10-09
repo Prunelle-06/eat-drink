@@ -12,7 +12,10 @@ class Order extends Model
         'order_number',
         'total_amount',
         'status',
+        'pickup_code', 
+        'code_generated_at',   
         'confirmed_at',
+        'ready_at',
         'delivered_at'
     ];
 
@@ -94,5 +97,16 @@ class Order extends Model
         } while (self::where('order_number', $number)->exists());
         
         return $number;
+    }
+
+    public static function generateUniqueCode()
+    {
+        do {
+            $code = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+        } while (Order::where('pickup_code', $code)
+                     ->where('code_used', false)
+                     ->exists());
+        
+        return $code;
     }
 }

@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {{-- @auth
+        <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+        <script>
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            OneSignalDeferred.push(async function(OneSignal) {
+                await OneSignal.init({
+                appId: "98be7eba-f9b7-45d9-aaa1-0e63fc3d7263",
+                });
+
+                try {
+                    // Lier l'utilisateur
+                    await OneSignal.login("{{ Auth::id() }}");
+                    
+                } catch(error) {
+                    console.error("Erreur OneSignal:", error);
+                }
+            });
+        </script>
+    @endauth --}}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>

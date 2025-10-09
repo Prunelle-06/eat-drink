@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// use Berkayk\OneSignal\OneSignal;
 use App\Models\Stand;
 use App\Models\Product;
 use App\Models\Order;
@@ -96,44 +97,83 @@ class OrderController extends Controller
         }
     }
 
-    // Mettre à jour le statut d'une commande
-    public function updateStatus(Request $request, Order $order)
+    public function confirmOrder(Request $request, Order $order)
     {
-        $request->validate([
-            'status' => 'required|in:confirmed,ready'
-        ]);
-
-        // Vérifier que c'est bien le propriétaire du stand
         if ($order->stand->user_id !== Auth::id()) {
             abort(403, 'Action non autorisée');
         }
 
-        $order->update(['status' => $request->status]);
-
-        // Mettre à jour les timestamps selon le statut
-        switch ($request->status) {
-            case 'confirmed':
-                $order->update(['confirmed_at' => now()]);
-                break;
-            case 'ready':
-                $order->update(['ready_at' => now()]);
-                break;
+        if ($order->status !== 'pending') {
+            return response()->json([
+                'success' => false,
+                'message' => 'La commande doit être en attente pour être marquée comme confirmé'
+            ], 400);
         }
+
+        $order->update([
+            'status' => 'confirmed',
+            'confirmed_at' => now()
+        ]);    
+        
+        // Notification au client
+        \OneSignal::sendNotificationToExternalUser(
+            "Votre commande #{$order->order_number} de chez {$order->stand->nom_stand} est confirmée !",
+            (string)$order->user_id,
+            route('home'),
+            [
+                'order_id' => $order->id,
+                'type' => 'order_confirmed',
+                'stand_name' => $order->stand->nom_stand
+            ]
+        );
 
         $clientName = $order->user->nom_complet;
         $orderNumber = $order->order_number;
 
-        $message = match($request->status) {
-            'confirmed' => "La commande {$orderNumber} de {$clientName} a été confirmée",
-            'ready' => "La commande {$orderNumber} de {$clientName} est en cours de livraison"
-        };
+        return response()->json([
+            'success' => true,
+            'message' => "La commande {$orderNumber} de {$clientName} a été confirmée",
+        ]);
+    }
+
+    public function markOrderReady(Request $request, Order $order)
+    {
+        if ($order->stand->user_id !== Auth::id()) {
+            abort(403, 'Action non autorisée');
+        }
+
+        if ($order->status !== 'confirmed') {
+            return response()->json([
+                'success' => false,
+                'message' => 'La commande doit être confirmée avant d\'être marquée comme prête'
+            ], 400);
+        }
+
+        // Générer code unique
+        $pickupCode = Order::generateUniqueCode();
+
+        $order->update([
+            'status' => 'ready',
+            'pickup_code' => $pickupCode,
+            'code_generated_at' => now(),
+            'ready_at' => now()
+        ]);
+
+        // Envoyer notification au client
+        \OneSignal::sendNotificationToExternalUser(
+            "Votre commande {$order->order_number} de chez {$order->stand->nom_stand} est prête! Code de retrait: {$pickupCode}",
+            (string)$order->user_id, 
+            route('home'),
+            [
+                'order_id' => $order->id,
+                'pickup_code' => $pickupCode,
+                'type' => 'order_ready'
+            ]
+        );
 
         return response()->json([
             'success' => true,
-            'message' => $message,
-            'status' => $request->status,
-            'client_name' => $clientName,
-            'order_number' => $orderNumber
+            'message' => "Commande prête! Code envoyé au client"
         ]);
     }
 
