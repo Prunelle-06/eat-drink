@@ -92,8 +92,13 @@ Route::middleware('auth')->controller(BoardVisitorController::class)->group(func
     Route::put('/dashboard/visiteur/profil', 'updateProfil')->name('dashboard.visiteur.updateProfil');
 });
 
-Route::get('/stands', [StandController::class, 'index'])->name('stands.index');
-Route::get('/stands/{stand}', [StandController::class, 'show'])->name('stands.show');
+// Routes Stands
+Route::middleware('auth')->controller(StandController::class)->group(function () {
+
+    Route::get('/stands', 'index')->name('stands.index');
+    Route::get('/stands/{stand}', 'show')->name('stands.show');
+    Route::post('/stands/{stand}/contact', 'contactStand');
+});
 
 
 // Route favoris

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Stand;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\CustomerContactNotification;
 
 class StandController extends Controller
 {
@@ -48,6 +49,25 @@ class StandController extends Controller
             'products' => $stand->products 
         ]);
        
+    }
+
+    // Contacter stand
+    public function contactStand(Request $request, Stand $stand)
+    {
+        $request->validate([
+            'message' => 'required|string|max:500'
+        ]);
+        
+        // Envoyer une notification
+        $stand->user->notify(new CustomerContactNotification(
+            Auth::user(),
+            $request->message
+        ));
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Message envoyé au stand'
+        ]);
     }
 
 }

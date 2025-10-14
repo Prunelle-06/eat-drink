@@ -7,19 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class EntrepreneurApprovedNotification extends Notification
+class CustomerContactNotification extends Notification
 {
     use Queueable;
+
+    protected $customer;
+    protected $message;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(
-        private string $nom_complet,
-        private string $nom_stand
-    )
+    public function __construct($customer, $message)
     {
-        //
+        $this->customer = $customer;
+        $this->message = $message;
     }
 
     /**
@@ -38,13 +39,15 @@ class EntrepreneurApprovedNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("{$this->nom_complet}, votre stand {$this->nom_stand} a été approuvé ! 🎉")
-            ->line("Félicitations! {$this->nom_complet} votre demande d'inscription sur Taste&Stay a été approuvée par notre équipe.")
-            ->line('Vous pouvez désormais :')
-            ->line('✅Gérer vos produits : Ajoutez, modifiez ou supprimez vos offres depuis votre espace.')
-            ->line('✅Recevoir des commandes : Les visiteurs peuvent réserver vos produits en ligne.')
-            ->action('Accédez à votre dashboard', route('dashboard.exposant'))
-            ->line('Merci de nous faire confiance!');
+            ->subject("Nouveau message d'un client")
+            ->greeting("Bonjour {$notifiable->nom_complet},")
+            ->line("Vous avez reçu un nouveau message concernant votre stand.")
+            ->line("**De:** {$this->customer->nom_complet}")
+            ->line("**Email:** {$this->customer->email}")
+            ->line("**Message:**")
+            ->line($this->message)
+            // ->action('Répondre au client', route(''))
+            ->line("Merci d'utiliser notre plateforme !");
     }
 
     /**

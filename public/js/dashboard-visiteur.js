@@ -412,6 +412,64 @@ function closeLoadingModal() {
 }
 
 
+// Contacter stand
+function contactStand(standId, standName) {
+    
+    showContactModal(standId, standName);
+}
+
+function showContactModal(standId, standName) {
+    const modal = document.createElement('div');
+    modal.className = 'contact-modal';
+    modal.innerHTML = `
+        <div class="modal-overlay" onclick="this.parentElement.remove()"></div>
+        <div class="modal-content">
+            <h3>Contacter ${standName}</h3>
+            <form onsubmit="sendMessage(event, ${standId})">
+                <textarea name="message" placeholder="Votre message..." required rows="4"></textarea>
+                <div class="modal-actions">
+                    <button type="button" onclick="this.closest('.contact-modal').remove()">Annuler</button>
+                    <button type="submit" class="btn-primary">Envoyer</button>
+                </div>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+async function sendMessage(event, standId) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const message = form.message.value;
+    
+    showLoadingModal('Envoi du message par mail au stand...');
+
+    try {
+        const response = await fetch(`/stands/${standId}/contact`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ message: message })
+        });
+        
+        const data = await response.json();
+        
+        closeLoadingModal();
+        if (data.success) {
+            showNotification(data.message, 'success');
+            form.closest('.contact-modal').remove();
+        }
+    } catch (error) {
+        // console.error('Fetch error:', error);
+        showNotification('Erreur lors de l\'envoi', 'error');
+    }
+}
+
+
 
 
 

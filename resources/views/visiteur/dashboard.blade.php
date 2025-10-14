@@ -328,7 +328,12 @@
                           Annuler la commande
                         </button>
                         @endif
-                        <button class="action-btn btn-secondary">Contacter le stand</button>
+                        <button 
+                            class="action-btn btn-secondary" 
+                            onclick="contactStand({{ $order->stand_id }}, '{{ $order->stand->nom_stand }}')" >
+                            
+                            Contacter le stand
+                        </button>
                     </div>
                 </div>
             </div>

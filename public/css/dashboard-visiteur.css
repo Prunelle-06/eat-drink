@@ -1368,3 +1368,122 @@ textarea {
         width: 100%;
     }
 }
+
+/* Contacter stand */
+.contact-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.contact-modal .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+.contact-modal .modal-content {
+    position: relative;
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+.contact-modal h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 20px;
+}
+.contact-modal textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 100px;
+    transition: border-color 0.2s ease;
+}
+.contact-modal textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+.contact-modal textarea::placeholder {
+    color: #9ca3af;
+}
+.contact-modal .modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+.contact-modal .modal-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.contact-modal .modal-actions button[type="button"] {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+.contact-modal .modal-actions button[type="button"]:hover {
+    background: #e5e7eb;
+}
+.contact-modal .modal-actions .btn-primary {
+    background: var(--pri-mary);
+    color: white;
+}
+.contact-modal .modal-actions .btn-primary:hover {
+    background: var(--se-condary);
+}
+/* Responsive */
+@media (max-width: 640px) {
+    .contact-modal .modal-content {
+        padding: 24px;
+        width: 95%;
+    }
+    
+    .contact-modal h3 {
+        font-size: 20px;
+    }
+    
+    .contact-modal .modal-actions {
+        flex-direction: column-reverse;
+    }
+    
+    .contact-modal .modal-actions button {
+        width: 100%;
+    }
+}
