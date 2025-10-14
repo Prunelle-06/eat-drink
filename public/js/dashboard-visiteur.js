@@ -250,6 +250,46 @@ async function reorder(orderId) {
     });
 }
 
+// Annuler une commande déjà faite
+async function cancelOrder(orderId) {
+
+    showConfirmModal({
+        title: 'Annuler la commande',
+        message: 'Êtes-vous sûr de vouloir annuler cette commande ? Cette action est irréversible.',
+        confirmText: 'Oui, annuler',
+        cancelText: 'Non, garder',
+        confirmClass: 'btn-danger',
+
+        onConfirm: async () => {
+            showLoadingModal('Annulation en cours...');
+            
+            try {
+                const response = await fetch(`/orders/${orderId}/cancel`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+                
+                const data = await response.json();
+                
+                closeLoadingModal();
+                
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            } catch (error) {
+                closeLoadingModal();
+                showNotification('Erreur lors de l\'annulation', 'error');
+            }
+        }
+    });
+}
+
 // Fonction pour afficher les notifications
 function showNotification(message, type = 'info') {
  

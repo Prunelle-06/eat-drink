@@ -296,6 +296,8 @@
                         <span class="order-status status-{{ $order->status }}"><i class="fas fa-check"></i> En cours</span>
                     @elseif($order->status === "delivered")
                         <span class="order-status status-{{ $order->status }}"><i class="fas fa-check-double"></i> Livrée</span>
+                    @elseif($order->status === "cancelled")
+                        <span class="order-status status-{{ $order->status }}"><i class="fas fa-ban"></i> Annulée</span>
                     @endif
                 </div>
                 <div class="order-details">
@@ -316,7 +318,16 @@
                             onclick="reorder({{ $order->id }})"> 
                             Commander à nouveau
                         </button>
-                        <button class="action-btn btn-canceled">Annuler la commande</button>
+                        @if(!in_array($order->status, ['cancelled', 'delivered', 'ready']))
+                        <button 
+                          class="action-btn btn-canceled"
+                          onclick="cancelOrder({{ $order->id }})" 
+
+                          @if(!in_array($order->status, ['pending', 'confirmed'])) disabled @endif>
+
+                          Annuler la commande
+                        </button>
+                        @endif
                         <button class="action-btn btn-secondary">Contacter le stand</button>
                     </div>
                 </div>

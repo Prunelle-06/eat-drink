@@ -314,6 +314,10 @@
                                 <span class="status {{ $order->status }}">
                                     Livrée
                                 </span>
+                                @elseif($order->status === "cancelled")
+                                <span class="status {{ $order->status }}">
+                                    Annulée
+                                </span>
                                 @endif
                             </td>
                             <td>
@@ -328,6 +332,8 @@
                                     <span class="btn-ready" style="white-space: nowrap;">En cours</span>
                                 @elseif($order->status === "delivered")
                                     <span class="btn-delivered">Terminé</span>
+                                @elseif($order->status === "cancelled")
+                                    <span class="btn-cancelled">Annulée</span>
                                 @endif
                             </td>
                         </tr>

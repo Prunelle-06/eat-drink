@@ -98,7 +98,7 @@ class OrderController extends Controller
     }
 
     // Recommander une commande
-    public function reorder(Order $order)
+    public function reOrder(Order $order)
     {
         if ($order->user_id !== Auth::id()) {
             abort(403);
@@ -160,6 +160,44 @@ class OrderController extends Controller
                 'message' => 'Erreur lors de la création de la commande'
             ], 500);
         }
+    }
+
+    // Annuler une commande
+    public function cancelOrder(Order $order)
+    {
+        if ($order->user_id !== Auth::id()) {
+            abort(403);
+        }
+        
+        // Vérifier si annulation possible
+        if (!in_array($order->status, ['pending', 'confirmed'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cette commande ne peut plus être annulée'
+            ], 400);
+        }
+        
+        $order->update(['status' => 'cancelled']);
+        
+        // Notification à l'exposant
+        \OneSignal::sendNotificationUsingTags(
+            "Commande annulée : {$order->order_number} par {$order->user->nom_complet}",
+            [
+                ["field" => "tag", "key" => "user_id", "relation" => "=", "value" => (string)$order->stand->user_id]
+            ],
+            // route('exposant.orders'),
+            [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'customer_name' => $order->user->nom_complet,
+                'type' => 'order_cancelled_by_customer'
+            ]
+        );
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Commande annulée avec succès'
+        ]);
     }
 
     public function confirmOrder(Request $request, Order $order)
