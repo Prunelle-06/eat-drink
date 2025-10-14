@@ -24,7 +24,7 @@ class BoardVisitorController extends Controller
             
             $orders = Order::with(['stand.user', 'items'])
                       ->where('user_id', Auth::id())
-                      ->orderBy('created_at', 'asc')
+                      ->orderBy('created_at', 'desc')
                       ->get();
 
             $ordersReady = Order::where('user_id', Auth::id())
@@ -119,7 +119,7 @@ class BoardVisitorController extends Controller
 
             $orders = Order::with(['stand.user', 'items'])
                       ->where('user_id', Auth::id())
-                      ->orderBy('created_at', 'asc')
+                      ->orderBy('created_at', 'desc')
                       ->get();
 
             $ordersReady = Order::where('user_id', Auth::id())
@@ -240,7 +240,7 @@ class BoardVisitorController extends Controller
             
             $orders = Order::with(['stand.user', 'items'])
                       ->where('user_id', Auth::id())
-                      ->orderBy('created_at', 'asc')
+                      ->orderBy('created_at', 'desc')
                       ->get();
 
             $ordersReady = Order::where('user_id', Auth::id())
@@ -330,7 +330,7 @@ class BoardVisitorController extends Controller
             
             $orders = Order::with(['stand.user', 'items'])
                       ->where('user_id', Auth::id())
-                      ->orderBy('created_at', 'asc')
+                      ->orderBy('created_at', 'desc')
                       ->get();
 
             $ordersReady = Order::where('user_id', Auth::id())
@@ -406,4 +406,5 @@ class BoardVisitorController extends Controller
             'current_section'
         ));
     }
+
 }

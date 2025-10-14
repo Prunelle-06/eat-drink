@@ -45,6 +45,8 @@
     </style>
 </head>
 <body>
+    <div id="alert-notification" class="alert"></div>
+
     <div class="dashboard">
         @if (Session::has('success'))
             <p class="flash-message">{{ Session::get('success') }}</p>
@@ -310,7 +312,10 @@
                         <span class="total-amount">{{ number_format($order->total_amount, 0, ',', ' ') }} CFA</span>
                     </div>
                     <div class="order-actions">
-                        <button class="action-btn btn-primary">Commander à nouveau</button>
+                        <button class="action-btn btn-primary" 
+                            onclick="reorder({{ $order->id }})"> 
+                            Commander à nouveau
+                        </button>
                         <button class="action-btn btn-canceled">Annuler la commande</button>
                         <button class="action-btn btn-secondary">Contacter le stand</button>
                     </div>

@@ -159,10 +159,10 @@ document.addEventListener('keydown', function(e) {
         }
     }
 
-
 });
 
 
+// Gestion ouverture section sidebar commandes actives
 function openOrdersMenu() {
     const submenu = document.getElementById('orders-submenu');
     const toggleIcon = document.getElementById('orders-toggle-icon');
@@ -207,6 +207,169 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+
+// Commander à nouveau une commande déjà faite
+async function reorder(orderId) {
+
+    showConfirmModal({
+        title: 'Commander à nouveau',
+        message: 'Voulez-vous recommander les mêmes produits ?',
+        confirmText: 'Oui, recommander',
+        cancelText: 'Non, annuler',
+        confirmClass: 'btn-primary',
+
+        onConfirm: async () => {
+            // Afficher loader
+            showLoadingModal('Création de la commande en cours...');
+            
+            try {
+                const response = await fetch(`/orders/${orderId}/reorder`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                });
+                
+                const data = await response.json();
+                
+                // Fermer loader
+                closeLoadingModal();
+                
+                if (data.success) {
+                    showNotification(data.message, 'success');
+    
+                } else {
+                    showNotification(data.message, 'error');
+                }
+            } catch (error) {
+                closeLoadingModal();
+                showNotification('Erreur lors de la recommande', 'error');
+            }
+        }
+    });
+}
+
+// Fonction pour afficher les notifications
+function showNotification(message, type = 'info') {
+ 
+    const alertNotification = document.getElementById('alert-notification');
+    alertNotification.innerHTML = message;
+    alertNotification.className = `alert alert-${type}`;
+    alertNotification.style.display = 'block';
+    
+    // Animation d'entrée
+    setTimeout(() => {
+        alertNotification.classList.add('show');
+    }, 100);
+
+    setTimeout(() => {
+        alertNotification.style.display = 'none';
+        location.reload();
+    }, 4000);
+}
+
+// Fonction générique pour afficher modal de confirmation
+function showConfirmModal(options) {
+    const {
+        title,
+        message,
+        confirmText = 'Confirmer',
+        cancelText = 'Annuler',
+        confirmClass = 'btn-primary',
+        onConfirm,
+        onCancel
+    } = options;
+    
+    // Supprimer modal existant si présent
+    const existingModal = document.querySelector('.confirm-modal');
+    if (existingModal) existingModal.remove();
+    
+    // Créer le modal
+    const modal = document.createElement('div');
+    modal.className = 'confirm-modal';
+    modal.innerHTML = `
+        <div class="modal-overlay"></div>
+        <div class="modal-box">
+            <div class="modal-icon">
+                <i class="fas fa-question-circle"></i>
+            </div>
+            <h3 class="modal-title">${title}</h3>
+            <p class="modal-message">${message}</p>
+            <div class="modal-buttons">
+                <button class="modal-btn btn-cancel" id="modalCancel">
+                    ${cancelText}
+                </button>
+                <button class="modal-btn ${confirmClass}" id="modalConfirm">
+                    ${confirmText}
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Animation d'entrée
+    setTimeout(() => modal.classList.add('show'), 10);
+    
+    // Gestion des événements
+    const confirmBtn = modal.querySelector('#modalConfirm');
+    const cancelBtn = modal.querySelector('#modalCancel');
+    const overlay = modal.querySelector('.modal-overlay');
+    
+    function closeModal() {
+        modal.classList.remove('show');
+        setTimeout(() => modal.remove(), 300);
+    }
+    
+    confirmBtn.onclick = () => {
+        closeModal();
+        if (onConfirm) onConfirm();
+    };
+    
+    cancelBtn.onclick = () => {
+        closeModal();
+        if (onCancel) onCancel();
+    };
+    
+    overlay.onclick = () => {
+        closeModal();
+        if (onCancel) onCancel();
+    };
+    
+    // Fermer avec Escape
+    document.addEventListener('keydown', function escapeHandler(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+            if (onCancel) onCancel();
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    });
+}
+
+// Modal de chargement
+function showLoadingModal(message) {
+    const loading = document.createElement('div');
+    loading.className = 'loading-modal';
+    loading.id = 'loadingModal';
+    loading.innerHTML = `
+        <div class="modal-overlay"></div>
+        <div class="loading-box">
+            <div class="spinner"></div>
+            <p>${message}</p>
+        </div>
+    `;
+    document.body.appendChild(loading);
+    setTimeout(() => loading.classList.add('show'), 10);
+}
+
+function closeLoadingModal() {
+    const loading = document.getElementById('loadingModal');
+    if (loading) {
+        loading.classList.remove('show');
+        setTimeout(() => loading.remove(), 300);
+    }
+}
 
 
 

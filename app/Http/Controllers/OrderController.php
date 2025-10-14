@@ -97,6 +97,71 @@ class OrderController extends Controller
         }
     }
 
+    // Recommander une commande
+    public function reorder(Order $order)
+    {
+        if ($order->user_id !== Auth::id()) {
+            abort(403);
+        }
+        
+        // Vérifier que le stand existe toujours
+        if ($order->stand->statut !== 'approuve') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ce stand n\'est plus disponible'
+            ], 400);
+        }
+        
+        // Vérifier disponibilité des produits
+        foreach ($order->items as $item) {
+            if (!Product::where('id', $item->product_id)->where('stand_id', $order->stand_id)->exists()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Certains produits ne sont plus disponibles'
+                ], 400);
+            }
+        }
+        
+        // Créer nouvelle commande
+        try {
+            DB::beginTransaction();
+
+            $newOrder = Order::create([
+                'user_id' => Auth::id(),
+                'stand_id' => $order->stand_id,
+                'order_number' => Order::generateOrderNumber(),
+                'total_amount' => $order->total_amount,
+                'status' => 'pending'
+            ]);
+            
+            foreach ($order->items as $item) {
+                $product = Product::find($item->product_id);
+                $newOrder->items()->create([
+                    'product_id' => $item->product_id,
+                    'product_name' => $product->nom_produit,
+                    'product_price' => $product->prix,
+                    'quantity' => $item->quantity,
+                    'subtotal' => $product->prix * $item->quantity
+                ]);
+            }
+            
+            DB::commit();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Nouvelle commande créée avec succès !'
+                // 'redirect_url' => route('orders.show', $newOrder->id)
+            ]);
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de la création de la commande'
+            ], 500);
+        }
+    }
+
     public function confirmOrder(Request $request, Order $order)
     {
         if ($order->stand->user_id !== Auth::id()) {

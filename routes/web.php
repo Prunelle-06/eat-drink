@@ -106,6 +106,7 @@ Route::post('/stands/{stand}/toggle-favorite', [StandFavoriteController::class, 
 Route::middleware('auth')->controller(OrderController::class)->group(function () {
 
     Route::post('/orders', 'store')->name('orders.store');
+    Route::post('/orders/{order}/reorder', 'reorder')->name('orders.reorder');
     Route::patch('/orders/{order}/confirm', 'confirmOrder')->name('confirm.order');
     Route::patch('/orders/{order}/mark-ready', 'markOrderReady')->name('ready.order');
 });
